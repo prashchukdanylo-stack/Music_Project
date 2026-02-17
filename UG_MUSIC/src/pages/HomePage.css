@@ -1,0 +1,22 @@
+.welcome-text {
+    color: blueviolet;
+    text-align: center;
+    margin-top: 100px;
+    font-size: 70px;
+}
+.welcome-about {
+    color: rgb(95, 9, 175);
+}
+.play-button {
+    color: white;
+    background-color: rgb(21, 21, 152);
+    width: 100px;
+    height: 100px;
+    align-items: center;
+}
+.play-button-container {
+    text-align: center;
+}
+#id {
+    
+}

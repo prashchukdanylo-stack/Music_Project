@@ -1,0 +1,31 @@
+[
+    {
+        "id": "1",
+        "name": "Baby Shark",
+        "audio": "/songs/babyshark.mp3"
+    },
+
+    {
+        "id": "2",
+        "name": "Rap God",
+        "audio": "/songs/rapgod.mp3"
+    },
+
+    {
+        "id": "3",
+        "name": "Beat it",
+        "audio": "/songs/beatit.mp3"
+    },
+
+    {
+        "id": "4",
+        "name": "Espresso",
+        "audio": "/songs/espresso.mp3"
+    },
+
+    {
+        "id": "5",
+        "name": "Run Away",
+        "audio": "/songs/runaway.mp3"
+    }
+]

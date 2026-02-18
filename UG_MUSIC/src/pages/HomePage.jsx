@@ -1,15 +1,56 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./HomePage.css";
-import babyShark from "/songs/babyshark.mp3";
 
 export const HomePage = () => {
   const [button, setButton] = useState("Play track");
+  const [songs, setSongs] = useState([]);
+
   const audioRef = useRef(null);
+  const trackGenRef = useRef(null);
+
+  //get access to songs
+  useEffect(() => {
+    const getSongsData = async () => {
+      const response = await fetch("/songs.json");
+      const data = await response.json();
+      setSongs(data);
+    };
+
+    getSongsData();
+  }, []);
+
+  useEffect(() => {
+    if (songs.length > 0) {
+      trackGenRef.current = (function* () {
+        while (true) {
+          const numberOfSongs = Math.floor(Math.random() * songs.length);
+          const randomSong = songs[numberOfSongs].audio;
+          yield randomSong;
+        }
+      })();
+    }
+  }, [songs]);
+
+  const randomTrack = () => {
+    if (!trackGenRef.current) return;
+    const song = trackGenRef.current.next().value;
+    audioRef.current.src = song;
+    audioRef.current.play();
+  };
 
   const playTrack = () => {
-    button === "Play track" ? setButton("Stop track") : setButton("Play track");
-    button === "Play track" ? audioRef.current.play() : audioRef.current.pause();
-  };
+    setButton((prev)=> {
+      if (prev === "Play Track") {
+        randomTrack();
+        return "Stop Track";
+      } else {
+        audioRef.current.pause();
+        return "Play Track";
+      }
+    })
+  }
+  
+
   return (
     <>
       <p className="welcome-text">Welcome to Fluire!</p>
@@ -33,13 +74,7 @@ export const HomePage = () => {
         <button className="play-button" onClick={playTrack}>
           {button}
         </button>
-        <audio
-            id="id"
-          controls
-          ref={audioRef}
-          src={babyShark}
-          type="audio/mpeg"
-        ></audio>
+        <audio id="id" ref={audioRef} type="audio/mpeg"></audio>
       </div>
     </>
   );

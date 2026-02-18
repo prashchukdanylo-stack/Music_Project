@@ -13,6 +13,7 @@
     width: 100px;
     height: 100px;
     align-items: center;
+    margin-right: 5px;
 }
 .play-button-container {
     text-align: center;

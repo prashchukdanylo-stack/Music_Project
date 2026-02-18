@@ -22,11 +22,17 @@ export const HomePage = () => {
 
   useEffect(() => {
     if (songs.length > 0) {
+      
       trackGenRef.current = (function* () {
+
+        let previousSong = 0;
         while (true) {
           const numberOfSongs = Math.floor(Math.random() * songs.length);
-          const randomSong = songs[numberOfSongs].audio;
-          yield randomSong;
+          const randomSong = songs.splice(numberOfSongs, 1)[0];
+          if (previousSong) songs.splice(numberOfSongs, 0, previousSong);
+          previousSong = randomSong;
+          yield randomSong.audio;
+          
         }
       })();
     }
@@ -34,9 +40,11 @@ export const HomePage = () => {
 
   const randomTrack = () => {
     if (!trackGenRef.current) throw new Error("Track is not ready yet");
+    if (button === "Stop Track") playTrack();
     const song = trackGenRef.current.next().value;
     audioRef.current.src = song;
     playTrack();
+    
     
   };
 

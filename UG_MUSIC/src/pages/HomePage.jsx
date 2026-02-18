@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import "./HomePage.css";
 
 export const HomePage = () => {
-  const [button, setButton] = useState("Play track");
+
+  const [button, setButton] = useState("Play Track");
   const [songs, setSongs] = useState([]);
 
   const audioRef = useRef(null);
@@ -32,16 +33,17 @@ export const HomePage = () => {
   }, [songs]);
 
   const randomTrack = () => {
-    if (!trackGenRef.current) return;
+    if (!trackGenRef.current) throw new Error("Track is not ready yet");
     const song = trackGenRef.current.next().value;
     audioRef.current.src = song;
-    audioRef.current.play();
+    playTrack();
+    
   };
 
   const playTrack = () => {
     setButton((prev)=> {
       if (prev === "Play Track") {
-        randomTrack();
+        audioRef.current.play();
         return "Stop Track";
       } else {
         audioRef.current.pause();
@@ -74,6 +76,7 @@ export const HomePage = () => {
         <button className="play-button" onClick={playTrack}>
           {button}
         </button>
+        <button className="play-button" onClick={randomTrack}> Random song</button>
         <audio id="id" ref={audioRef} type="audio/mpeg"></audio>
       </div>
     </>

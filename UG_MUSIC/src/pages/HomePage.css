@@ -18,3 +18,7 @@
 .play-button-container {
     text-align: center;
 }
+.song-image {
+    width: 300px;
+    height: 300px;
+}

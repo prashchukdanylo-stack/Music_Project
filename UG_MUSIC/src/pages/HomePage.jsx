@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import "./HomePage.css";
 
-export const HomePage = () => {
+export function HomePage() {
 
   const [button, setButton] = useState("Play Track");
   const [songs, setSongs] = useState([]);
+  const [song, setSong] = useState();
 
   const audioRef = useRef(null);
   const trackGenRef = useRef(null);
@@ -31,7 +32,7 @@ export const HomePage = () => {
           const randomSong = songs.splice(numberOfSongs, 1)[0];
           if (previousSong) songs.splice(numberOfSongs, 0, previousSong);
           previousSong = randomSong;
-          yield randomSong.audio;
+          yield randomSong;
           
         }
       })();
@@ -42,7 +43,8 @@ export const HomePage = () => {
     if (!trackGenRef.current) throw new Error("Track is not ready yet");
     if (button === "Stop Track") playTrack();
     const song = trackGenRef.current.next().value;
-    audioRef.current.src = song;
+    audioRef.current.src = song.audio;
+    setSong(song);
     playTrack();
     
     
@@ -85,8 +87,14 @@ export const HomePage = () => {
           {button}
         </button>
         <button className="play-button" onClick={randomTrack}> Random song</button>
-        <audio id="id" ref={audioRef} type="audio/mpeg"></audio>
+        <audio id="id" ref={audioRef} controls type="audio/mpeg" onEnded={randomTrack}></audio>
       </div>
+      
+        {song && <div>
+          <img src={song.img} className="song-image"></img>
+          <p>{song.name}</p>
+        </div> }
+      
     </>
   );
 };

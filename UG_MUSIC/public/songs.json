@@ -2,30 +2,35 @@
     {
         "id": "1",
         "name": "Baby Shark",
+        "img": "/images/babyshark.png",
         "audio": "/songs/babyshark.mp3"
     },
 
     {
         "id": "2",
         "name": "Rap God",
+        "img":"/images/rapgod.jpg",
         "audio": "/songs/rapgod.mp3"
     },
 
     {
         "id": "3",
-        "name": "Beat it",
-        "audio": "/songs/beatit.mp3"
+        "name": "Baby",
+        "img":"/images/baby.jpg",
+        "audio": "/songs/baby.mp3"
     },
 
     {
         "id": "4",
         "name": "Espresso",
+        "img":"/images/espresso.jpg",
         "audio": "/songs/espresso.mp3"
     },
 
     {
         "id": "5",
         "name": "Run Away",
+        "img":"/images/runaway.jpg",
         "audio": "/songs/runaway.mp3"
     }
 ]

@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import "./HomePage.css";
+import { Player } from "../Components/Player";
 
 export function HomePage() {
 
-  const [button, setButton] = useState("Play Track");
+  const [isPlaying, setIsPlaying] = useState(true);
   const [songs, setSongs] = useState([]);
   const [song, setSong] = useState();
 
@@ -41,7 +42,7 @@ export function HomePage() {
 
   const randomTrack = () => {
     if (!trackGenRef.current) throw new Error("Track is not ready yet");
-    if (button === "Stop Track") playTrack();
+    if (isPlaying === false) playTrack();
     const song = trackGenRef.current.next().value;
     audioRef.current.src = song.audio;
     setSong(song);
@@ -51,13 +52,13 @@ export function HomePage() {
   };
 
   const playTrack = () => {
-    setButton((prev)=> {
-      if (prev === "Play Track") {
+    setIsPlaying((prev)=> {
+      if (prev === false) {
         audioRef.current.play();
-        return "Stop Track";
+        return true;
       } else {
         audioRef.current.pause();
-        return "Play Track";
+        return false;
       }
     })
   }
@@ -83,16 +84,15 @@ export function HomePage() {
         </p>
       </div>
       <div className="play-button-container">
-        <button className="play-button" onClick={playTrack}>
-          {button}
-        </button>
-        <button className="play-button" onClick={randomTrack}> Random song</button>
-        <audio id="id" ref={audioRef} controls type="audio/mpeg" onEnded={randomTrack}></audio>
+       
+        <button className="random-button" onClick={randomTrack}> Random song</button>
+        <audio id="id" ref={audioRef} type="audio/mpeg" onEnded={randomTrack}></audio>
       </div>
       
         {song && <div>
           <img src={song.img} className="song-image"></img>
           <p>{song.name}</p>
+           <Player isPlaying = {isPlaying} playTrack={playTrack} />
         </div> }
       
     </>

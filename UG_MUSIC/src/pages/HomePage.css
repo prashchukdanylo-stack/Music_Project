@@ -7,7 +7,7 @@
 .welcome-about {
     color: rgb(95, 9, 175);
 }
-.play-button {
+.random-button {
     color: white;
     background-color: rgb(21, 21, 152);
     width: 100px;
@@ -21,4 +21,8 @@
 .song-image {
     width: 300px;
     height: 300px;
+}
+.play-button{
+    width: 100px;
+    height: 100px;
 }

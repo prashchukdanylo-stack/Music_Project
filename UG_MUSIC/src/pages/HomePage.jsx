@@ -1,12 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import "./HomePage.css";
 import { Player } from "../Components/Player";
+import { formatTime } from "../utils/formatTime";
 
 export function HomePage() {
-
   const [isPlaying, setIsPlaying] = useState(true);
   const [songs, setSongs] = useState([]);
   const [song, setSong] = useState();
+  const [progress, setProgress] = useState();
+  const [time, setTime] = useState();
 
   const audioRef = useRef(null);
   const trackGenRef = useRef(null);
@@ -24,9 +26,7 @@ export function HomePage() {
 
   useEffect(() => {
     if (songs.length > 0) {
-      
       trackGenRef.current = (function* () {
-
         let previousSong = 0;
         while (true) {
           const numberOfSongs = Math.floor(Math.random() * songs.length);
@@ -34,7 +34,6 @@ export function HomePage() {
           if (previousSong) songs.splice(numberOfSongs, 0, previousSong);
           previousSong = randomSong;
           yield randomSong;
-          
         }
       })();
     }
@@ -47,12 +46,10 @@ export function HomePage() {
     audioRef.current.src = song.audio;
     setSong(song);
     playTrack();
-    
-    
   };
 
   const playTrack = () => {
-    setIsPlaying((prev)=> {
+    setIsPlaying((prev) => {
       if (prev === false) {
         audioRef.current.play();
         return true;
@@ -60,15 +57,24 @@ export function HomePage() {
         audioRef.current.pause();
         return false;
       }
-    })
-  }
-  
+    });
+  };
+
+  const trackDuration = () => {
+    if (!audioRef.current) return;
+    const duration = audioRef.current.duration;
+    const currentTime = audioRef.current.currentTime;
+
+    if (!duration || isNaN(duration)) return;
+    setTime(`${formatTime(currentTime)} / ${formatTime(duration)}`);
+    setProgress((currentTime / duration) * 100);
+  };
 
   return (
     <>
       <p className="welcome-text">Welcome to Fluire!</p>
       <div className="welcome-about-container">
-        <p className="welcome-about">
+        <p>
           This is a beautiful place to chill and throw away all your problems
           and just feel hapiness!Here, the music flows like a gentle river,
           carrying your thoughts away and wrapping you in a cocoon of sound.
@@ -84,17 +90,31 @@ export function HomePage() {
         </p>
       </div>
       <div className="play-button-container">
-       
-        <button className="random-button" onClick={randomTrack}> Random song</button>
-        <audio id="id" ref={audioRef} type="audio/mpeg" onEnded={randomTrack}></audio>
+        <button className="random-button" onClick={randomTrack}>
+          {" "}
+          Random song
+        </button>
+        <audio
+          id="id"
+          ref={audioRef}
+          type="audio/mpeg"
+          onEnded={randomTrack}
+          onTimeUpdate={trackDuration}
+          onLoadedMetadata={trackDuration}
+        ></audio>
       </div>
-      
-        {song && <div>
-          <img src={song.img} className="song-image"></img>
-          <p>{song.name}</p>
-           <Player isPlaying = {isPlaying} playTrack={playTrack} />
-        </div> }
-      
+
+      {song && (
+        <Player
+          isPlaying={isPlaying}
+          time={time}
+          playTrack={playTrack}
+          audioRef={audioRef}
+          song={song}
+          setProgress={setProgress}
+          progress={progress}
+        />
+      )}
     </>
   );
-};
+}

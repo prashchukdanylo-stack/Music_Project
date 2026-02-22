@@ -30,7 +30,45 @@
     {
         "id": "5",
         "name": "Run Away",
-        "img":"/images/runaway.jpg",
-        "audio": "/songs/runaway.mp3"
+        "img":"/images/stronger.jpg",
+        "audio": "/songs/stronger.mp3"
+    },
+
+    {
+        "id": "6",
+        "name": "Where is my mind",
+        "img": "/images/whereismymind.jpg",
+        "audio": "/songs/whereismymind.mp3"
+    },
+
+    {
+        "id": "7",
+        "name": "Old town road",
+        "img": "/images/oldtownroad.jpg",
+        "audio": "/songs/oldtownroad.mp3"
+    },
+
+    {
+        "id": "8",
+        "name": "Cheerleader",
+        "img": "/images/cheerleader.jpg",
+        "audio": "/songs/cheerleader.mp3"
+    },
+
+     {
+        "id": "9",
+        "name": "Popular",
+        "img": "/images/popular.jpg",
+        "audio": "/songs/popular.mp3"
+    },
+
+    {
+        "id": "10",
+        "name": "Lovely",
+        "img": "/images/lovely.jpg",
+        "audio": "/songs/lovely.mp3"
     }
+
+
+
 ]

@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import "./HomePage.css";
 import { Player } from "../Components/Player";
-import { formatTime } from "../utils/formatTime";
 
 export function HomePage() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [songs, setSongs] = useState([]);
   const [song, setSong] = useState();
-  const [progress, setProgress] = useState();
-  const [time, setTime] = useState();
+  
+  
 
   const audioRef = useRef(null);
   const trackGenRef = useRef(null);
@@ -24,31 +23,40 @@ export function HomePage() {
     getSongsData();
   }, []);
 
-  useEffect(() => {
-    if (songs.length > 0) {
-      trackGenRef.current = (function* () {
-        let previousSong = 0;
-        while (true) {
-          const numberOfSongs = Math.floor(Math.random() * songs.length);
-          const randomSong = songs.splice(numberOfSongs, 1)[0];
-          if (previousSong) songs.splice(numberOfSongs, 0, previousSong);
+
+//choosing random song from array
+  const randomTrackGenerator = (songs) => {
+    let previousSong = null;
+    const copyOfSongs = [...songs];
+
+    return function* () {
+      while (true) {
+          const numberOfSong = Math.floor(Math.random() * copyOfSongs.length);
+          const randomSong = copyOfSongs.splice(numberOfSong, 1)[0];
+          if (previousSong) copyOfSongs.push(previousSong);
           previousSong = randomSong;
           yield randomSong;
         }
-      })();
+      }
+    }
+  
+
+  useEffect(() => {
+    if (songs.length > 0) {
+      trackGenRef.current = randomTrackGenerator(songs)();
     }
   }, [songs]);
 
   const randomTrack = () => {
     if (!trackGenRef.current) throw new Error("Track is not ready yet");
-    if (isPlaying === false) playTrack();
     const song = trackGenRef.current.next().value;
-    audioRef.current.src = song.audio;
+    if (!song) return;
     setSong(song);
-    playTrack();
+    setIsPlaying(true);
   };
 
-  const playTrack = () => {
+  //playing/pausing track
+  const playSong = () => {
     setIsPlaying((prev) => {
       if (prev === false) {
         audioRef.current.play();
@@ -60,18 +68,11 @@ export function HomePage() {
     });
   };
 
-  const trackDuration = () => {
-    if (!audioRef.current) return;
-    const duration = audioRef.current.duration;
-    const currentTime = audioRef.current.currentTime;
-
-    if (!duration || isNaN(duration)) return;
-    setTime(`${formatTime(currentTime)} / ${formatTime(duration)}`);
-    setProgress((currentTime / duration) * 100);
-  };
+  
 
   return (
-    <>
+    <div className="all-page">
+    <div className="welcome">
       <p className="welcome-text">Welcome to Fluire!</p>
       <div className="welcome-about-container">
         <p>
@@ -89,32 +90,25 @@ export function HomePage() {
           life can be simple, beautiful, and full of bliss.
         </p>
       </div>
+    </div>
+
       <div className="play-button-container">
         <button className="random-button" onClick={randomTrack}>
           {" "}
           Random song
         </button>
-        <audio
-          id="id"
-          ref={audioRef}
-          type="audio/mpeg"
-          onEnded={randomTrack}
-          onTimeUpdate={trackDuration}
-          onLoadedMetadata={trackDuration}
-        ></audio>
-      </div>
-
-      {song && (
+        {song && (
         <Player
           isPlaying={isPlaying}
-          time={time}
-          playTrack={playTrack}
+          playSong={playSong}
           audioRef={audioRef}
           song={song}
-          setProgress={setProgress}
-          progress={progress}
+          onEnded={randomTrack}
         />
       )}
-    </>
+      </div>
+
+      
+      </div>
   );
 }

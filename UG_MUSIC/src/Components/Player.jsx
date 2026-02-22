@@ -1,24 +1,56 @@
+import { useState, useEffect } from "react";
+import { formatTime } from "../utils/formatTime";
+import "./Player.css"
 export function Player({
   isPlaying,
-  playTrack,
+  playSong,
   audioRef,
   song,
-  progress,
-  setProgress,
-  time,
+  onEnded,
 }) {
+  const [progress, setProgress] = useState(0);
+  const [time, setTime] = useState('');
+
+  //getting duration of track to manipulate progress
+  const trackDuration = () => {
+    if (!audioRef.current) return;
+    const duration = audioRef.current.duration;
+    const currentTime = audioRef.current.currentTime;
+
+    if (!duration || isNaN(duration)) return;
+    setTime(`${formatTime(currentTime)} / ${formatTime(duration)}`);
+    setProgress((currentTime / duration) * 100);
+  };
+
+  useEffect(() => {
+  if (!audioRef.current || !song) return;
+
+  audioRef.current.src = song.audio;
+  audioRef.current.play();
+}, [song, audioRef]);
+
   return (
+    <>
+    <audio
+          id="id"
+          ref={audioRef}
+          type="audio/mpeg"
+          onEnded={onEnded}
+          onTimeUpdate={trackDuration}
+          onLoadedMetadata={trackDuration}
+        ></audio>
+
     <div className="song-container">
       <img src={song.img} className="song-image"></img>
       <p className="song-name">{song.name}</p>
 
       <div>
         <input
+          className="volume-range"
           type="range"
           min="0"
           max="100"
           onChange={(event) => {
-            console.log(audioRef.current.duration);
             const volume = Number(event.target.value) / 100;
             audioRef.current.volume = volume;
           }}
@@ -27,13 +59,12 @@ export function Player({
         <img
           className="play-button"
           src={isPlaying ? "images/pause.png" : "images/play.png"}
-          onClick={playTrack}
+          onClick={playSong}
         ></img>
 
         <input
+        className="progress-range"
           type="range"
-          min="0"
-          max="100"
           value={progress || 0}
           onChange={(event) => {
             const duration = audioRef.current.duration;
@@ -45,5 +76,6 @@ export function Player({
         <p>{time}</p>
       </div>
     </div>
+    </>
   );
 }

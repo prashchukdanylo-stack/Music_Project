@@ -9,35 +9,64 @@ export function Player({
   onEnded,
 }) {
   const [progress, setProgress] = useState(0);
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState("0:00 / 0:00");
+  const [duration, setDuration] = useState(0);
 
-  //getting duration of track to manipulate progress
+ 
+  useEffect(() => {
+    if (!audioRef.current || !song) return;
+
+    const audio = audioRef.current;
+    audio.src = song.audio;
+    audio.load();
+
+  
+    
+
+    const handleMetaData = () => {
+      const duration = audio.duration;
+      if (duration && !isNaN(duration)) {
+        setDuration(duration);
+        setTime(`0:00 / ${formatTime(duration)}`);
+      }
+    };
+
+    audio.addEventListener("loadedmetadata", handleMetaData);
+    return () => {
+      audio.removeEventListener("loadedmetadata", handleMetaData);
+    };
+  }, [song, audioRef]);
+
+
   const trackDuration = () => {
-    if (!audioRef.current) return;
-    const duration = audioRef.current.duration;
-    const currentTime = audioRef.current.currentTime;
+    const audio = audioRef.current;
+    if (!audio || !duration || isNaN(duration)) return;
 
-    if (!duration || isNaN(duration)) return;
-    setTime(`${formatTime(currentTime)} / ${formatTime(duration)}`);
-    setProgress((currentTime / duration) * 100);
+    const currentTime = audio.currentTime;
+    const safeCurrentTime = Math.min(currentTime, duration);
+
+    setProgress((safeCurrentTime / duration) * 100);
+    setTime(`${formatTime(safeCurrentTime)} / ${formatTime(duration)}`);
   };
 
-  useEffect(() => {
-  if (!audioRef.current || !song) return;
 
-  audioRef.current.src = song.audio;
-  audioRef.current.play();
-}, [song, audioRef]);
-
+const resetThings = () => {
+  onEnded();
+  setProgress(0);
+    setTime("0:00 / 0:00");
+    setDuration(0);
+}
   return (
     <>
     <audio
           id="id"
           ref={audioRef}
           type="audio/mpeg"
-          onEnded={onEnded}
+          onEnded={resetThings}
           onTimeUpdate={trackDuration}
-          onLoadedMetadata={trackDuration}
+          onCanPlay={() => {
+          if (isPlaying) audioRef.current.play();
+        }}
         ></audio>
 
     <div className="song-container">
@@ -63,16 +92,17 @@ export function Player({
         ></img>
 
         <input
-        className="progress-range"
+          className="progress-range"
           type="range"
-          value={progress || 0}
+          min="0"
+          max="100"
+          value={progress}
           onChange={(event) => {
-            const duration = audioRef.current.duration;
             const newTime = (event.target.value / 100) * duration;
             audioRef.current.currentTime = newTime;
-            setProgress(event.target.value);
+            setProgress(Number(event.target.value));
           }}
-        ></input>
+        />
         <p>{time}</p>
       </div>
     </div>

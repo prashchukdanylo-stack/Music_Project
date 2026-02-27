@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "./HomePage.css";
 import { Player } from "../Components/Player";
+import { Link } from "react-router-dom";
 
 export function HomePage() {
   const [isPlaying, setIsPlaying] = useState(true);
@@ -9,11 +10,10 @@ export function HomePage() {
   
   
   
-
-  const audioRef = useRef(null);
+const audioRef = useRef(null);
   const trackGenRef = useRef(null);
 
-  //get access to songs
+
   useEffect(() => {
     const getSongsData = async () => {
       const response = await fetch("/songs.json");
@@ -25,18 +25,18 @@ export function HomePage() {
   }, []);
 
 
-//choosing random song from array
-  const randomTrackGenerator = (songs) => {
-    let previousSong = null;
-    const copyOfSongs = [...songs];
 
+  const randomTrackGenerator = (songs) => {
+    const copyOfSongs = [...songs];
+    let previousSong = 0;
+    
     return function* () {
       while (true) {
           const numberOfSong = Math.floor(Math.random() * copyOfSongs.length);
           const randomSong = copyOfSongs.splice(numberOfSong, 1)[0];
+          yield randomSong;
           if (previousSong) copyOfSongs.push(previousSong);
           previousSong = randomSong;
-          yield randomSong;
         }
       }
     }
@@ -56,7 +56,7 @@ export function HomePage() {
     setIsPlaying(true);
   };
 
-  //playing/pausing track
+ 
   const playSong = () => {
     setIsPlaying((prev) => {
       if (prev === false) {
@@ -109,7 +109,7 @@ export function HomePage() {
       )}
       </div>
 
-      
+      <p><Link to={"/song"}>click</Link></p>
       </div>
   );
 }

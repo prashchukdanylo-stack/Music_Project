@@ -6,13 +6,16 @@ export function Song({
   isPlaying,
   song,
   setIsPlaying,
+  setSong,
+  trackGenRef,
 }) {
   const [progress, setProgress] = useState(0);
   const [time, setTime] = useState("0:00 / 0:00");
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const navigate = useNavigate();
- 
+  
+  
   useEffect(() => {
     if (!audioRef.current || !song) return;
 
@@ -66,6 +69,11 @@ const resetThings = () => {
   setProgress(0);
     setTime("0:00 / 0:00");
     setDuration(0);
+    if (!trackGenRef.current) throw new Error("Track is not ready yet");
+    const song = trackGenRef.current.next().value;
+    if (!song) return;
+    setSong(song);
+    setIsPlaying(true);
 }
   return (
     <>

@@ -1,52 +1,18 @@
-import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 
-export function HomePage({setIsPlaying ,setSong}) {
+export function HomePage({setIsPlaying ,setSong, trackGenRef}) {
   
-  const [songs, setSongs] = useState([]);
+  
   const navigate = useNavigate();
   
   
   
 
-  const trackGenRef = useRef(null);
-
-
-  useEffect(() => {
-    const getSongsData = async () => {
-      const response = await fetch("/songs.json");
-      const data = await response.json();
-      setSongs(data);
-    };
-
-    getSongsData();
-  }, []);
-
-
-
-  const randomTrackGenerator = (songs) => {
-    const copyOfSongs = [...songs];
-    let previousSong = 0;
-    
-    return function* () {
-      while (true) {
-          const numberOfSong = Math.floor(Math.random() * copyOfSongs.length);
-          const randomSong = copyOfSongs.splice(numberOfSong, 1)[0];
-          yield randomSong;
-          if (previousSong) copyOfSongs.push(previousSong);
-          previousSong = randomSong;
-        }
-      }
-    }
   
 
-  useEffect(() => {
-    if (songs.length > 0) {
-      trackGenRef.current = randomTrackGenerator(songs)();
-    }
-  }, [songs]);
+ 
 
   const randomTrack = () => {
     if (!trackGenRef.current) throw new Error("Track is not ready yet");

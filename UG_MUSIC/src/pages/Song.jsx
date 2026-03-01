@@ -43,7 +43,7 @@ export function Song({
     return () => {
       audio.removeEventListener("loadedmetadata", handleMetaData);
     };
-  }, [song, audioRef]);
+  }, [song]);
 
   const playSong = () => {
     setIsPlaying((prev) => {
@@ -91,7 +91,7 @@ const nextSong = () => {
       setCurrentIndex(newArr.length - 1);
       return newArr;
     });
-    console.log(currentSongPlaylist);
+
 }
 
 const previousSong = () => {
@@ -106,6 +106,7 @@ const previousSong = () => {
     setIsPlaying(true);
 }
   return (
+    
     <>
     <audio
           id="id"
@@ -118,12 +119,24 @@ const previousSong = () => {
         }}
         ></audio>
 
-      <button className = "back-button" onClick={() => navigate("/")}> GO BACK GOME</button>
+      <button className = "back-button" onClick={() => navigate("/")}> Go back to Home page</button>
 
     <div className="song-container">
       <img src={song.img} className="song-image"></img>
       <p className="song-name">{song.name}</p>
 
+      <div>
+        
+        <img onClick={previousSong} src ="/images/previous.png" className = "previous-button"></img>
+        <img
+          className="play-button"
+          src={isPlaying ? "images/pause.png" : "images/play.png"}
+          onClick={playSong}
+        ></img>
+        <img onClick={nextSong} src ="/images/next.png" className = "next-button"></img>
+        
+        <p>{time}</p>
+      </div>
       <div>
         <input
           className="volume-range"
@@ -136,12 +149,6 @@ const previousSong = () => {
           }}
         ></input>
 
-        <img
-          className="play-button"
-          src={isPlaying ? "images/pause.png" : "images/play.png"}
-          onClick={playSong}
-        ></img>
-
         <input
           className="progress-range"
           type="range"
@@ -153,12 +160,8 @@ const previousSong = () => {
             audioRef.current.currentTime = newTime;
             setProgress(Number(event.target.value));
           }}
-        />
-        <p>{time}</p>
-      </div>
-      <div>
-        <button onClick={previousSong}>Previous song</button>
-        <button onClick={nextSong}>Next song</button>
+        ></input>
+        
       </div>
     </div>
     </>

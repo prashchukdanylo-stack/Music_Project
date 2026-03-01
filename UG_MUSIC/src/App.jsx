@@ -48,7 +48,7 @@ const [currentIndex, setCurrentIndex] = useState(-1);
   return (
    <BrowserRouter>
    <Routes>
-    <Route index element = {<HomePage isPlaying={isPlaying} setIsPlaying={setIsPlaying} setSong={setSong} trackGenRef={trackGenRef} currentSongPlaylist={currentSongPlaylist} setCurrentSongPlaylist={setCurrentSongPlaylist} currentIndex={setCurrentIndex} setCurrentIndex={setCurrentIndex} />} />
+    <Route index element = {<HomePage isPlaying={isPlaying} setIsPlaying={setIsPlaying} setSong={setSong} trackGenRef={trackGenRef} setCurrentSongPlaylist={setCurrentSongPlaylist} currentIndex={setCurrentIndex} setCurrentIndex={setCurrentIndex} />} />
     <Route path="/song" element = {<Song isPlaying={isPlaying} setIsPlaying={setIsPlaying} song={song} setSong={setSong} trackGenRef={trackGenRef} currentSongPlaylist={currentSongPlaylist} setCurrentSongPlaylist={setCurrentSongPlaylist} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />} />
    </Routes>
    </BrowserRouter>

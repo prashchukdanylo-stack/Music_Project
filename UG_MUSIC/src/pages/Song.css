@@ -13,3 +13,13 @@ button.back-button {
     align-items: center;
     margin-right: 5px;
 }
+.previous-button {
+    width: 100px;
+    height: 100px;
+    margin-right: 40px;
+}
+.next-button {
+    width: 100px;
+    height: 100px;
+    margin-left: 40px;
+}

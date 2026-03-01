@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 
-export function HomePage({setIsPlaying ,setSong, trackGenRef, currentSongPlaylist, setCurrentSongPlaylist, currentIndex, setCurrentIndex}) {
+export function HomePage({setIsPlaying ,setSong, trackGenRef,setCurrentSongPlaylist, currentIndex, setCurrentIndex}) {
   
   
   const navigate = useNavigate();
@@ -25,7 +25,6 @@ export function HomePage({setIsPlaying ,setSong, trackGenRef, currentSongPlaylis
       setCurrentIndex(newArr.length - 1);
       return newArr;
     });
-    console.log(currentSongPlaylist);
     navigate("/song", {state: {song}});
   };
 

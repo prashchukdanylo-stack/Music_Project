@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
-import { Player } from "../Components/Player";
-import { Link } from "react-router-dom";
 
-export function HomePage() {
-  const [isPlaying, setIsPlaying] = useState(true);
+
+export function HomePage({setIsPlaying ,setSong}) {
+  
   const [songs, setSongs] = useState([]);
-  const [song, setSong] = useState();
+  const navigate = useNavigate();
   
   
   
-const audioRef = useRef(null);
+
   const trackGenRef = useRef(null);
 
 
@@ -54,20 +54,11 @@ const audioRef = useRef(null);
     if (!song) return;
     setSong(song);
     setIsPlaying(true);
+    navigate("/song", {state: {song}});
   };
 
  
-  const playSong = () => {
-    setIsPlaying((prev) => {
-      if (prev === false) {
-        audioRef.current.play();
-        return true;
-      } else {
-        audioRef.current.pause();
-        return false;
-      }
-    });
-  };
+  
 
 
 
@@ -95,21 +86,12 @@ const audioRef = useRef(null);
 
       <div className="play-button-container">
         <button className="random-button" onClick={randomTrack}>
-          {" "}
-          Random song
+        Random song
+          
         </button>
-        {song && (
-        <Player
-          isPlaying={isPlaying}
-          playSong={playSong}
-          audioRef={audioRef}
-          song={song}
-          onEnded={randomTrack}
-        />
-      )}
+
       </div>
 
-      <p><Link to={"/song"}>click</Link></p>
       </div>
   );
 }

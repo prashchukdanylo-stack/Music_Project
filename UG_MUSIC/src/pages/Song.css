@@ -1,0 +1,15 @@
+.progress-range {
+    accent-color: blueviolet;
+}
+.volume-range {
+    accent-color: blueviolet;
+}
+
+button.back-button {
+    color: white;
+    background-color: rgb(21, 21, 152);
+    width: 100px;
+    height: 100px;
+    align-items: center;
+    margin-right: 5px;
+}

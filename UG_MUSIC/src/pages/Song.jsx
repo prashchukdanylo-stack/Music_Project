@@ -8,6 +8,10 @@ export function Song({
   setIsPlaying,
   setSong,
   trackGenRef,
+  currentSongPlaylist,
+  setCurrentSongPlaylist,
+  currentIndex,
+  setCurrentIndex,
 }) {
   const [progress, setProgress] = useState(0);
   const [time, setTime] = useState("0:00 / 0:00");
@@ -15,6 +19,7 @@ export function Song({
   const audioRef = useRef(null);
   const navigate = useNavigate();
   
+
   
   useEffect(() => {
     if (!audioRef.current || !song) return;
@@ -64,15 +69,40 @@ export function Song({
   };
 
 
-const resetThings = () => {
+const nextSong = () => {
   
   setProgress(0);
     setTime("0:00 / 0:00");
     setDuration(0);
+    if (currentIndex < currentSongPlaylist.length - 1) {
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      setSong(currentSongPlaylist[nextIndex]);
+      setIsPlaying(true);
+      return;
+    };
     if (!trackGenRef.current) throw new Error("Track is not ready yet");
     const song = trackGenRef.current.next().value;
     if (!song) return;
     setSong(song);
+    setIsPlaying(true);
+    setCurrentSongPlaylist(prev => {
+      const newArr = [...prev.slice(0, currentIndex + 1), song];
+      setCurrentIndex(newArr.length - 1);
+      return newArr;
+    });
+    console.log(currentSongPlaylist);
+}
+
+const previousSong = () => {
+  if (currentIndex <=0) return;
+  setProgress(0);
+    setTime("0:00 / 0:00");
+    setDuration(0);
+    
+    const previousIndex = currentIndex - 1;
+    setCurrentIndex(previousIndex);
+    setSong(currentSongPlaylist[previousIndex]);
     setIsPlaying(true);
 }
   return (
@@ -81,7 +111,7 @@ const resetThings = () => {
           id="id"
           ref={audioRef}
           type="audio/mpeg"
-          onEnded={resetThings}
+          onEnded={nextSong}
           onTimeUpdate={trackDuration}
           onCanPlay={() => {
           if (isPlaying) audioRef.current.play();
@@ -125,6 +155,10 @@ const resetThings = () => {
           }}
         />
         <p>{time}</p>
+      </div>
+      <div>
+        <button onClick={previousSong}>Previous song</button>
+        <button onClick={nextSong}>Next song</button>
       </div>
     </div>
     </>

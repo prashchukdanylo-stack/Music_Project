@@ -8,6 +8,8 @@ const [isPlaying, setIsPlaying] = useState(true);
 const [song, setSong] = useState();
 const [songs, setSongs] = useState([]);
 const trackGenRef = useRef(null);
+const [currentSongPlaylist, setCurrentSongPlaylist] = useState([]);
+const [currentIndex, setCurrentIndex] = useState(-1);
 
  useEffect(() => {
     const getSongsData = async () => {
@@ -17,8 +19,8 @@ const trackGenRef = useRef(null);
     };
 
     getSongsData();
+    
   }, []);
-
 
 
   const randomTrackGenerator = (songs) => {
@@ -46,8 +48,8 @@ const trackGenRef = useRef(null);
   return (
    <BrowserRouter>
    <Routes>
-    <Route index element = {<HomePage isPlaying={isPlaying} setIsPlaying={setIsPlaying} setSong={setSong} trackGenRef={trackGenRef} />} />
-    <Route path="/song" element = {<Song isPlaying={isPlaying} setIsPlaying={setIsPlaying} song={song} setSong={setSong} trackGenRef={trackGenRef} />} />
+    <Route index element = {<HomePage isPlaying={isPlaying} setIsPlaying={setIsPlaying} setSong={setSong} trackGenRef={trackGenRef} currentSongPlaylist={currentSongPlaylist} setCurrentSongPlaylist={setCurrentSongPlaylist} currentIndex={setCurrentIndex} setCurrentIndex={setCurrentIndex} />} />
+    <Route path="/song" element = {<Song isPlaying={isPlaying} setIsPlaying={setIsPlaying} song={song} setSong={setSong} trackGenRef={trackGenRef} currentSongPlaylist={currentSongPlaylist} setCurrentSongPlaylist={setCurrentSongPlaylist} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />} />
    </Routes>
    </BrowserRouter>
   )

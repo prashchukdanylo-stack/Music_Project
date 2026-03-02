@@ -10,6 +10,7 @@ const [songs, setSongs] = useState([]);
 const trackGenRef = useRef(null);
 const [currentSongPlaylist, setCurrentSongPlaylist] = useState([]);
 const [currentIndex, setCurrentIndex] = useState(-1);
+const [isPlayerReady, setIsPlayerReady] = useState(false);
 
  useEffect(() => {
     const getSongsData = async () => {
@@ -17,11 +18,26 @@ const [currentIndex, setCurrentIndex] = useState(-1);
       const data = await response.json();
       setSongs(data);
     };
-
+    const savedPlayer = localStorage.getItem("player");
+    if (savedPlayer) {
+      const {song, currentSongPlaylist, currentIndex} = JSON.parse(savedPlayer);
+      setCurrentIndex(currentIndex ?? -1);
+      setCurrentSongPlaylist(currentSongPlaylist || []);
+      setSong(song || null);
+      setIsPlaying(false);
+    }
+    setIsPlayerReady(true);
     getSongsData();
-    
   }, []);
 
+  useEffect(()=> {
+    if (!song) return;
+    localStorage.setItem("player", JSON.stringify({
+      song,
+      currentSongPlaylist,
+      currentIndex,
+    }))
+  },[song, currentSongPlaylist, currentIndex]);
 
   const randomTrackGenerator = (songs) => {
     const copyOfSongs = [...songs];
@@ -45,10 +61,11 @@ const [currentIndex, setCurrentIndex] = useState(-1);
     }
   }, [songs]);
 
+  if(!isPlayerReady) return null;
   return (
    <BrowserRouter>
    <Routes>
-    <Route index element = {<HomePage isPlaying={isPlaying} setIsPlaying={setIsPlaying} setSong={setSong} trackGenRef={trackGenRef} setCurrentSongPlaylist={setCurrentSongPlaylist} currentIndex={setCurrentIndex} setCurrentIndex={setCurrentIndex} />} />
+    <Route index element = {<HomePage isPlaying={isPlaying} setIsPlaying={setIsPlaying} setSong={setSong} trackGenRef={trackGenRef} setCurrentSongPlaylist={setCurrentSongPlaylist} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />} />
     <Route path="/song" element = {<Song isPlaying={isPlaying} setIsPlaying={setIsPlaying} song={song} setSong={setSong} trackGenRef={trackGenRef} currentSongPlaylist={currentSongPlaylist} setCurrentSongPlaylist={setCurrentSongPlaylist} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />} />
    </Routes>
    </BrowserRouter>

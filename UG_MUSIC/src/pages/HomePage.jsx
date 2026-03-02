@@ -60,9 +60,13 @@ export function HomePage({setIsPlaying ,setSong, trackGenRef,setCurrentSongPlayl
         Random song
           
         </button>
+        <br />
+        <button onClick={() => {navigate("/song")}}>Go to song page</button>
+        <br />
+        <button onClick={() => {localStorage.clear(); window.location.reload()}}>Erase localStorage</button>
 
       </div>
-
+      
       </div>
   );
 }

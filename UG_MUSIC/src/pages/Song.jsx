@@ -19,11 +19,11 @@ export function Song({
   const audioRef = useRef(null);
   const navigate = useNavigate();
   
-
+  
   
   useEffect(() => {
     if (!audioRef.current || !song) return;
-
+   
     const audio = audioRef.current;
     audio.src = song.audio;
     audio.load();
@@ -82,15 +82,17 @@ const nextSong = () => {
       return;
     };
     if (!trackGenRef.current) throw new Error("Track is not ready yet");
-    const song = trackGenRef.current.next().value;
-    if (!song) return;
-    setSong(song);
-    setIsPlaying(true);
+    const newSong = trackGenRef.current.next().value;
+    if (!newSong) return;
+    
     setCurrentSongPlaylist(prev => {
-      const newArr = [...prev.slice(0, currentIndex + 1), song];
+      const newArr = [...prev, newSong];
       setCurrentIndex(newArr.length - 1);
       return newArr;
     });
+
+    setSong(newSong);
+    setIsPlaying(true);
 
 }
 

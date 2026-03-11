@@ -2,7 +2,8 @@
     accent-color: blueviolet;
 }
 .volume-range {
-    accent-color: blueviolet;
+    accent-color: rgb(43, 141, 226);
+
 }
 
 button.back-button {
@@ -22,4 +23,4 @@ button.back-button {
     width: 100px;
     height: 100px;
     margin-left: 40px;
-}
+}   

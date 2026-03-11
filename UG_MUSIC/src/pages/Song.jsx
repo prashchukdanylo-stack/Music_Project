@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import {  useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatTime } from "../utils/formatTime";
 import "./Song.css"
@@ -12,11 +12,15 @@ export function Song({
   setCurrentSongPlaylist,
   currentIndex,
   setCurrentIndex,
+  audioRef,
+  progress,
+  setProgress,
+  time,
+  setTime,
+  duration,
+  setDuration
 }) {
-  const [progress, setProgress] = useState(0);
-  const [time, setTime] = useState("0:00 / 0:00");
-  const [duration, setDuration] = useState(0);
-  const audioRef = useRef(null);
+  
   const navigate = useNavigate();
   
   
@@ -43,7 +47,7 @@ export function Song({
     return () => {
       audio.removeEventListener("loadedmetadata", handleMetaData);
     };
-  }, [song]);
+  }, [song, audioRef, setDuration, setTime]);
 
   const playSong = () => {
     setIsPlaying((prev) => {

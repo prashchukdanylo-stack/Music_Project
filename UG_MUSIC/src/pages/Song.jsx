@@ -32,14 +32,13 @@ export function Song({
     audio.src = song.audio;
     audio.load();
 
-  
+  setTime(`0:00 / ${song.duration}`);
     
 
     const handleMetaData = () => {
       const duration = audio.duration;
       if (duration && !isNaN(duration)) {
         setDuration(duration);
-        setTime(`0:00 / ${formatTime(duration)}`);
       }
     };
 
@@ -63,13 +62,13 @@ export function Song({
 
   const trackDuration = () => {
     const audio = audioRef.current;
-    if (!audio || !duration || isNaN(duration)) return;
+    if (!audio || isNaN(audio.duration)) return;
 
     const currentTime = audio.currentTime;
-    const safeCurrentTime = Math.min(currentTime, duration);
+    const duration = audio.duration;
 
-    setProgress((safeCurrentTime / duration) * 100);
-    setTime(`${formatTime(safeCurrentTime)} / ${formatTime(duration)}`);
+    setProgress((currentTime / duration) * 100);
+    setTime(`${formatTime(currentTime)} / ${song.duration}`);
   };
 
 

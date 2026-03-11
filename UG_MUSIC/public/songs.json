@@ -3,70 +3,80 @@
         "id": "1",
         "name": "Baby Shark",
         "img": "/images/babyshark.png",
-        "audio": "/songs/babyshark.mp3"
+        "audio": "/songs/babyshark.mp3",
+        "duration": "1:22"
     },
 
     {
         "id": "2",
         "name": "Rap God",
         "img":"/images/rapgod.jpg",
-        "audio": "/songs/rapgod.mp3"
+        "audio": "/songs/rapgod.mp3",
+        "duration": "6:03"
     },
 
     {
         "id": "3",
         "name": "Baby",
         "img":"/images/baby.jpg",
-        "audio": "/songs/baby.mp3"
+        "audio": "/songs/baby.mp3",
+        "duration": "3:35"
     },
 
     {
         "id": "4",
         "name": "Espresso",
         "img":"/images/espresso.jpg",
-        "audio": "/songs/espresso.mp3"
+        "audio": "/songs/espresso.mp3",
+        "duration": "2:55"
     },
 
     {
         "id": "5",
-        "name": "Run Away",
+        "name": "Stronger",
         "img":"/images/stronger.jpg",
-        "audio": "/songs/stronger.mp3"
+        "audio": "/songs/stronger.mp3",
+        "duration": "5:11"
     },
 
     {
         "id": "6",
         "name": "Where is my mind",
         "img": "/images/whereismymind.jpg",
-        "audio": "/songs/whereismymind.mp3"
+        "audio": "/songs/whereismymind.mp3",
+        "duration": "3:52"
     },
 
     {
         "id": "7",
         "name": "Old town road",
         "img": "/images/oldtownroad.jpg",
-        "audio": "/songs/oldtownroad.mp3"
+        "audio": "/songs/oldtownroad.mp3",
+        "duration": "2:37"
     },
 
     {
         "id": "8",
         "name": "Cheerleader",
         "img": "/images/cheerleader.jpg",
-        "audio": "/songs/cheerleader.mp3"
+        "audio": "/songs/cheerleader.mp3",
+        "duration": "3:01"
     },
 
      {
         "id": "9",
         "name": "Popular",
         "img": "/images/popular.jpg",
-        "audio": "/songs/popular.mp3"
+        "audio": "/songs/popular.mp3",
+        "duration": "3:35"
     },
 
     {
         "id": "10",
         "name": "Lovely",
         "img": "/images/lovely.jpg",
-        "audio": "/songs/lovely.mp3"
+        "audio": "/songs/lovely.mp3",
+        "duration": "3:20"
     }
 
 

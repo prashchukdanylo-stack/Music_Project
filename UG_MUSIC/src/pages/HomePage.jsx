@@ -7,6 +7,7 @@ export function HomePage({
   trackGenRef,
   setCurrentSongPlaylist,
   setCurrentIndex,
+  song
 }) {
   const navigate = useNavigate();
 
@@ -54,7 +55,11 @@ export function HomePage({
         <button
         className="random-button"
           onClick={() => {
-            navigate("/song");
+            if (song) navigate("/song");
+            else {
+              alert("Choose a song first");
+              navigate("/songslist");
+            }
           }}
         >
           Go to song page

@@ -85,6 +85,7 @@ function App() {
               setCurrentSongPlaylist={setCurrentSongPlaylist}
               currentIndex={currentIndex}
               setCurrentIndex={setCurrentIndex}
+              song={song}
             />
           }
         />

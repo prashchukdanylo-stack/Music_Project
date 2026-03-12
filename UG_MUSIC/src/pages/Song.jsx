@@ -125,10 +125,11 @@ const previousSong = () => {
         ></audio>
 
       <button className = "back-button" onClick={() => navigate("/")}> Go back to Home page</button>
+      <button className = "back-button" onClick={() => navigate("/songslist")}> Go to songs list</button>
 
     <div className="song-container">
       <img src={song.img} className="song-image"></img>
-      <p className="song-name">{song.name}</p>
+      <h1 className="song-name">{song.name}</h1>
 
       <div>
         

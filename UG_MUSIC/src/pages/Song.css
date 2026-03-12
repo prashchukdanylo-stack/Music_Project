@@ -1,9 +1,10 @@
 .progress-range {
     accent-color: blueviolet;
+    cursor: pointer;
 }
 .volume-range {
     accent-color: rgb(43, 141, 226);
-
+    cursor: pointer;
 }
 
 button.back-button {
@@ -13,14 +14,22 @@ button.back-button {
     height: 100px;
     align-items: center;
     margin-right: 5px;
+    cursor: pointer;
 }
 .previous-button {
     width: 100px;
     height: 100px;
     margin-right: 40px;
+    cursor: pointer;
 }
 .next-button {
     width: 100px;
     height: 100px;
     margin-left: 40px;
+    cursor: pointer;
 }   
+.play-button {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}

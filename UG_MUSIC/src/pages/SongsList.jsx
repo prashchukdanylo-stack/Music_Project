@@ -40,9 +40,12 @@ export function SongsList({
               className="song-card"
               onClick={() => chooseSong(song)}
             >
-              <img src={song.img} className="songs-list" />
+              <img src={song.img} className="songs-list-img" />
+              <div className ="song-info">
               <h3>{song.name}</h3>
-              <span>{song.duration}</span>
+              <h5>{song.duration}</h5>
+              </div>
+              <h5 className="song-author">{song.author}</h5>
             </div>
           );
         })}

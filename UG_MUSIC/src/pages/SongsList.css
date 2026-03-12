@@ -1,6 +1,9 @@
-.songs-list {
-    width: 300px;
+.songs-list-img {
+    width: 360px;
     height: 300px;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
 }
 button.back-button {
     color: white;
@@ -13,7 +16,30 @@ button.back-button {
 .songs-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 .song-card {
-    margin-left: 10px;
+    background-color: rgb(209, 26, 166);
+    border-radius: 40px;
+    overflow: hidden;
+    cursor: pointer;
 }
+.song-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+.song-info {
+    display: flex;
+    padding: 10px 12px;
+    justify-content: space-between;
+    padding-bottom: 0;
+}
+.song-author {
+    padding-top: 0;
+    padding-left: 12px;
+    padding-bottom: 11px;
+    margin: 0;
+    color: rgb(21, 21, 152);
+}
+

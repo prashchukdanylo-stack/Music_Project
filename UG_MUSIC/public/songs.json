@@ -4,7 +4,8 @@
         "name": "Baby Shark",
         "img": "/images/babyshark.png",
         "audio": "/songs/babyshark.mp3",
-        "duration": "1:22"
+        "duration": "1:22",
+        "author": "Pinkfong"
     },
 
     {
@@ -12,7 +13,8 @@
         "name": "Rap God",
         "img":"/images/rapgod.jpg",
         "audio": "/songs/rapgod.mp3",
-        "duration": "6:03"
+        "duration": "6:03",
+        "author": "Eminem"
     },
 
     {
@@ -20,7 +22,8 @@
         "name": "Baby",
         "img":"/images/baby.jpg",
         "audio": "/songs/baby.mp3",
-        "duration": "3:35"
+        "duration": "3:35",
+        "author": "Justin Bieber"
     },
 
     {
@@ -28,7 +31,8 @@
         "name": "Espresso",
         "img":"/images/espresso.jpg",
         "audio": "/songs/espresso.mp3",
-        "duration": "2:55"
+        "duration": "2:55",
+        "author": "Sabrina Carpenter"
     },
 
     {
@@ -36,7 +40,8 @@
         "name": "Stronger",
         "img":"/images/stronger.jpg",
         "audio": "/songs/stronger.mp3",
-        "duration": "5:11"
+        "duration": "5:11",
+        "author": "Kanye West"
     },
 
     {
@@ -44,7 +49,8 @@
         "name": "Where is my mind",
         "img": "/images/whereismymind.jpg",
         "audio": "/songs/whereismymind.mp3",
-        "duration": "3:52"
+        "duration": "3:52",
+        "author": "Pixies"
     },
 
     {
@@ -52,7 +58,8 @@
         "name": "Old town road",
         "img": "/images/oldtownroad.jpg",
         "audio": "/songs/oldtownroad.mp3",
-        "duration": "2:37"
+        "duration": "2:37",
+        "author": "Lil Nas X"
     },
 
     {
@@ -60,7 +67,8 @@
         "name": "Cheerleader",
         "img": "/images/cheerleader.jpg",
         "audio": "/songs/cheerleader.mp3",
-        "duration": "3:01"
+        "duration": "3:01",
+        "author": "OMI"
     },
 
      {
@@ -68,7 +76,8 @@
         "name": "Popular",
         "img": "/images/popular.jpg",
         "audio": "/songs/popular.mp3",
-        "duration": "3:35"
+        "duration": "3:35",
+        "author": "The Weeknd"
     },
 
     {
@@ -76,7 +85,8 @@
         "name": "Lovely",
         "img": "/images/lovely.jpg",
         "audio": "/songs/lovely.mp3",
-        "duration": "3:20"
+        "duration": "3:20",
+        "author": "Billie Eilish"
     }
 
 

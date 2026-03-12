@@ -1,20 +1,40 @@
-const memoize = (fn, maxSize = Infinity) => {
+const memoize = (fn, options) => {
     const cache = new Map();
     return (...args) => {
         const key = JSON.stringify(args);
         if (cache.has(key)) {
-            return cache.get(key);
+            const cached = cache.get(key);
+            cached.frequency += 1;
+            cache.set(key, cached);
+            console.log(cache);
+            return cached.value;
         }
     
-    const result = fn(...args);
+    const result = { value: fn(...args), frequency: 1 };
 
-    if (cache.size >= maxSize) {
-        const firstKey = cache.keys().next().value;
-        cache.delete(firstKey);
+    
+
+    if (cache.size >= options.maxSize) {
+        if (options.strategy === 'LRU') {
+            const firstKey = cache.keys().next().value;
+            cache.delete(firstKey);
+
+        } else if ( options.strategy === 'LFU') {
+            let leastFreaqKey = null;
+            let leastFreaqValue = Infinity;
+            for (const [key, value] of cache.entries()) {
+                if (value.frequency < leastFreaqValue) {
+                    leastFreaqValue = value.frequency;
+                    leastFreaqKey = key;
+                }
+            }
+            cache.delete(leastFreaqKey);
+        }
+        
     }
     cache.set(key, result);
     console.log(cache);
-    return result;
+    return result.value;
     };
 };
 
@@ -22,8 +42,7 @@ const plus = (a, b) => {
     return a + b;
 }
 
-const memoizedPlus = memoize(plus, 2);
-console.log(memoizedPlus(20000000000, 2000000000000000));
-console.log(memoizedPlus(1, 2));
-console.log(memoizedPlus(2, 3));
-console.log(memoizedPlus(3, 4));
+const memoizedPlus = memoize(plus, { maxSize: 3, strategy: 'LFU' });
+console.log(memoizedPlus(1, 3));
+console.log(memoizedPlus(1, 4));
+console.log(memoizedPlus(1, 5));

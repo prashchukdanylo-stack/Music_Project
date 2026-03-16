@@ -42,4 +42,12 @@ button.back-button {
     margin: 0;
     color: rgb(21, 21, 152);
 }
+.songs-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.songs-list-search {
+    width: 400px;
+}
 

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "./SongsList.css";
 export function SongsList({
   songs,
@@ -11,7 +12,7 @@ export function SongsList({
   setCurrentIndex,
 }) {
   const navigate = useNavigate();
-
+  const [search, setSearch] = useState("");
   const chooseSong = (song) => {
     setProgress(0);
     setTime("0:00 / 0:00");
@@ -27,13 +28,27 @@ export function SongsList({
     navigate("/song");
     setisPlaying(true);
   };
+  const filteredSong = () => {
+     return songs.filter((song) => {
+       return song.name.toLowerCase().includes(search.toLowerCase());
+      
+    })
+  }
+  const songsToRender = search ? filteredSong() : songs;
   return (
     <>
-      <button className="back-button" onClick={() => navigate("/")}>
-        Go back
-      </button>
+      <div className="songs-list-header">
+        <button className="back-button" onClick={() => navigate("/")}>
+          Go back
+        </button>
+        <input placeholder="Search song" className="songs-list-search" value = {search} onChange={(e)=> {
+          setSearch(e.target.value);
+        }}></input>
+
+      </div>
       <div className="songs-grid">
-        {songs.map((song) => {
+        {
+        songsToRender.map((song) => {
           return (
             <div
               key={song.id}
@@ -41,9 +56,9 @@ export function SongsList({
               onClick={() => chooseSong(song)}
             >
               <img src={song.img} className="songs-list-img" />
-              <div className ="song-info">
-              <h3>{song.name}</h3>
-              <h5>{song.duration}</h5>
+              <div className="song-info">
+                <h3>{song.name}</h3>
+                <h5>{song.duration}</h5>
               </div>
               <h5 className="song-author">{song.author}</h5>
             </div>

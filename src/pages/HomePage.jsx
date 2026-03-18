@@ -2,28 +2,11 @@ import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 export function HomePage({
-  setIsPlaying,
-  setSong,
-  trackGenRef,
-  setCurrentSongPlaylist,
-  setCurrentIndex,
   song
 }) {
   const navigate = useNavigate();
 
-  const randomTrack = () => {
-    if (!trackGenRef.current) throw new Error("Track is not ready yet");
-    const song = trackGenRef.current.next().value;
-    if (!song) return;
-    setSong(song);
-    setIsPlaying(true);
-    setCurrentSongPlaylist((prev) => {
-      const newArr = [...prev, song];
-      setCurrentIndex(newArr.length - 1);
-      return newArr;
-    });
-    navigate("/song");
-  };
+  
 
   return (
     <div className="all-page">
@@ -48,9 +31,7 @@ export function HomePage({
       </div>
 
       <div className="play-button-container">
-        <button className="random-button" onClick={randomTrack}>
-          Random song
-        </button>
+        
         <br />
         <button
         className="random-button"

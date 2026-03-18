@@ -18,7 +18,8 @@ export function Song({
   time,
   setTime,
   duration,
-  setDuration
+  setDuration,
+  shuffle
 }) {
   
   const navigate = useNavigate();
@@ -73,31 +74,40 @@ export function Song({
 
 
 const nextSong = () => {
+
+ 
+
   
-  setProgress(0);
+  if (currentIndex < currentSongPlaylist.length - 1) {
+    const nextIndex = currentIndex + 1;
+    setCurrentIndex(nextIndex);
+    setSong(currentSongPlaylist[nextIndex]);
+    setIsPlaying(true);
+    return;
+  }
+
+  
+  if (shuffle) {
+     setProgress(0);
     setTime("0:00 / 0:00");
     setDuration(0);
-    if (currentIndex < currentSongPlaylist.length - 1) {
-      const nextIndex = currentIndex + 1;
-      setCurrentIndex(nextIndex);
-      setSong(currentSongPlaylist[nextIndex]);
-      setIsPlaying(true);
-      return;
-    };
     if (!trackGenRef.current) throw new Error("Track is not ready yet");
+
     const newSong = trackGenRef.current.next().value;
     if (!newSong) return;
-    
+
+    setSong(newSong);
+    setIsPlaying(true);
+
     setCurrentSongPlaylist(prev => {
       const newArr = [...prev, newSong];
       setCurrentIndex(newArr.length - 1);
       return newArr;
     });
 
-    setSong(newSong);
-    setIsPlaying(true);
-
-}
+    return;
+  }
+};
 
 const previousSong = () => {
   if (currentIndex <=0) return;

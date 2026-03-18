@@ -12,6 +12,7 @@ button.random-button {
     align-items: center;
     margin-right: 5px;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 .play-button-container {
     text-align: center;

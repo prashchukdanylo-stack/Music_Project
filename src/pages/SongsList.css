@@ -5,13 +5,13 @@
     margin: 0 auto;
     object-fit: cover;
 }
-button.back-button {
+.back-button {
     color: white;
-    background-color: rgb(21, 21, 152);
     width: 100px;
     height: 100px;
     align-items: center;
     margin-right: 5px;
+    cursor: pointer;
 }
 .songs-grid {
     display: grid;
@@ -49,5 +49,9 @@ button.back-button {
 }
 .songs-list-search {
     width: 400px;
+}
+.sorry-text {
+    display: flex;
+    justify-content: center;
 }
 

@@ -17,6 +17,7 @@ function App() {
   const [time, setTime] = useState("0:00 / 0:00");
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
+  const [shuffle, setShuffle] = useState(false);
 
   useEffect(() => {
     const getSongsData = async () => {
@@ -109,6 +110,7 @@ function App() {
               setTime={setTime}
               duration={duration}
               setDuration={setDuration}
+              shuffle={shuffle}
             />
           }
         />
@@ -125,9 +127,12 @@ function App() {
               duration={duration}
               setDuration={setDuration}
               setSong={setSong}
-              setisPlaying={setIsPlaying}
+              setIsPlaying={setIsPlaying}
               setCurrentSongPlaylist={setCurrentSongPlaylist}
               setCurrentIndex={setCurrentIndex}
+              trackGenRef={trackGenRef}
+              shuffle={shuffle}
+              setShuffle={setShuffle}
             />
           }
         />

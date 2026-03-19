@@ -7,29 +7,45 @@
     cursor: pointer;
 }
 
-button.back-button {
-    color: white;
-    background-color: rgb(21, 21, 152);
-    width: 100px;
-    height: 100px;
-    align-items: center;
-    margin-right: 5px;
-    cursor: pointer;
-}
-.previous-button {
-    width: 100px;
-    height: 100px;
-    margin-right: 40px;
-    cursor: pointer;
-}
-.next-button {
-    width: 100px;
-    height: 100px;
-    margin-left: 40px;
-    cursor: pointer;
-}   
+
+ 
 .play-button {
     width: 100px;
     height: 100px;
     cursor: pointer;
+     background: #b40391;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 0 5px 0 5px;
+}
+
+.play-button:hover{
+    background: #d970c2;
+}
+
+.song-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    width: 1000px;
+    background: #0ca761;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.song-image {
+    width: 600px;
+    height: 600px;
+    border-radius: 15px;
+}
+.song-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

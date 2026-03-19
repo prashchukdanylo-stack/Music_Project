@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./SongsList.css";
+import { Shuffle } from "../Components/Shuffle";
 export function SongsList({
   songs,
   setProgress,
@@ -37,35 +38,11 @@ export function SongsList({
     });
   };
 
-  const shuffleSongs = () => {
-    const randomTrack = () => {
-      if (!trackGenRef.current) throw new Error("Track is not ready yet");
-      const song = trackGenRef.current.next().value;
-      if (!song) return;
-      setSong(song);
-      setIsPlaying(true);
-      setCurrentSongPlaylist((prev) => {
-        const newArr = [...prev, song];
-        setCurrentIndex(newArr.length - 1);
-        return newArr;
-      });
-    };
-
-    if (!shuffle) {
-      setShuffle(true);
-      randomTrack();
-    } else {
-      setShuffle(false);
-    }
-  };
-
   const songsToRender = search ? filteredSong() : songs;
   return (
     <>
       <div className="songs-list-header">
-        <button className="back-button" onClick={() => navigate("/")}>
-          Go back
-        </button>
+
         <input
           placeholder="Search song"
           className="songs-list-search"
@@ -74,15 +51,21 @@ export function SongsList({
             setSearch(e.target.value);
           }}
         ></input>
-        <img
-          className="back-button"
-          onClick={shuffleSongs}
-          src={shuffle ? "/images/shuffleOn.png" : "/images/shuffleOff.png"}
-        ></img>
+        <Shuffle
+          trackGenRef={trackGenRef}
+          setSong={setSong}
+          setIsPlaying={setIsPlaying}
+          setCurrentSongPlaylist={setCurrentSongPlaylist}
+          setCurrentIndex={setCurrentIndex}
+          shuffle={shuffle}
+          setShuffle={setShuffle}
+        />
       </div>
       {songsToRender.length === 0 ? (
-        <div className = "sorry-text">
-        <h1>Sorry, there is no song like this! Check for mistakes in your input.</h1>
+        <div className="sorry-text">
+          <h1>
+            Sorry, there is no song like this! Check for mistakes in your input.
+          </h1>
         </div>
       ) : (
         <div className="songs-grid">
@@ -90,7 +73,7 @@ export function SongsList({
             return (
               <div
                 key={song.id}
-                className="song-card"
+                className="songlist-card"
                 onClick={() => chooseSong(song)}
               >
                 <img src={song.img} className="songs-list-img" />

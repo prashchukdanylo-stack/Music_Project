@@ -1,7 +1,7 @@
 import {  useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { formatTime } from "../utils/formatTime";
 import "./Song.css"
+import { Shuffle } from "../Components/Shuffle";
 export function Song({
   isPlaying,
   song,
@@ -19,10 +19,11 @@ export function Song({
   setTime,
   duration,
   setDuration,
-  shuffle
+  shuffle,
+  setShuffle
 }) {
   
-  const navigate = useNavigate();
+  
   
   
   
@@ -134,23 +135,30 @@ const previousSong = () => {
         }}
         ></audio>
 
-      <button className = "back-button" onClick={() => navigate("/")}> Go back to Home page</button>
-      <button className = "back-button" onClick={() => navigate("/songslist")}> Go to songs list</button>
 
+      <div className = "song-card">
     <div className="song-container">
       <img src={song.img} className="song-image"></img>
       <h1 className="song-name">{song.name}</h1>
-
+        <h5 className = "song-author">{song.author} </h5>
       <div>
         
-        <img onClick={previousSong} src ="/images/previous.png" className = "previous-button"></img>
+        <img onClick={previousSong} src ="/images/previous.png" className = "play-button"></img>
         <img
           className="play-button"
           src={isPlaying ? "images/pause.png" : "images/play.png"}
           onClick={playSong}
         ></img>
-        <img onClick={nextSong} src ="/images/next.png" className = "next-button"></img>
-        
+        <img onClick={nextSong} src ="/images/next.png" className = "play-button"></img>
+        <Shuffle
+          trackGenRef={trackGenRef}
+          setSong={setSong}
+          setIsPlaying={setIsPlaying}
+          setCurrentSongPlaylist={setCurrentSongPlaylist}
+          setCurrentIndex={setCurrentIndex}
+          shuffle={shuffle}
+          setShuffle={setShuffle}
+        />
         <p>{time}</p>
       </div>
       <div>
@@ -179,6 +187,7 @@ const previousSong = () => {
         ></input>
         
       </div>
+    </div>
     </div>
     </>
   );

@@ -4,6 +4,7 @@ import "./App.css";
 import { HomePage } from "./pages/HomePage";
 import { Song } from "./pages/Song";
 import { SongsList } from "./pages/SongsList";
+import { Sidebar } from "./Components/Sidebar";
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(true);
@@ -74,6 +75,7 @@ function App() {
   if (!isPlayerReady) return null;
   return (
     <BrowserRouter>
+    <Sidebar song={song}/>
       <Routes>
         <Route
           index
@@ -111,6 +113,7 @@ function App() {
               duration={duration}
               setDuration={setDuration}
               shuffle={shuffle}
+              setShuffle={setShuffle}
             />
           }
         />

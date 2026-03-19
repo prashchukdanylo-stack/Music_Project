@@ -18,18 +18,12 @@ button.random-button {
     text-align: center;
     margin-top: 150px;
 }
-.song-image {
-    width: 300px;
-    height: 300px;
-}
+
 .play-button{
     width: 100px;
     height: 100px;
 }
-.song-container {
-    text-align: center;
-    margin-top: 10px;
-}
+
 .song-name {
     margin: 0;
 }

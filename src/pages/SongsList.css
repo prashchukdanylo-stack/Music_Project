@@ -5,27 +5,21 @@
     margin: 0 auto;
     object-fit: cover;
 }
-.back-button {
-    color: white;
-    width: 100px;
-    height: 100px;
-    align-items: center;
-    margin-right: 5px;
-    cursor: pointer;
-}
+
 .songs-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
+    margin-left: 170px;
 }
-.song-card {
+.songlist-card {
     background-color: rgb(209, 26, 166);
     border-radius: 40px;
     overflow: hidden;
     cursor: pointer;
 }
-.song-card:hover {
+.songlist-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }

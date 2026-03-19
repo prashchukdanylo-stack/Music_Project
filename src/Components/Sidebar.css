@@ -1,0 +1,42 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 30px;
+    background: #1e1e1e;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+}
+
+.side-links {
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button.nav-button {
+    color: white;
+    background-color: rgb(21, 21, 152);
+    width: 100px;
+    height: 100px;
+    align-items: center;
+    margin-right: 5px;
+    cursor: pointer;
+}
+button.nav-button-active {
+    color: white;
+    background-color: rgb(16, 73, 10);
+    width: 100px;
+    height: 100px;
+    align-items: center;
+    margin-right: 5px;
+    cursor: pointer;
+}
+button.nav-button:hover {
+    background-color: #0ca761;
+}

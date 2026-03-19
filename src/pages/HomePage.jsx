@@ -1,12 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
-export function HomePage({
-  song
-}) {
-  const navigate = useNavigate();
-
-  
+export function HomePage() {
 
   return (
     <div className="all-page">
@@ -34,29 +28,7 @@ export function HomePage({
         
         <br />
         <button
-        className="random-button"
-          onClick={() => {
-            if (song) navigate("/song");
-            else {
-              alert("Choose a song first");
-              navigate("/songslist");
-            }
-          }}
-        >
-          Go to song page
-        </button>
-        <br />
-        <button
-        className="random-button"
-          onClick={() => {
-            navigate("/songslist");
-          }}
-        >
-          Go to songs list
-        </button>
-        <br />
-        <button
-        className="random-button"
+        className="back-button"
           onClick={() => {
             localStorage.clear();
             window.location.reload();
@@ -64,6 +36,9 @@ export function HomePage({
         >
           Erase localStorage
         </button>
+        <br />
+  
+        
       </div>
     </div>
   );

@@ -5,9 +5,10 @@ import { HomePage } from "./pages/HomePage";
 import { Song } from "./pages/Song";
 import { SongsList } from "./pages/SongsList";
 import { Sidebar } from "./Components/Sidebar";
+import { Player } from "./Components/Player";
 
 function App() {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [song, setSong] = useState();
   const [songs, setSongs] = useState([]);
   const trackGenRef = useRef(null);
@@ -75,7 +76,7 @@ function App() {
   if (!isPlayerReady) return null;
   return (
     <BrowserRouter>
-    <Sidebar song={song}/>
+      <Sidebar song={song} />
       <Routes>
         <Route
           index
@@ -92,31 +93,7 @@ function App() {
             />
           }
         />
-        <Route
-          path="/song"
-          element={
-            <Song
-              isPlaying={isPlaying}
-              setIsPlaying={setIsPlaying}
-              song={song}
-              setSong={setSong}
-              trackGenRef={trackGenRef}
-              currentSongPlaylist={currentSongPlaylist}
-              setCurrentSongPlaylist={setCurrentSongPlaylist}
-              currentIndex={currentIndex}
-              setCurrentIndex={setCurrentIndex}
-              audioRef={audioRef}
-              progress={progress}
-              setProgress={setProgress}
-              time={time}
-              setTime={setTime}
-              duration={duration}
-              setDuration={setDuration}
-              shuffle={shuffle}
-              setShuffle={setShuffle}
-            />
-          }
-        />
+        <Route path="/song" element={<Song song={song} time={time} />} />
         <Route
           path="/songslist"
           element={
@@ -140,6 +117,26 @@ function App() {
           }
         />
       </Routes>
+
+      {song && <Player
+        setTime={setTime}
+        duration={duration}
+        setDuration={setDuration}
+        shuffle={shuffle}
+        setShuffle={setShuffle}
+        setSong={setSong}
+        trackGenRef={trackGenRef}
+        currentSongPlaylist={currentSongPlaylist}
+        setCurrentSongPlaylist={setCurrentSongPlaylist}
+        currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
+        audioRef={audioRef}
+        progress={progress}
+        setProgress={setProgress}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        song={song}
+      />}
     </BrowserRouter>
   );
 }

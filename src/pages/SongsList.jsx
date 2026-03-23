@@ -11,9 +11,6 @@ export function SongsList({
   setIsPlaying,
   setCurrentSongPlaylist,
   setCurrentIndex,
-  trackGenRef,
-  shuffle,
-  setShuffle,
 }) {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -51,15 +48,7 @@ export function SongsList({
             setSearch(e.target.value);
           }}
         ></input>
-        <Shuffle
-          trackGenRef={trackGenRef}
-          setSong={setSong}
-          setIsPlaying={setIsPlaying}
-          setCurrentSongPlaylist={setCurrentSongPlaylist}
-          setCurrentIndex={setCurrentIndex}
-          shuffle={shuffle}
-          setShuffle={setShuffle}
-        />
+       
       </div>
       {songsToRender.length === 0 ? (
         <div className="sorry-text">

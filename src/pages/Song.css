@@ -1,29 +1,4 @@
-.progress-range {
-    accent-color: blueviolet;
-    cursor: pointer;
-}
-.volume-range {
-    accent-color: rgb(43, 141, 226);
-    cursor: pointer;
-}
 
-
- 
-.play-button {
-    width: 100px;
-    height: 100px;
-    cursor: pointer;
-     background: #b40391;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-weight: bold;
-    margin: 0 5px 0 5px;
-}
-
-.play-button:hover{
-    background: #d970c2;
-}
 
 .song-container {
     display: flex;

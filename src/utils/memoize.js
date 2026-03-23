@@ -34,22 +34,9 @@ const memoize = (fn, options) => {
         console.log(cache);
       }, options.ttl);
     }
+
     cache.set(key, result);
     console.log(cache);
     return result.value;
   };
 };
-
-const plus = (a, b) => {
-  return a + b;
-};
-
-const memoizedPlus = memoize(plus, { maxSize: 3, strategy: "TTL", ttl: 5000 });
-console.log(memoizedPlus(1, 3));
-console.log(memoizedPlus(1, 4));
-console.log(memoizedPlus(1, 5));
-console.log(memoizedPlus(1, 6));
-console.log(memoizedPlus(1, 7));
-setTimeout(() => {
-  console.log(memoizedPlus(1, 9));
-}, 3000);

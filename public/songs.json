@@ -5,7 +5,8 @@
         "img": "/images/babyshark.png",
         "audio": "/songs/babyshark.mp3",
         "duration": "1:22",
-        "author": "Pinkfong"
+        "author": "Pinkfong",
+        "like": false
     },
 
     {
@@ -14,7 +15,8 @@
         "img":"/images/rapgod.jpg",
         "audio": "/songs/rapgod.mp3",
         "duration": "6:03",
-        "author": "Eminem"
+        "author": "Eminem",
+        "like": false
     },
 
     {
@@ -23,7 +25,8 @@
         "img":"/images/baby.jpg",
         "audio": "/songs/baby.mp3",
         "duration": "3:35",
-        "author": "Justin Bieber"
+        "author": "Justin Bieber",
+        "like": false
     },
 
     {
@@ -32,7 +35,8 @@
         "img":"/images/espresso.jpg",
         "audio": "/songs/espresso.mp3",
         "duration": "2:55",
-        "author": "Sabrina Carpenter"
+        "author": "Sabrina Carpenter",
+        "like": false
     },
 
     {
@@ -41,7 +45,8 @@
         "img":"/images/stronger.jpg",
         "audio": "/songs/stronger.mp3",
         "duration": "5:11",
-        "author": "Kanye West"
+        "author": "Kanye West",
+        "like": false
     },
 
     {
@@ -50,7 +55,8 @@
         "img": "/images/whereismymind.jpg",
         "audio": "/songs/whereismymind.mp3",
         "duration": "3:52",
-        "author": "Pixies"
+        "author": "Pixies",
+        "like": false
     },
 
     {
@@ -59,7 +65,8 @@
         "img": "/images/oldtownroad.jpg",
         "audio": "/songs/oldtownroad.mp3",
         "duration": "2:37",
-        "author": "Lil Nas X"
+        "author": "Lil Nas X",
+        "like": false
     },
 
     {
@@ -68,7 +75,8 @@
         "img": "/images/cheerleader.jpg",
         "audio": "/songs/cheerleader.mp3",
         "duration": "3:01",
-        "author": "OMI"
+        "author": "OMI",
+        "like": false
     },
 
      {
@@ -77,7 +85,8 @@
         "img": "/images/popular.jpg",
         "audio": "/songs/popular.mp3",
         "duration": "3:35",
-        "author": "The Weeknd"
+        "author": "The Weeknd",
+        "like": false
     },
 
     {
@@ -86,7 +95,8 @@
         "img": "/images/lovely.jpg",
         "audio": "/songs/lovely.mp3",
         "duration": "3:20",
-        "author": "Billie Eilish"
+        "author": "Billie Eilish",
+        "like": false
     }
 
 

@@ -35,3 +35,40 @@
 .play-button:hover{
     background: #d970c2;
 }
+
+.player-song-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+.song-details {
+    display: flex;
+    align-items: center;
+}
+.player-song-description {
+    height: 70px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.player-song-name {
+    margin-bottom: 0;
+}
+.player-song-author {
+    color: rgb(21, 21, 152);
+}
+.player-time {
+    margin-top: 0;
+    }
+.player-ranges {
+    display: flex;
+}
+.progress {
+    text-align: center;
+}
+.player-song-heart {
+    width: 40px;
+    height: 40px;
+    border-radius: 15px;
+    cursor: pointer;
+}

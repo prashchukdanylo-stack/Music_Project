@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import {formatTime} from "../utils/formatTime";
+import { useNavigate } from "react-router-dom";
+import { formatTime } from "../utils/formatTime";
 import { Shuffle } from "./Shuffle";
-import "./Player.css"
+import "./Player.css";
 export function Player({
   audioRef,
   song,
@@ -19,8 +20,12 @@ export function Player({
   isPlaying,
   setShuffle,
   progress,
-  duration
+  duration,
+  time,
+  setFavourite,
+  favourite,
 }) {
+  const navigate = useNavigate();
   useEffect(() => {
     if (!audioRef.current || !song) return;
 
@@ -29,7 +34,7 @@ export function Player({
     audio.load();
 
     setTime(`0:00 / ${song.duration}`);
-    console.log("okey")
+    console.log("okey");
     const handleMetaData = () => {
       const duration = audio.duration;
       if (duration && !isNaN(duration)) {
@@ -108,26 +113,35 @@ export function Player({
     setSong(currentSongPlaylist[previousIndex]);
     setIsPlaying(true);
   };
-  return <div className="player-container">
-    <audio
-          id="id"
-          ref={audioRef}
-          type="audio/mpeg"
-          onEnded={nextSong}
-          onTimeUpdate={trackDuration}
-          onCanPlay={() => {
+  return (
+    <div className="player-container">
+      <audio
+        id="id"
+        ref={audioRef}
+        type="audio/mpeg"
+        onEnded={nextSong}
+        onTimeUpdate={trackDuration}
+        onCanPlay={() => {
           if (isPlaying) audioRef.current.play();
         }}
+      ></audio>
+      <div>
+        <img
+          onClick={previousSong}
+          src="/images/previous.png"
+          className="play-button"
+        ></img>
 
-        ></audio>
-        <div>
-        <img onClick={previousSong} src ="/images/previous.png" className = "play-button"></img>
         <img
           className="play-button"
           src={isPlaying ? "images/pause.png" : "images/play.png"}
           onClick={playSong}
         ></img>
-        <img onClick={nextSong} src ="/images/next.png" className = "play-button"></img>
+        <img
+          onClick={nextSong}
+          src="/images/next.png"
+          className="play-button"
+        ></img>
         <Shuffle
           trackGenRef={trackGenRef}
           setSong={setSong}
@@ -137,32 +151,58 @@ export function Player({
           shuffle={shuffle}
           setShuffle={setShuffle}
         />
-        </div>
-        <div>
-        <input
-          className="volume-range"
-          type="range"
-          min="0"
-          max="100"
-          onChange={(event) => {
-            const volume = Number(event.target.value) / 100;
-            audioRef.current.volume = volume;
-          }}
-        ></input>
-
-        <input
-          className="progress-range"
-          type="range"
-          min="0"
-          max="100"
-          value={progress}
-          onChange={(event) => {
-            const newTime = (event.target.value / 100) * duration;
-            audioRef.current.currentTime = newTime;
-            setProgress(Number(event.target.value));
-          }}
-        ></input>
-        
       </div>
-  </div>;
+      <div className="song-details">
+        <img
+          className="player-song-image"
+          src={song.img}
+          onClick={() => navigate("/song")}
+        ></img>
+        <div className="player-song-description">
+          <h1 className="player-song-name">{song.name}</h1>
+          <h5 className="player-song-author">{song.author}</h5>
+        </div>
+        <img
+          className="player-song-heart"
+          src={favourite.has(song) ? "images/heart-active.png" : "images/heart.png"}
+          onClick={() => {
+            setFavourite(prev => {
+              const newSet = new Set(prev);
+              newSet.has(song) ? newSet.delete(song) : newSet.add(song);
+              return newSet;
+            })
+          }}
+        ></img>
+      </div>
+      <div className="player-ranges">
+        <div className="volume">
+          <input
+            className="volume-range"
+            type="range"
+            min="0"
+            max="100"
+            onChange={(event) => {
+              const volume = Number(event.target.value) / 100;
+              audioRef.current.volume = volume;
+            }}
+          ></input>
+        </div>
+        <div className="progress">
+          <input
+            className="progress-range"
+            type="range"
+            min="0"
+            max="100"
+            value={progress}
+            onChange={(event) => {
+              const newTime = (event.target.value / 100) * duration;
+              audioRef.current.currentTime = newTime;
+              setProgress(Number(event.target.value));
+            }}
+          ></input>
+          <p className="player-time">{time}</p>
+        </div>
+      </div>
+    </div>
+  );
 }

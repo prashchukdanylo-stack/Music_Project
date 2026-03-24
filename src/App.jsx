@@ -6,6 +6,7 @@ import { Song } from "./pages/Song";
 import { SongsList } from "./pages/SongsList";
 import { Sidebar } from "./Components/Sidebar";
 import { Player } from "./Components/Player";
+import { Favourite } from "./pages/Favourite";
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -20,6 +21,10 @@ function App() {
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const [shuffle, setShuffle] = useState(false);
+  const [favourite, setFavourite] = useState(new Set());
+
+
+  
 
   useEffect(() => {
     const getSongsData = async () => {
@@ -28,6 +33,7 @@ function App() {
       setSongs(data);
     };
     const savedPlayer = localStorage.getItem("player");
+    
     if (savedPlayer) {
       const { song, currentSongPlaylist, currentIndex } =
         JSON.parse(savedPlayer);
@@ -36,6 +42,7 @@ function App() {
       setSong(song || null);
       setIsPlaying(false);
     }
+   
     setIsPlayerReady(true);
     getSongsData();
   }, []);
@@ -99,23 +106,32 @@ function App() {
           element={
             <SongsList
               songs={songs}
-              audioRef={audioRef}
               progress={progress}
               setProgress={setProgress}
-              time={time}
               setTime={setTime}
-              duration={duration}
               setDuration={setDuration}
               setSong={setSong}
               setIsPlaying={setIsPlaying}
               setCurrentSongPlaylist={setCurrentSongPlaylist}
               setCurrentIndex={setCurrentIndex}
-              trackGenRef={trackGenRef}
-              shuffle={shuffle}
-              setShuffle={setShuffle}
             />
           }
         />
+        <Route path="/favourite" element = {<Favourite
+        songs={songs}
+              progress={progress}
+              setProgress={setProgress}
+              setTime={setTime}
+              setDuration={setDuration}
+              setSong={setSong}
+              setIsPlaying={setIsPlaying}
+              setCurrentSongPlaylist={setCurrentSongPlaylist}
+              setCurrentIndex={setCurrentIndex}
+              favourite={favourite}
+              setFavourite={setFavourite}
+        />}>
+
+        </Route>
       </Routes>
 
       {song && <Player
@@ -136,6 +152,10 @@ function App() {
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         song={song}
+        songs={songs}
+        time={time}
+        favourite={favourite}
+        setFavourite={setFavourite}
       />}
     </BrowserRouter>
   );

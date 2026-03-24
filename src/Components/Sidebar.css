@@ -19,24 +19,38 @@
     font-size: 16px;
 }
 
+button {
+    margin-top: 10px;
+}
+
 button.nav-button {
     color: white;
-    background-color: rgb(21, 21, 152);
+    background-color: #b40391;
     width: 100px;
     height: 100px;
     align-items: center;
     margin-right: 5px;
     cursor: pointer;
+    border: none;
+    border-radius: 10px;
 }
 button.nav-button-active {
     color: white;
-    background-color: rgb(16, 73, 10);
+    background-color: rgb(136, 16, 157);
     width: 100px;
     height: 100px;
     align-items: center;
     margin-right: 5px;
     cursor: pointer;
+    border: none;
+    border-radius: 10px;
 }
 button.nav-button:hover {
-    background-color: #0ca761;
+    background-color: #d970c2;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
 }

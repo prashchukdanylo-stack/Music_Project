@@ -8,7 +8,7 @@ export function Sidebar({song}) {
     
     return (
         <div className = "sidebar">
-          <button onClick = {()=>sidebar ? setSidebar(false) : setSidebar(true) }>{sidebar ? "Close" : "Open"} Sidebar</button>
+          <img onClick = {()=>sidebar ? setSidebar(false) : setSidebar(true) } src = "/images/logo.png" className = "logo"></img>
         
         {sidebar && <div className = "side-links">
       <button className = {location.pathname === "/" ? "nav-button-active" : "nav-button"} onClick={() => {
@@ -29,6 +29,11 @@ export function Sidebar({song}) {
           }}
         >
           Go to song page
+        </button>
+        <button className = {location.pathname === "/favourite" ? "nav-button-active" : "nav-button"} onClick={() => {
+          navigate("/favourite");
+        }}>
+          Favourite
         </button>
       </div>}
         </div> 

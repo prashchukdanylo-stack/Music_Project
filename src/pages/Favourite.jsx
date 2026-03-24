@@ -1,18 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import "./SongsList.css";
-export function SongsList({
-  songs,
+export function Favourite({
+  favourite,
   setProgress,
   setTime,
   setDuration,
   setSong,
-  setIsPlaying,
   setCurrentSongPlaylist,
   setCurrentIndex,
+  setIsPlaying,
 }) {
+  const songsToRender = Array.from(favourite);
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
+
   const chooseSong = (song) => {
     setProgress(0);
     setTime("0:00 / 0:00");
@@ -28,31 +27,13 @@ export function SongsList({
     navigate("/song");
     setIsPlaying(true);
   };
-  const filteredSong = () => {
-    return songs.filter((song) => {
-      return song.name.toLowerCase().includes(search.toLowerCase());
-    });
-  };
 
-  const songsToRender = search ? filteredSong() : songs;
   return (
     <>
-      <div className="songs-list-header">
-
-        <input
-          placeholder="Search song"
-          className="songs-list-search"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-        ></input>
-       
-      </div>
       {songsToRender.length === 0 ? (
         <div className="sorry-text">
           <h1>
-            Sorry, there is no song like this! Check for mistakes in your input.
+            Sorry, there are no songs! Choose the best songs on "Songs" page to see them here!
           </h1>
         </div>
       ) : (

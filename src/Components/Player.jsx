@@ -164,11 +164,11 @@ export function Player({
         </div>
         <img
           className="player-song-heart"
-          src={favourite.has(song) ? "images/heart-active.png" : "images/heart.png"}
+          src={favourite.has(song.id) ? "images/heart-active.png" : "images/heart.png"}
           onClick={() => {
             setFavourite(prev => {
               const newSet = new Set(prev);
-              newSet.has(song) ? newSet.delete(song) : newSet.add(song);
+              newSet.has(song.id) ? newSet.delete(song.id) : newSet.add(song.id);
               return newSet;
             })
           }}

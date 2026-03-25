@@ -8,8 +8,9 @@ export function Favourite({
   setCurrentSongPlaylist,
   setCurrentIndex,
   setIsPlaying,
+  songs
 }) {
-  const songsToRender = Array.from(favourite);
+  const songsToRender = songs.filter((song) => favourite.has(song.id));
   const navigate = useNavigate();
 
   const chooseSong = (song) => {

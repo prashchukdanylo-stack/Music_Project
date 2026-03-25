@@ -21,7 +21,10 @@ function App() {
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const [shuffle, setShuffle] = useState(false);
-  const [favourite, setFavourite] = useState(new Set());
+  const [favourite, setFavourite] = useState(() => {
+    const saved = localStorage.getItem("favourite");
+    return saved ? new Set(JSON.parse(saved)) : new Set();
+  });
 
 
   
@@ -33,7 +36,10 @@ function App() {
       setSongs(data);
     };
     const savedPlayer = localStorage.getItem("player");
-    
+    const favPlayer = localStorage.getItem("favourite");
+    console.log(favPlayer);
+    console.log(12345);
+    console.log(savedPlayer);
     if (savedPlayer) {
       const { song, currentSongPlaylist, currentIndex } =
         JSON.parse(savedPlayer);
@@ -41,6 +47,12 @@ function App() {
       setCurrentSongPlaylist(currentSongPlaylist || []);
       setSong(song || null);
       setIsPlaying(false);
+    }
+    if (favPlayer) {
+      const favourite = JSON.parse(favPlayer);
+      console.log("nigga");
+      console.log(favourite);
+      setFavourite(new Set(favourite));
     }
    
     setIsPlayerReady(true);
@@ -58,6 +70,16 @@ function App() {
       }),
     );
   }, [song, currentSongPlaylist, currentIndex]);
+
+  useEffect(()=> {
+    localStorage.setItem(
+      "favourite",
+      JSON.stringify(
+        Array.from(favourite)
+      )
+    )
+    console.log(localStorage);
+  }, [favourite])
 
   const randomTrackGenerator = (songs) => {
     const copyOfSongs = [...songs];
@@ -118,7 +140,7 @@ function App() {
           }
         />
         <Route path="/favourite" element = {<Favourite
-        songs={songs}
+              songs = {songs}
               progress={progress}
               setProgress={setProgress}
               setTime={setTime}

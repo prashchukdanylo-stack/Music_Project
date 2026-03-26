@@ -30,7 +30,7 @@ export function HomePage() {
         <button
         className="back-button"
           onClick={() => {
-            localStorage.clear();
+            localStorage.removeItem("player");
             window.location.reload();
           }}
         >

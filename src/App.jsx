@@ -35,11 +35,16 @@ function App() {
       const data = await response.json();
       setSongs(data);
     };
+    const timeExpire =Number(localStorage.getItem("timeExpire"));
+     if (timeExpire && Date.now() > timeExpire) {
+      localStorage.removeItem("player");
+      localStorage.removeItem("timeExpire");
+      console.log("complete")
+    }
+    
     const savedPlayer = localStorage.getItem("player");
     const favPlayer = localStorage.getItem("favourite");
-    console.log(favPlayer);
-    console.log(12345);
-    console.log(savedPlayer);
+    
     if (savedPlayer) {
       const { song, currentSongPlaylist, currentIndex } =
         JSON.parse(savedPlayer);
@@ -50,10 +55,9 @@ function App() {
     }
     if (favPlayer) {
       const favourite = JSON.parse(favPlayer);
-      console.log("nigga");
-      console.log(favourite);
       setFavourite(new Set(favourite));
     }
+   
    
     setIsPlayerReady(true);
     getSongsData();

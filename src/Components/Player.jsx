@@ -72,11 +72,13 @@ export function Player({
   };
 
   const nextSong = () => {
+
     if (currentIndex < currentSongPlaylist.length - 1) {
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
       setSong(currentSongPlaylist[nextIndex]);
       setIsPlaying(true);
+      
       return;
     }
 
@@ -113,13 +115,18 @@ export function Player({
     setSong(currentSongPlaylist[previousIndex]);
     setIsPlaying(true);
   };
+
+  const handleEnded = () => {
+    nextSong();
+    localStorage.setItem("timeExpire", Date.now() + 600000);
+  }
   return (
     <div className="player-container">
       <audio
         id="id"
         ref={audioRef}
         type="audio/mpeg"
-        onEnded={nextSong}
+        onEnded={handleEnded}
         onTimeUpdate={trackDuration}
         onCanPlay={() => {
           if (isPlaying) audioRef.current.play();
@@ -138,7 +145,7 @@ export function Player({
           onClick={playSong}
         ></img>
         <img
-          onClick={nextSong}
+          onClick={handleEnded}
           src="/images/next.png"
           className="play-button"
         ></img>

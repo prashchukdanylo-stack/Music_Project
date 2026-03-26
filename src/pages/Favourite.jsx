@@ -18,13 +18,10 @@ export function Favourite({
     setTime("0:00 / 0:00");
     setDuration(0);
 
+    const index = songsToRender.findIndex(s => s.id ===song.id )
     setSong(song);
-    setCurrentSongPlaylist((prev) => {
-      const newArr = [...prev, song];
-      setCurrentIndex(newArr.length - 1);
-      return newArr;
-    });
-
+    setCurrentSongPlaylist(songsToRender);
+    setCurrentIndex(index);
     navigate("/song");
     setIsPlaying(true);
   };

@@ -10,21 +10,24 @@ export function SongsList({
   setIsPlaying,
   setCurrentSongPlaylist,
   setCurrentIndex,
+  setCurrentGenerator,
+  setPath,
 }) {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+
+
   const chooseSong = (song) => {
     setProgress(0);
     setTime("0:00 / 0:00");
     setDuration(0);
+    setPath("list")
 
-    setSong(song);
-    setCurrentSongPlaylist((prev) => {
-      const newArr = [...prev, song];
-      setCurrentIndex(newArr.length - 1);
-      return newArr;
-    });
-
+    const index = songsToRender.findIndex(s => s.id ===song.id );
+    setCurrentGenerator(songs); 
+    setSong(song); 
+    setCurrentSongPlaylist(songs);
+    setCurrentIndex(index);
     navigate("/song");
     setIsPlaying(true);
   };

@@ -8,7 +8,9 @@ export function Favourite({
   setCurrentSongPlaylist,
   setCurrentIndex,
   setIsPlaying,
-  songs
+  songs,
+  setCurrentGenerator,
+  setPath,
 }) {
   const songsToRender = songs.filter((song) => favourite.has(song.id));
   const navigate = useNavigate();
@@ -17,11 +19,14 @@ export function Favourite({
     setProgress(0);
     setTime("0:00 / 0:00");
     setDuration(0);
+    setPath("fav")
 
-    const index = songsToRender.findIndex(s => s.id ===song.id )
-    setSong(song);
-    setCurrentSongPlaylist(songsToRender);
-    setCurrentIndex(index);
+    const index = songsToRender.findIndex(s => s.id ===song.id );
+     setSong(song); 
+     setCurrentSongPlaylist(songsToRender); 
+     setCurrentGenerator(songsToRender);
+      setCurrentIndex(index);                                      
+    
     navigate("/song");
     setIsPlaying(true);
   };

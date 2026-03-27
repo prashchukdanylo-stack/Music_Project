@@ -1,17 +1,20 @@
-
 import "../pages/Song.css"
 export function Shuffle({
+  trackGenRef,
+  currentSongPlaylist,
+  randomTrackGenerator,
   shuffle,
   setShuffle,
 }) {
-  
   const shuffleSongs = () => {
-   if (!shuffle) {
-    setShuffle(true);
-   } else {
-    setShuffle(false);
-    
-   }
+  
+
+    if (!shuffle) {
+      trackGenRef.current = randomTrackGenerator(currentSongPlaylist)();
+      setShuffle(true);
+    } else {
+      setShuffle(false);
+    }
   };
 
   return (

@@ -14,6 +14,7 @@ function App() {
   const [songs, setSongs] = useState([]);
   const trackGenRef = useRef(null);
   const [currentSongPlaylist, setCurrentSongPlaylist] = useState([]);
+  const [currentGenerator, setCurrentGenerator] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -25,6 +26,10 @@ function App() {
     const saved = localStorage.getItem("favourite");
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
+
+  const [path, setPath] = useState("");
+  
+  
 
 
   
@@ -86,25 +91,24 @@ function App() {
   }, [favourite])
 
   const randomTrackGenerator = (songs) => {
-    const copyOfSongs = [...songs];
-    let previousSong = 0;
+    let copyOfSongs = [...songs];
+
 
     return function* () {
       while (true) {
-        const numberOfSong = Math.floor(Math.random() * copyOfSongs.length);
-        const randomSong = copyOfSongs.splice(numberOfSong, 1)[0];
-        yield randomSong;
-        if (previousSong) copyOfSongs.push(previousSong);
-        previousSong = randomSong;
-      }
+        if (copyOfSongs.length===0) {
+          copyOfSongs = [...songs];
+        }
+        const index = Math.floor(Math.random() * copyOfSongs.length);
+        yield copyOfSongs.splice(index, 1)[0];
     };
   };
-
+  }
   useEffect(() => {
-    if (songs.length > 0) {
-      trackGenRef.current = randomTrackGenerator(songs)();
+    if (currentGenerator.length > 0) {
+      trackGenRef.current = randomTrackGenerator(currentGenerator)();
     }
-  }, [songs]);
+  }, [currentGenerator]);
 
   if (!isPlayerReady) return null;
   return (
@@ -140,6 +144,10 @@ function App() {
               setIsPlaying={setIsPlaying}
               setCurrentSongPlaylist={setCurrentSongPlaylist}
               setCurrentIndex={setCurrentIndex}
+              shuffle={shuffle}
+              setCurrentGenerator={setCurrentGenerator}
+              setPath={setPath}
+              
             />
           }
         />
@@ -155,6 +163,14 @@ function App() {
               setCurrentIndex={setCurrentIndex}
               favourite={favourite}
               setFavourite={setFavourite}
+              currentSongPlaylist={currentSongPlaylist}
+              song={song}
+              setCurrentGenerator={setCurrentGenerator}
+              shuffle={shuffle}
+              setPath={setPath}
+              
+              
+
         />}>
 
         </Route>
@@ -182,6 +198,9 @@ function App() {
         time={time}
         favourite={favourite}
         setFavourite={setFavourite}
+        randomTrackGenerator={randomTrackGenerator}
+        path={path}
+      
       />}
     </BrowserRouter>
   );

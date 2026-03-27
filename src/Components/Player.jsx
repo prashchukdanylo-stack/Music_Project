@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { formatTime } from "../utils/formatTime";
 import { Shuffle } from "./Shuffle";
 import "./Player.css";
+
 export function Player({
   audioRef,
   song,
+  songs,
   setTime,
   setDuration,
   setIsPlaying,
@@ -24,8 +26,10 @@ export function Player({
   time,
   setFavourite,
   favourite,
+  randomTrackGenerator
 }) {
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!audioRef.current || !song) return;
 
@@ -72,21 +76,10 @@ export function Player({
   };
 
   const nextSong = () => {
-
-    if (currentIndex < currentSongPlaylist.length - 1) {
-      const nextIndex = currentIndex + 1;
-      setCurrentIndex(nextIndex);
-      setSong(currentSongPlaylist[nextIndex]);
-      setIsPlaying(true);
-      
-      return;
-    }
-
     if (shuffle) {
       setProgress(0);
       setTime("0:00 / 0:00");
       setDuration(0);
-      if (!trackGenRef.current) throw new Error("Track is not ready yet");
 
       const newSong = trackGenRef.current.next().value;
       if (!newSong) return;
@@ -94,13 +87,22 @@ export function Player({
       setSong(newSong);
       setIsPlaying(true);
 
-      setCurrentSongPlaylist((prev) => {
+      setCurrentSongPlaylist((prev) => { 
         const newArr = [...prev, newSong];
-        setCurrentIndex(newArr.length - 1);
-        return newArr;
-      });
+         setCurrentIndex(newArr.length - 1); 
+         return newArr;
+         });
 
       return;
+    }
+
+    if (currentIndex < currentSongPlaylist.length - 1) {
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      setSong(currentSongPlaylist[nextIndex]);
+      setIsPlaying(true);
+
+      
     }
   };
 
@@ -119,7 +121,8 @@ export function Player({
   const handleEnded = () => {
     nextSong();
     localStorage.setItem("timeExpire", Date.now() + 600000);
-  }
+  };
+
   return (
     <div className="player-container">
       <audio
@@ -157,6 +160,10 @@ export function Player({
           setCurrentIndex={setCurrentIndex}
           shuffle={shuffle}
           setShuffle={setShuffle}
+          currentSongPlaylist={currentSongPlaylist}
+          randomTrackGenerator={randomTrackGenerator}
+          song={song}
+          songs={songs}
         />
       </div>
       <div className="song-details">
@@ -173,11 +180,11 @@ export function Player({
           className="player-song-heart"
           src={favourite.has(song.id) ? "images/heart-active.png" : "images/heart.png"}
           onClick={() => {
-            setFavourite(prev => {
+            setFavourite((prev) => {
               const newSet = new Set(prev);
               newSet.has(song.id) ? newSet.delete(song.id) : newSet.add(song.id);
               return newSet;
-            })
+            });
           }}
         ></img>
       </div>

@@ -1,13 +1,12 @@
-h1, p {
-    color: blueviolet;
+h1{   
     font-size: 20px;
     
 }
+
 html {
-    background-color: rgb(229, 170, 226);
+    background-color: #66526c;
 }
 
 body {
     font-family: sans-serif;
 }
-rgb(160, 218, 59)

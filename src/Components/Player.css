@@ -1,6 +1,6 @@
 .player-container {
     padding-top: 20px;
-    background-color: #1e1e1e;
+    background: #0f0f0f;
     display: flex;
     justify-content: space-between;
     position: fixed;
@@ -24,7 +24,7 @@
     width: 50px;
     height: 50px;
     cursor: pointer;
-     background: #b40391;
+     background: blueviolet;
     border: none;
     padding: 10px 15px;
     border-radius: 10px;
@@ -33,7 +33,7 @@
 }
 
 .play-button:hover{
-    background: #d970c2;
+    background: rgb(161, 116, 203);
 }
 
 .player-song-image {
@@ -53,12 +53,14 @@
 }
 .player-song-name {
     margin-bottom: 0;
+    color: blueviolet;
 }
 .player-song-author {
-    color: rgb(21, 21, 152);
+    color: rgb(182, 182, 205);
 }
 .player-time {
     margin-top: 0;
+    color: rgb(182, 182, 205);
     }
 .player-ranges {
     display: flex;
@@ -71,4 +73,5 @@
     height: 40px;
     border-radius: 15px;
     cursor: pointer;
+    margin-bottom: 10px;
 }

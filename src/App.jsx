@@ -147,6 +147,9 @@ function App() {
               shuffle={shuffle}
               setCurrentGenerator={setCurrentGenerator}
               setPath={setPath}
+              song = {song}
+              favourite={favourite}
+              setFavourite={setFavourite}
               
             />
           }
@@ -168,6 +171,8 @@ function App() {
               setCurrentGenerator={setCurrentGenerator}
               shuffle={shuffle}
               setPath={setPath}
+              
+              
               
               
 

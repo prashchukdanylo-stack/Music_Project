@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+
 export function Favourite({
   favourite,
   setProgress,
@@ -11,9 +11,12 @@ export function Favourite({
   songs,
   setCurrentGenerator,
   setPath,
+  song,
+  setFavourite
 }) {
-  const songsToRender = songs.filter((song) => favourite.has(song.id));
-  const navigate = useNavigate();
+  const songsMap = new Map(songs.map(song => [song.id, song]));
+  const songsToRender = Array.from(favourite).map(id => songsMap.get(id)).filter(Boolean);
+  console.log(songsToRender);
 
   const chooseSong = (song) => {
     setProgress(0);
@@ -27,7 +30,7 @@ export function Favourite({
      setCurrentGenerator(songsToRender);
       setCurrentIndex(index);                                      
     
-    navigate("/song");
+    
     setIsPlaying(true);
   };
 
@@ -41,19 +44,39 @@ export function Favourite({
         </div>
       ) : (
         <div className="songs-grid">
-          {songsToRender.map((song) => {
+          {songsToRender.map((songToRender) => {
             return (
               <div
-                key={song.id}
-                className="songlist-card"
-                onClick={() => chooseSong(song)}
+                key={songToRender.id}
+                className={songToRender === song ? "songlist-card-active" : "songlist-card"}
+                onClick={() => chooseSong(songToRender)}
               >
-                <img src={song.img} className="songs-list-img" />
+                <img src={songToRender.img} className="songs-list-img" />
                 <div className="song-info">
-                  <h3>{song.name}</h3>
-                  <h5>{song.duration}</h5>
+                  <h3>{songToRender.name}</h3>
+                  <h5>{songToRender.duration}</h5>
                 </div>
-                <h5 className="song-author">{song.author}</h5>
+                <div className="song-info">
+                  <h5 className="song-author">{songToRender.author}</h5>
+                  <img
+                    className="player-song-heart"
+                    src={
+                      favourite.has(songToRender.id)
+                        ? "images/heart-active.png"
+                        : "images/heart.png"
+                    }
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setFavourite((prev) => {
+                        const newSet = new Set(prev);
+                        newSet.has(songToRender.id)
+                          ? newSet.delete(songToRender.id)
+                          : newSet.add(songToRender.id);
+                        return newSet;
+                      });
+                    }}
+                  ></img>
+                </div>
               </div>
             );
           })}

@@ -35,18 +35,34 @@ function App() {
   
 
   useEffect(() => {
+    console.log("1. useEffect")
     const getSongsData = async () => {
-      const response = await fetch("/songs.json");
-      const data = await response.json();
-      setSongs(data);
-    };
-    const timeExpire =Number(localStorage.getItem("timeExpire"));
-     if (timeExpire && Date.now() > timeExpire) {
-      localStorage.removeItem("player");
-      localStorage.removeItem("timeExpire");
-      console.log("complete")
-    }
-    
+     
+      let loadedSongs = [];
+      const savedSongs = localStorage.getItem("songs");
+      if (savedSongs) {
+      
+          const parsed = JSON.parse(savedSongs);
+          loadedSongs = parsed;
+        
+      }
+
+      if (loadedSongs.length === 0) {
+        const response = await fetch("/songs.json");
+        const data = await response.json();
+        loadedSongs = data.map(song => ({
+          ...song,
+          playCount: song.playCount || 0
+        }));
+
+        localStorage.setItem("songs", JSON.stringify(loadedSongs));
+      }
+
+        setSongs(loadedSongs);
+        setCurrentSongPlaylist(loadedSongs);
+
+
+
     const savedPlayer = localStorage.getItem("player");
     const favPlayer = localStorage.getItem("favourite");
     
@@ -63,9 +79,22 @@ function App() {
       setFavourite(new Set(favourite));
     }
    
+     }
+    
    
+
+    const timeExpire =Number(localStorage.getItem("timeExpire"));
+     if (timeExpire && Date.now() > timeExpire) {
+      localStorage.removeItem("player");
+      localStorage.removeItem("timeExpire");
+      console.log("complete")
+    }
+    
+   
+    
     setIsPlayerReady(true);
-    getSongsData();
+     getSongsData();
+    
   }, []);
 
   useEffect(() => {
@@ -88,8 +117,19 @@ function App() {
       )
     )
     console.log(localStorage);
-  }, [favourite])
+  }, [favourite]);
 
+
+
+  useEffect(()=> {
+    if (songs.length > 0 && Array.isArray(songs)) {
+      localStorage.setItem("songs", JSON.stringify(songs));
+    }
+  }, [songs]);
+
+  
+  
+  
   const randomTrackGenerator = (songs) => {
     let copyOfSongs = [...songs];
 
@@ -150,6 +190,7 @@ function App() {
               song = {song}
               favourite={favourite}
               setFavourite={setFavourite}
+              setSongs={setSongs}
               
             />
           }
@@ -171,6 +212,7 @@ function App() {
               setCurrentGenerator={setCurrentGenerator}
               shuffle={shuffle}
               setPath={setPath}
+              setSongs={setSongs}
               
               
               

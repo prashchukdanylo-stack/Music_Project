@@ -7,7 +7,7 @@
         "audio": "/songs/babyshark.mp3",
         "duration": "1:22",
         "author": "Pinkfong",
-        "like": false
+        "playCount": 0
     },
 
     {
@@ -17,7 +17,7 @@
         "audio": "/songs/rapgod.mp3",
         "duration": "6:03",
         "author": "Eminem",
-        "like": false
+        "playCount": 0
     },
 
     {
@@ -27,7 +27,7 @@
         "audio": "/songs/baby.mp3",
         "duration": "3:35",
         "author": "Justin Bieber",
-        "like": false
+        "playCount": 0
     },
 
     {
@@ -37,7 +37,7 @@
         "audio": "/songs/espresso.mp3",
         "duration": "2:55",
         "author": "Sabrina Carpenter",
-        "like": false
+        "playCount": 0
     },
 
     {
@@ -47,7 +47,7 @@
         "audio": "/songs/stronger.mp3",
         "duration": "5:11",
         "author": "Kanye West",
-        "like": false
+        "playCount": 0
     },
 
     {
@@ -57,7 +57,7 @@
         "audio": "/songs/whereismymind.mp3",
         "duration": "3:52",
         "author": "Pixies",
-        "like": false
+        "playCount": 0
     },
 
     {
@@ -67,7 +67,7 @@
         "audio": "/songs/oldtownroad.mp3",
         "duration": "2:37",
         "author": "Lil Nas X",
-        "like": false
+        "playCount": 0
     },
 
     {
@@ -77,7 +77,7 @@
         "audio": "/songs/cheerleader.mp3",
         "duration": "3:01",
         "author": "OMI",
-        "like": false
+        "playCount": 0
     },
 
      {
@@ -87,7 +87,7 @@
         "audio": "/songs/popular.mp3",
         "duration": "3:35",
         "author": "The Weeknd",
-        "like": false
+        "playCount": 0
     },
 
     {
@@ -97,7 +97,7 @@
         "audio": "/songs/lovely.mp3",
         "duration": "3:20",
         "author": "Billie Eilish",
-        "like": false
+        "playCount": 0
     }
 
 

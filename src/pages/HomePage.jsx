@@ -3,11 +3,12 @@ import "./HomePage.css";
 export function HomePage() {
 
   return (
+    <div >
     <div className="all-page">
       <div className="welcome">
         <p className="welcome-text">Welcome to Fluire!</p>
         <div className="welcome-about-container">
-          <p>
+          <p className = "welcome-descr">
             This is a beautiful place to chill and throw away all your problems
             and just feel hapiness!Here, the music flows like a gentle river,
             carrying your thoughts away and wrapping you in a cocoon of sound.
@@ -23,23 +24,27 @@ export function HomePage() {
           </p>
         </div>
       </div>
-
-      <div className="play-button-container">
         
-        <br />
+        
+      
+        
+  
+        
+      
+    </div>
+    <div className="erase-button-container">
         <button
-        className="back-button"
+        className="erase-button"
           onClick={() => {
+            localStorage.removeItem("songs");
             localStorage.removeItem("player");
+            localStorage.removeItem("favourite");
             window.location.reload();
           }}
         >
           Erase localStorage
         </button>
-        <br />
-  
-        
-      </div>
+    </div>
     </div>
   );
 }

@@ -14,6 +14,7 @@ export function SongsList({
   setPath,
   favourite,
   setFavourite,
+  setSongs
 }) {
   const [search, setSearch] = useState("");
 
@@ -23,10 +24,24 @@ export function SongsList({
     setDuration(0);
     setPath("list");
 
+    const updatedSongs =  songs.map((s) => {
+      if (s.id === song.id) {
+        return {
+          ...s,
+          playCount: (s.playCount || 0) + 1
+        };
+      }
+      return s;
+    })
+
+    setSongs(updatedSongs);
+
+    const updatedSong = updatedSongs.find((s)=> s.id === song.id);
+
     const index = songsToRender.findIndex((s) => s.id === song.id);
-    setCurrentGenerator(songs);
-    setSong(song);
-    setCurrentSongPlaylist(songs);
+    setCurrentGenerator(updatedSongs);
+    setSong(updatedSong);
+    setCurrentSongPlaylist(updatedSongs);
     setCurrentIndex(index);
     setIsPlaying(true);
   };

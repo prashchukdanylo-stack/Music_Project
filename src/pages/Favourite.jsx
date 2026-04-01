@@ -12,10 +12,11 @@ export function Favourite({
   setCurrentGenerator,
   setPath,
   song,
-  setFavourite
+  setFavourite,
+  setSongs
 }) {
   const songsMap = new Map(songs.map(song => [song.id, song]));
-  const songsToRender = Array.from(favourite).map(id => songsMap.get(id)).filter(Boolean);
+  let songsToRender = Array.from(favourite).map(id => songsMap.get(id)).filter(Boolean);
   console.log(songsToRender);
 
   const chooseSong = (song) => {
@@ -24,8 +25,22 @@ export function Favourite({
     setDuration(0);
     setPath("fav")
 
+    const updatedSongs = songs.map((s) => {
+      if (s.id === song.id) {
+        return {
+          ...s,
+          playCount: (s.playCount || 0) + 1
+        };
+      };
+      return s;
+    })
+
+    setSongs(updatedSongs);
+    
+    const updatedSong = updatedSongs.find((s) => s.id === song.id);
+    
     const index = songsToRender.findIndex(s => s.id ===song.id );
-     setSong(song); 
+     setSong(updatedSong); 
      setCurrentSongPlaylist(songsToRender); 
      setCurrentGenerator(songsToRender);
       setCurrentIndex(index);                                      

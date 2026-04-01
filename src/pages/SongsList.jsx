@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./SongsList.css";
+import Queue from "../utils/queue";
 export function SongsList({
   song,
   songs,
@@ -17,6 +18,8 @@ export function SongsList({
   setSongs
 }) {
   const [search, setSearch] = useState("");
+  const queue = new Queue();
+
 
   const chooseSong = (song) => {
     setProgress(0);
@@ -44,12 +47,23 @@ export function SongsList({
     setCurrentSongPlaylist(updatedSongs);
     setCurrentIndex(index);
     setIsPlaying(true);
+    queue.enqueue(updatedSong, updatedSong.playCount || 0);
   };
   const filteredSong = () => {
     return songs.filter((song) => {
       return song.name.toLowerCase().includes(search.toLowerCase());
     });
   };
+
+  const highestPrioritySong =() => {
+
+   const song = queue.peek("highestPriority");
+   console.log(song);
+    if (song) {
+      chooseSong(song.item);
+    }
+    console.log(queue);
+  }
 
   const songsToRender = search ? filteredSong() : songs;
   return (
@@ -63,6 +77,9 @@ export function SongsList({
             setSearch(e.target.value);
           }}
         ></input>
+        <button onClick={highestPrioritySong}>
+          The most played track
+        </button>
       </div>
       {songsToRender.length === 0 ? (
         <div className="sorry-text">

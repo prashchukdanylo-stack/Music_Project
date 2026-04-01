@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./SongsList.css";
-import Queue from "../utils/queue";
+import PriorityQueue from "../utils/queue";
 export function SongsList({
   song,
   songs,
@@ -18,7 +18,7 @@ export function SongsList({
   setSongs
 }) {
   const [search, setSearch] = useState("");
-  const queue = new Queue();
+  const queue = useRef (new PriorityQueue());
 
 
   const chooseSong = (song) => {
@@ -47,7 +47,7 @@ export function SongsList({
     setCurrentSongPlaylist(updatedSongs);
     setCurrentIndex(index);
     setIsPlaying(true);
-    queue.enqueue(updatedSong, updatedSong.playCount || 0);
+    queue.current.enqueue(updatedSong, updatedSong.playCount || 0);
   };
   const filteredSong = () => {
     return songs.filter((song) => {
@@ -57,12 +57,22 @@ export function SongsList({
 
   const highestPrioritySong =() => {
 
-   const song = queue.peek("highestPriority");
+   const song = queue.current.peek("highest");
    console.log(song);
     if (song) {
       chooseSong(song.item);
+      queue.current.dequeue("highest");
     }
-    console.log(queue);
+    console.log(queue.current.items);
+  }
+
+  const lowestPrioritySong = () => {
+    const song = queue.current.peek("lowest");
+   console.log(song);
+    if (song) {
+      chooseSong(song.item);
+      queue.current.dequeue("lowest");
+    }
   }
 
   const songsToRender = search ? filteredSong() : songs;
@@ -79,6 +89,9 @@ export function SongsList({
         ></input>
         <button onClick={highestPrioritySong}>
           The most played track
+        </button>
+        <button onClick={lowestPrioritySong}>
+          The least played track
         </button>
       </div>
       {songsToRender.length === 0 ? (

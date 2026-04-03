@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PriorityQueue from "./utils/queue";
 import "./App.css";
 import { HomePage } from "./pages/HomePage";
 import { Song } from "./pages/Song";
@@ -18,7 +19,10 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [time, setTime] = useState("0:00 / 0:00");
+  const [time, setTime] = useState(()=> {
+  const Parsedtime = localStorage.getItem("time");
+  return Parsedtime ? Parsedtime : "0:00 / 0:00";
+  });
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const [shuffle, setShuffle] = useState(false);
@@ -28,6 +32,7 @@ function App() {
   });
 
   const [path, setPath] = useState("");
+  const queue = useRef (new PriorityQueue());
   
   
 
@@ -62,9 +67,8 @@ function App() {
         setCurrentSongPlaylist(loadedSongs);
 
 
-
     const savedPlayer = localStorage.getItem("player");
-    const favPlayer = localStorage.getItem("favourite");
+   
     
     if (savedPlayer) {
       const { song, currentSongPlaylist, currentIndex } =
@@ -74,10 +78,7 @@ function App() {
       setSong(song || null);
       setIsPlaying(false);
     }
-    if (favPlayer) {
-      const favourite = JSON.parse(favPlayer);
-      setFavourite(new Set(favourite));
-    }
+   
    
      }
     
@@ -126,6 +127,10 @@ function App() {
       localStorage.setItem("songs", JSON.stringify(songs));
     }
   }, [songs]);
+
+  useEffect(() => {
+    localStorage.setItem("time", time);
+  }, [time]);
 
   
   
@@ -191,6 +196,7 @@ function App() {
               favourite={favourite}
               setFavourite={setFavourite}
               setSongs={setSongs}
+              queue = {queue}
               
             />
           }

@@ -25,7 +25,7 @@ export function Song({
         
         
         <p>{time}</p>
-        <h5>{song.playCount}</h5>
+        <h5>{song.playCount}- times played</h5>
       </div>
       
     </div>

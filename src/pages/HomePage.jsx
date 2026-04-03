@@ -38,7 +38,7 @@ export function HomePage() {
           onClick={() => {
             localStorage.removeItem("songs");
             localStorage.removeItem("player");
-            localStorage.removeItem("favourite");
+        
             window.location.reload();
           }}
         >

@@ -60,4 +60,14 @@
 .bottom {
     height: 200px;
 }
+.priority-button {
+    width: 70px;
+    height: 50px;
+    background-color: blueviolet;
+     cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    margin: 0 5px 0 5px;
+}
 

@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import "./SongsList.css";
-import PriorityQueue from "../utils/queue";
+
 export function SongsList({
   song,
   songs,
@@ -15,10 +15,11 @@ export function SongsList({
   setPath,
   favourite,
   setFavourite,
-  setSongs
+  setSongs,
+  queue
 }) {
   const [search, setSearch] = useState("");
-  const queue = useRef (new PriorityQueue());
+  
 
 
   const chooseSong = (song) => {
@@ -61,6 +62,7 @@ export function SongsList({
    console.log(song);
     if (song) {
       chooseSong(song.item);
+      setCurrentSongPlaylist(queue.current.items.map((s)=> s.item));
       queue.current.dequeue("highest");
     }
     console.log(queue.current.items);
@@ -87,12 +89,12 @@ export function SongsList({
             setSearch(e.target.value);
           }}
         ></input>
-        <button onClick={highestPrioritySong}>
-          The most played track
-        </button>
-        <button onClick={lowestPrioritySong}>
-          The least played track
-        </button>
+        <img onClick={highestPrioritySong} src="images/top.png" className = "priority-button">
+          
+        </img>
+        <img onClick={lowestPrioritySong} src="images/bad.png" className = "priority-button">
+        
+        </img>
       </div>
       {songsToRender.length === 0 ? (
         <div className="sorry-text">

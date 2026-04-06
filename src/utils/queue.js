@@ -40,5 +40,10 @@ class PriorityQueue {
             return this.items.pop();
         }
     }
+    print() {
+        for ( this.items.item of this.items) {
+            console.log(this.items.item);
+        }
+    }
 }
 export default PriorityQueue;

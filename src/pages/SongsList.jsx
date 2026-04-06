@@ -49,6 +49,7 @@ export function SongsList({
     setCurrentIndex(index);
     setIsPlaying(true);
     queue.current.enqueue(updatedSong, updatedSong.playCount || 0);
+    queue.current.print();
   };
   const filteredSong = () => {
     return songs.filter((song) => {
@@ -65,7 +66,7 @@ export function SongsList({
       setCurrentSongPlaylist(queue.current.items.map((s)=> s.item));
       queue.current.dequeue("highest");
     }
-    console.log(queue.current.items);
+    queue.current.print();
   }
 
   const lowestPrioritySong = () => {

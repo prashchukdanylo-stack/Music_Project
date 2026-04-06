@@ -13,7 +13,8 @@ export function Favourite({
   setPath,
   song,
   setFavourite,
-  setSongs
+  setSongs,
+  queue
 }) {
   const songsMap = new Map(songs.map(song => [song.id, song]));
   let songsToRender = Array.from(favourite).map(id => songsMap.get(id)).filter(Boolean);
@@ -47,6 +48,8 @@ export function Favourite({
     
     
     setIsPlaying(true);
+    queue.current.enqueue(updatedSong, updatedSong.playCount || 0);
+    queue.current.print();
   };
 
   return (

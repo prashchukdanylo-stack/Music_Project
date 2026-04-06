@@ -219,6 +219,7 @@ function App() {
               shuffle={shuffle}
               setPath={setPath}
               setSongs={setSongs}
+              queue = {queue}
               
               
               

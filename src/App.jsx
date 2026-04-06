@@ -23,6 +23,7 @@ function App() {
   const Parsedtime = localStorage.getItem("time");
   return Parsedtime ? Parsedtime : "0:00 / 0:00";
   });
+
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const [shuffle, setShuffle] = useState(false);
@@ -128,9 +129,7 @@ function App() {
     }
   }, [songs]);
 
-  useEffect(() => {
-    localStorage.setItem("time", time);
-  }, [time]);
+
 
   
   

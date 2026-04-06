@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatTime } from "../utils/formatTime";
 import { Shuffle } from "./Shuffle";
@@ -29,6 +29,7 @@ export function Player({
   randomTrackGenerator
 }) {
   const navigate = useNavigate();
+  const [volume, setVolume] = useState(1);
 
   useEffect(() => {
     if (!audioRef.current || !song) return;
@@ -44,13 +45,28 @@ export function Player({
       if (duration && !isNaN(duration)) {
         setDuration(duration);
       }
+      const savedTime = JSON.parse(localStorage.getItem("time"));
+      const savedAudio = JSON.parse(localStorage.getItem("volume"));
+      if (savedTime && savedTime.songId === song.id) {
+        audio.currentTime = savedTime.time;
+        setProgress((savedTime.time / duration) * 100);
+        setTime(`${formatTime(savedTime.time)} / ${song.duration}`);
+      } else {
+        setTime(`0:00 / ${song.duration}`);
+      }
+
+      if (savedAudio) {
+        audioRef.current.volume = savedAudio.volume;
+        setVolume(savedAudio.volume);
+        console.log("Volume set to:", audioRef.current.volume);
+      }
     };
 
     audio.addEventListener("loadedmetadata", handleMetaData);
     return () => {
       audio.removeEventListener("loadedmetadata", handleMetaData);
     };
-  }, [song, audioRef, setDuration, setTime]);
+  }, [song, audioRef, setDuration, setTime, setProgress]);
 
   const playSong = () => {
     setIsPlaying((prev) => {
@@ -73,6 +89,10 @@ export function Player({
 
     setProgress((currentTime / duration) * 100);
     setTime(`${formatTime(currentTime)} / ${song?.duration || "0:00"}`);
+    localStorage.setItem("time", JSON.stringify({
+      time: currentTime,
+      songId: song.id
+    }));
   };
 
   const nextSong = () => {
@@ -195,10 +215,15 @@ export function Player({
             type="range"
             min="0"
             max="100"
+            value = {volume * 100}
             onChange={(event) => {
               const volume = Number(event.target.value) / 100;
               audioRef.current.volume = volume;
+              setVolume(volume);
+              localStorage.setItem("volume", JSON.stringify({ volume: volume}));
+              console.log(audioRef.current.volume)
             }}
+           
           ></input>
         </div>
         <div className="progress">

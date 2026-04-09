@@ -1,0 +1,53 @@
+[
+    {
+        "author": "The Weeknd",
+        "img": "/images/weeknd.jpg",
+        "id": 1
+    },
+    
+    {
+        "author": "Kanye West",
+        "img": "/images/kanye.jpg",
+        "id": 2
+    },
+
+    {
+        "author": "Billie Eilish",
+        "img": "/images/billie.jpg",
+        "id": 3
+    },
+
+    {
+        "author": "OMI",
+        "img": "/images/omi.jpg",
+        "id": 4
+    },
+
+    {
+        "author": "Pixies",
+        "img": "/images/pixies.jpg",
+        "id": 5
+    },
+
+     {
+        "author": "Lil Nas X",
+        "img": "/images/lilnasx.jpg",
+        "id": 6
+    }, 
+    {
+        "author": "Justin Bieber",
+        "img": "/images/justin.jpg",
+        "id": 7
+    },
+    {
+        "author": "Sabrina Carpenter",
+        "img": "/images/sabrina.jpg",
+        "id": 8
+    },
+    {
+        "author": "Eminem",
+        "img": "/images/eminem.jpg",
+        "id": 9
+    }
+   
+]

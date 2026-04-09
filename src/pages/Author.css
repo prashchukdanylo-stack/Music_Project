@@ -1,0 +1,17 @@
+.author-page {
+    display: flex;
+    justify-content: center;
+}
+.author {
+    font-size: 50px;
+    color: rgb(255, 255, 255);
+    
+}
+.author-img {
+    width: 300px;
+    height: 300px;  
+}
+.author-songs {
+    display:flex;
+    justify-content: center;
+}

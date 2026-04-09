@@ -3,6 +3,7 @@
     flex-direction: column;
     padding: 15px 30px;
     background: #0f0f0f;
+    width: 100px;
     position: fixed;
     top: 0;
     left: 0;

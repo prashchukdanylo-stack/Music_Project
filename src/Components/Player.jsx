@@ -26,7 +26,8 @@ export function Player({
   time,
   setFavourite,
   favourite,
-  randomTrackGenerator
+  randomTrackGenerator,
+  setAuthor
 }) {
   const navigate = useNavigate();
   const [volume, setVolume] = useState(1);
@@ -68,8 +69,11 @@ export function Player({
     };
   }, [song, audioRef, setDuration, setTime, setProgress]);
 
-  const playSong = () => {
-    setIsPlaying((prev) => {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+         setIsPlaying((prev) => {
       if (prev === false) {
         audioRef.current.play();
         return true;
@@ -78,6 +82,24 @@ export function Player({
         return false;
       }
     });
+      }
+      
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  const playSong = async () => {
+   if (audioRef.current.paused) {
+    await audioRef.current.play();
+    setIsPlaying(true);
+   } else {
+    audioRef.current.pause();
+    setIsPlaying(false);
+   }
   };
 
   const trackDuration = () => {
@@ -96,11 +118,11 @@ export function Player({
   };
 
   const nextSong = () => {
-    if (shuffle) {
-      setProgress(0);
+    setProgress(0);
       setTime("0:00 / 0:00");
       setDuration(0);
 
+    if (shuffle) {
       const newSong = trackGenRef.current.next().value;
       if (!newSong) return;
 
@@ -110,9 +132,10 @@ export function Player({
       setCurrentSongPlaylist((prev) => { 
         const newArr = [...prev, newSong];
          setCurrentIndex(newArr.length - 1); 
+         console.log(currentSongPlaylist);
          return newArr;
          });
-
+         
       return;
     }
 
@@ -127,7 +150,12 @@ export function Player({
   };
 
   const previousSong = () => {
+   
     if (currentIndex <= 0) return;
+    
+     if (shuffle) {
+      currentSongPlaylist.pop();
+    }
     setProgress(0);
     setTime("0:00 / 0:00");
     setDuration(0);
@@ -142,6 +170,22 @@ export function Player({
     nextSong();
     localStorage.setItem("timeExpire", Date.now() + 600000);
   };
+
+
+  useEffect(() => {
+    const handleEvent = (e) => {
+      if (e.code === "ArrowRight") {
+        e.preventDefault();
+        handleEnded();
+      } else if (e.code === "ArrowLeft") {
+        e.preventDefault();
+        previousSong();
+      }
+    }
+
+    window.addEventListener("keydown", handleEvent);
+    return () => window.removeEventListener("keydown", handleEvent);
+  }, [song]);
 
   return (
     <div className="player-container">
@@ -194,7 +238,11 @@ export function Player({
         ></img>
         <div className="player-song-description">
           <h1 className="player-song-name">{song.name}</h1>
-          <h5 className="player-song-author">{song.author}</h5>
+          <h5 className="player-song-author" onClick={
+            () => {navigate("/author"); 
+            setAuthor(song)}}>
+            {song.author}
+          </h5>
         </div>
         <img
           className="player-song-heart"

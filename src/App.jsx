@@ -8,9 +8,11 @@ import { SongsList } from "./pages/SongsList";
 import { Sidebar } from "./Components/Sidebar";
 import { Player } from "./Components/Player";
 import { Favourite } from "./pages/Favourite";
+import { Author } from "./pages/Author";
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [authors, setAuthors] = useState("");
   const [song, setSong] = useState();
   const [songs, setSongs] = useState([]);
   const trackGenRef = useRef(null);
@@ -19,9 +21,9 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [time, setTime] = useState(()=> {
-  const Parsedtime = localStorage.getItem("time");
-  return Parsedtime ? Parsedtime : "0:00 / 0:00";
+  const [time, setTime] = useState(() => {
+    const Parsedtime = localStorage.getItem("time");
+    return Parsedtime ? Parsedtime : "0:00 / 0:00";
   });
 
   const [duration, setDuration] = useState(0);
@@ -32,71 +34,58 @@ function App() {
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
 
-  const [path, setPath] = useState("");
-  const queue = useRef (new PriorityQueue());
-  
-  
 
-
-  
+  const queue = useRef(new PriorityQueue());
+  const [author, setAuthor] = useState("");
 
   useEffect(() => {
-    console.log("1. useEffect")
+    console.log("1. useEffect");
     const getSongsData = async () => {
-     
       let loadedSongs = [];
       const savedSongs = localStorage.getItem("songs");
       if (savedSongs) {
-      
-          const parsed = JSON.parse(savedSongs);
-          loadedSongs = parsed;
-        
+        const parsed = JSON.parse(savedSongs);
+        loadedSongs = parsed;
       }
 
       if (loadedSongs.length === 0) {
         const response = await fetch("/songs.json");
         const data = await response.json();
-        loadedSongs = data.map(song => ({
+        loadedSongs = data.map((song) => ({
           ...song,
-          playCount: song.playCount || 0
+          playCount: song.playCount || 0,
         }));
 
         localStorage.setItem("songs", JSON.stringify(loadedSongs));
       }
 
-        setSongs(loadedSongs);
-        setCurrentSongPlaylist(loadedSongs);
+      setSongs(loadedSongs);
+      setCurrentSongPlaylist(loadedSongs);
 
+      const savedPlayer = localStorage.getItem("player");
 
-    const savedPlayer = localStorage.getItem("player");
-   
-    
-    if (savedPlayer) {
-      const { song, currentSongPlaylist, currentIndex } =
-        JSON.parse(savedPlayer);
-      setCurrentIndex(currentIndex ?? -1);
-      setCurrentSongPlaylist(currentSongPlaylist || []);
-      setSong(song || null);
-      setIsPlaying(false);
-    }
-   
-   
-     }
-    
-   
+      if (savedPlayer) {
+        const { song, currentSongPlaylist, currentIndex } =
+          JSON.parse(savedPlayer);
+        setCurrentIndex(currentIndex ?? -1);
+        setCurrentSongPlaylist(currentSongPlaylist || []);
+        setSong(song || null);
+        setIsPlaying(false);
+      }
+      const response = await fetch("/authors.json");
+      const data = await response.json();
+      setAuthors(data);
+    };
 
-    const timeExpire =Number(localStorage.getItem("timeExpire"));
-     if (timeExpire && Date.now() > timeExpire) {
+    const timeExpire = Number(localStorage.getItem("timeExpire"));
+    if (timeExpire && Date.now() > timeExpire) {
       localStorage.removeItem("player");
       localStorage.removeItem("timeExpire");
-      console.log("complete")
+      console.log("complete");
     }
-    
-   
-    
+
     setIsPlayerReady(true);
-     getSongsData();
-    
+    getSongsData();
   }, []);
 
   useEffect(() => {
@@ -111,43 +100,30 @@ function App() {
     );
   }, [song, currentSongPlaylist, currentIndex]);
 
-  useEffect(()=> {
-    localStorage.setItem(
-      "favourite",
-      JSON.stringify(
-        Array.from(favourite)
-      )
-    )
+  useEffect(() => {
+    localStorage.setItem("favourite", JSON.stringify(Array.from(favourite)));
     console.log(localStorage);
   }, [favourite]);
 
-
-
-  useEffect(()=> {
+  useEffect(() => {
     if (songs.length > 0 && Array.isArray(songs)) {
       localStorage.setItem("songs", JSON.stringify(songs));
     }
   }, [songs]);
 
-
-
-  
-  
-  
   const randomTrackGenerator = (songs) => {
     let copyOfSongs = [...songs];
 
-
     return function* () {
       while (true) {
-        if (copyOfSongs.length===0) {
+        if (copyOfSongs.length === 0) {
           copyOfSongs = [...songs];
         }
         const index = Math.floor(Math.random() * copyOfSongs.length);
         yield copyOfSongs.splice(index, 1)[0];
+      }
     };
   };
-  }
   useEffect(() => {
     if (currentGenerator.length > 0) {
       trackGenRef.current = randomTrackGenerator(currentGenerator)();
@@ -190,18 +166,19 @@ function App() {
               setCurrentIndex={setCurrentIndex}
               shuffle={shuffle}
               setCurrentGenerator={setCurrentGenerator}
-              setPath={setPath}
-              song = {song}
+              song={song}
               favourite={favourite}
               setFavourite={setFavourite}
               setSongs={setSongs}
-              queue = {queue}
-              
+              queue={queue}
             />
           }
         />
-        <Route path="/favourite" element = {<Favourite
-              songs = {songs}
+        <Route
+          path="/favourite"
+          element={
+            <Favourite
+              songs={songs}
               progress={progress}
               setProgress={setProgress}
               setTime={setTime}
@@ -216,45 +193,63 @@ function App() {
               song={song}
               setCurrentGenerator={setCurrentGenerator}
               shuffle={shuffle}
-              setPath={setPath}
               setSongs={setSongs}
-              queue = {queue}
-              
-              
-              
-              
-
-        />}>
-
-        </Route>
+              queue={queue}
+            />
+          }
+        ></Route>
+        <Route
+          path="/author"
+          element={
+            <Author
+              authorInfo={author}
+              songs={songs}
+              song={song}
+              setFavourite={setFavourite}
+              favourite={favourite}
+              setSongs={setSongs}
+              setProgress={setProgress}
+              setTime={setTime}
+              setDuration={setDuration}
+              setSong={setSong}
+              setCurrentSongPlaylist={setCurrentSongPlaylist}
+              setCurrentIndex={setCurrentIndex}
+              setIsPlaying={setIsPlaying}
+              setCurrentGenerator={setCurrentGenerator}
+              queue={queue}
+              authors={authors}
+            />
+          }
+        ></Route>
       </Routes>
 
-      {song && <Player
-        setTime={setTime}
-        duration={duration}
-        setDuration={setDuration}
-        shuffle={shuffle}
-        setShuffle={setShuffle}
-        setSong={setSong}
-        trackGenRef={trackGenRef}
-        currentSongPlaylist={currentSongPlaylist}
-        setCurrentSongPlaylist={setCurrentSongPlaylist}
-        currentIndex={currentIndex}
-        setCurrentIndex={setCurrentIndex}
-        audioRef={audioRef}
-        progress={progress}
-        setProgress={setProgress}
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
-        song={song}
-        songs={songs}
-        time={time}
-        favourite={favourite}
-        setFavourite={setFavourite}
-        randomTrackGenerator={randomTrackGenerator}
-        path={path}
-      
-      />}
+      {song && (
+        <Player
+          setTime={setTime}
+          duration={duration}
+          setDuration={setDuration}
+          shuffle={shuffle}
+          setShuffle={setShuffle}
+          setSong={setSong}
+          trackGenRef={trackGenRef}
+          currentSongPlaylist={currentSongPlaylist}
+          setCurrentSongPlaylist={setCurrentSongPlaylist}
+          currentIndex={currentIndex}
+          setCurrentIndex={setCurrentIndex}
+          audioRef={audioRef}
+          progress={progress}
+          setProgress={setProgress}
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+          song={song}
+          songs={songs}
+          time={time}
+          favourite={favourite}
+          setFavourite={setFavourite}
+          randomTrackGenerator={randomTrackGenerator}
+          setAuthor={setAuthor}
+        />
+      )}
     </BrowserRouter>
   );
 }

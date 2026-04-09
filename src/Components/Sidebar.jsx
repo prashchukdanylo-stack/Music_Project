@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Sidebar.css"
 export function Sidebar({song}) {
     const navigate = useNavigate();
     const location = useLocation();
-    const [sidebar, setSidebar] = useState(false);
+      const [sidebar, setSidebar] = useState(false);
+
+      useEffect(()=> {
+            const handleGlobalKey = (e) => {
+          if (e.key === "Escape") {
+            sidebar ? setSidebar(false) : setSidebar(true)
+          }
+        }
+        window.addEventListener("keydown", handleGlobalKey);
+        return () => window.removeEventListener("keydown", handleGlobalKey);
+      }, [sidebar]);
+
     
     return (
         <div className = "sidebar">

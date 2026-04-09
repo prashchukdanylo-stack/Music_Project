@@ -12,7 +12,6 @@ export function SongsList({
   setCurrentSongPlaylist,
   setCurrentIndex,
   setCurrentGenerator,
-  setPath,
   favourite,
   setFavourite,
   setSongs,
@@ -20,13 +19,13 @@ export function SongsList({
 }) {
   const [search, setSearch] = useState("");
   
-
+ 
 
   const chooseSong = (song) => {
     setProgress(0);
     setTime("0:00 / 0:00");
     setDuration(0);
-    setPath("list");
+    
 
     const updatedSongs =  songs.map((s) => {
       if (s.id === song.id) {

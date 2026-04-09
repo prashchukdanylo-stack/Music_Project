@@ -1,24 +1,26 @@
+import "./Author.css";
 
-export function Favourite({
+export function Author({
+  authorInfo,
+  songs,
+  song,
+  setFavourite,
   favourite,
+  setSongs,
   setProgress,
   setTime,
   setDuration,
   setSong,
   setCurrentSongPlaylist,
-  setCurrentIndex,
   setIsPlaying,
-  songs,
   setCurrentGenerator,
-  song,
-  setFavourite,
-  setSongs,
-  queue
+  queue,
+  authors
 }) {
-  const songsMap = new Map(songs.map(song => [song.id, song]));
-  let songsToRender = Array.from(favourite).map(id => songsMap.get(id)).filter(Boolean);
-  console.log(songsToRender);
 
+  const author = authors.find((a) => a.author === authorInfo.author);
+  
+console.log(author.img);
   const chooseSong = (song) => {
     setProgress(0);
     setTime("0:00 / 0:00");
@@ -29,43 +31,50 @@ export function Favourite({
       if (s.id === song.id) {
         return {
           ...s,
-          playCount: (s.playCount || 0) + 1
+          playCount: (s.playCount || 0) + 1,
         };
-      };
+      }
       return s;
-    })
+    });
 
     setSongs(updatedSongs);
-    
+
     const updatedSong = updatedSongs.find((s) => s.id === song.id);
+
     
-    const index = songsToRender.findIndex(s => s.id ===song.id );
-     setSong(updatedSong); 
-     setCurrentSongPlaylist(songsToRender); 
-     setCurrentGenerator(songsToRender);
-      setCurrentIndex(index);                                      
+    setSong(updatedSong);
+    setCurrentSongPlaylist(updatedSongs.filter((s) => s.author === authorInfo.author));
+    setCurrentGenerator(updatedSongs.filter((s) => s.author === authorInfo.author));
     
-    
+
     setIsPlaying(true);
     queue.current.enqueue(updatedSong, updatedSong.playCount || 0);
     queue.current.print();
   };
 
   return (
-    <>
-      {songsToRender.length === 0 ? (
-        <div className="sorry-text">
-          <h1>
-            Sorry, there are no songs! Choose the best songs on "Songs" page to see them here!
-          </h1>
-        </div>
-      ) : (
-        <div className="songs-grid">
-          {songsToRender.map((songToRender) => {
+    <div>
+      <div className="author-page">
+        <p className="author">{authorInfo.author}</p>
+        <img
+          className="author-img"
+          src={author.img}
+          alt={authorInfo.author}
+        ></img>
+      </div>
+
+      <div className="author-songs">
+        {songs
+          .filter((song) => song.author === authorInfo.author)
+          .map((songToRender) => {
             return (
               <div
                 key={songToRender.id}
-                className={songToRender === song ? "songlist-card-active" : "songlist-card"}
+                className={
+                  songToRender === song
+                    ? "songlist-card-active"
+                    : "songlist-card"
+                }
                 onClick={() => chooseSong(songToRender)}
               >
                 <img src={songToRender.img} className="songs-list-img" />
@@ -74,7 +83,9 @@ export function Favourite({
                   <h5>{songToRender.duration}</h5>
                 </div>
                 <div className="song-info">
-                  <h5 className="song-author">{songToRender.author}</h5>
+                  <h5 className="song-author">
+                    {songToRender.author}
+                  </h5>
                   <img
                     className="player-song-heart"
                     src={
@@ -97,8 +108,7 @@ export function Favourite({
               </div>
             );
           })}
-        </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 }

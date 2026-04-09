@@ -1,4 +1,5 @@
 
+import { useEffect } from "react";
 import "../pages/Song.css"
 export function Shuffle({
   shuffle,
@@ -13,6 +14,19 @@ export function Shuffle({
     
    }
   };
+
+  useEffect(() => {
+    const handleEvent = (e) => {
+      if (e.code === "KeyS") {
+        e.preventDefault();
+        shuffleSongs();
+      }
+    };
+    window.addEventListener("keydown", handleEvent);
+    return () => {
+      window.removeEventListener("keydown", handleEvent);
+    }
+  })
 
   return (
     <img

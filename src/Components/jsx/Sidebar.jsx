@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./Sidebar.css"
+import "../css/Sidebar.css"
 export function Sidebar({song}) {
     const navigate = useNavigate();
     const location = useLocation();

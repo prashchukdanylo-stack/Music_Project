@@ -1,5 +1,5 @@
 
-import "./Song.css"
+import "../css/Song.css"
 export function Song({
   song,
   time

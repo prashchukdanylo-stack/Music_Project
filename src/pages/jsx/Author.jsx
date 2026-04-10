@@ -1,4 +1,4 @@
-import "./Author.css";
+import "../css/Author.css";
 
 export function Author({
   authorInfo,

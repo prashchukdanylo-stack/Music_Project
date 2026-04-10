@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./SongsList.css";
+import "../css/SongsList.css"
 
 export function SongsList({
   song,

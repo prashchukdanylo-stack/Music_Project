@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { formatTime } from "../utils/formatTime";
+import { formatTime } from "../../utils/formatTime";
 import { Shuffle } from "./Shuffle";
-import "./Player.css";
+import "../css/Player.css";
 
 export function Player({
   audioRef,

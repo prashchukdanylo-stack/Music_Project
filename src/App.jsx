@@ -2,13 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PriorityQueue from "./utils/queue";
 import "./App.css";
-import { HomePage } from "./pages/HomePage";
-import { Song } from "./pages/Song";
-import { SongsList } from "./pages/SongsList";
-import { Sidebar } from "./Components/Sidebar";
-import { Player } from "./Components/Player";
-import { Favourite } from "./pages/Favourite";
-import { Author } from "./pages/Author";
+import { HomePage } from "./pages/jsx/HomePage";
+import { Song } from "./pages/jsx/Song";
+import { SongsList } from "./pages/jsx/SongsList";
+import { Sidebar } from "./Components/jsx/Sidebar";
+import { Player } from "./Components/jsx/Player";
+import { Favourite } from "./pages/jsx/Favourite";
+import { Author } from "./pages/jsx/Author";
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);

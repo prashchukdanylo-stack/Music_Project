@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import "../pages/Song.css"
+import "../../pages/css/Song.css"
 export function Shuffle({
   shuffle,
   setShuffle,

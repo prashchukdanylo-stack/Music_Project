@@ -1,3 +1,4 @@
+import { QueueButton } from "../../Components/jsx/QueueButton";
 import "../css/Author.css";
 
 export function Author({
@@ -12,15 +13,18 @@ export function Author({
   setDuration,
   setSong,
   setCurrentSongPlaylist,
+  currentSongPlaylist,
+  setCurrentIndex,
   setIsPlaying,
   setCurrentGenerator,
   queue,
-  authors
+  authors,
+  setQueueChoose
 }) {
-
+  
   const author = authors.find((a) => a.author === authorInfo.author);
   
-console.log(author.img);
+
   const chooseSong = (song) => {
     setProgress(0);
     setTime("0:00 / 0:00");
@@ -44,6 +48,7 @@ console.log(author.img);
     
     setSong(updatedSong);
     setCurrentSongPlaylist(updatedSongs.filter((s) => s.author === authorInfo.author));
+    setCurrentIndex(currentSongPlaylist.findIndex((s)=>s.id === song.id));
     setCurrentGenerator(updatedSongs.filter((s) => s.author === authorInfo.author));
     
 
@@ -86,6 +91,8 @@ console.log(author.img);
                   <h5 className="song-author">
                     {songToRender.author}
                   </h5>
+                  <div>
+                    <QueueButton setQueueChoose = {setQueueChoose} songToRender = {songToRender} />
                   <img
                     className="player-song-heart"
                     src={
@@ -104,6 +111,7 @@ console.log(author.img);
                       });
                     }}
                   ></img>
+                  </div>
                 </div>
               </div>
             );

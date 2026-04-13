@@ -1,4 +1,4 @@
-
+import { QueueButton } from "../../Components/jsx/QueueButton";
 export function Favourite({
   favourite,
   setProgress,
@@ -13,7 +13,8 @@ export function Favourite({
   song,
   setFavourite,
   setSongs,
-  queue
+  queue,
+  setQueueChoose
 }) {
   const songsMap = new Map(songs.map(song => [song.id, song]));
   let songsToRender = Array.from(favourite).map(id => songsMap.get(id)).filter(Boolean);
@@ -75,6 +76,8 @@ export function Favourite({
                 </div>
                 <div className="song-info">
                   <h5 className="song-author">{songToRender.author}</h5>
+                  <div>
+                    <QueueButton setQueueChoose = {setQueueChoose} songToRender = {songToRender} />
                   <img
                     className="player-song-heart"
                     src={
@@ -93,6 +96,7 @@ export function Favourite({
                       });
                     }}
                   ></img>
+                  </div>
                 </div>
               </div>
             );

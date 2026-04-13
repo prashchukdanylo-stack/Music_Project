@@ -37,6 +37,7 @@ function App() {
 
   const queue = useRef(new PriorityQueue());
   const [author, setAuthor] = useState("");
+  const [queueChoose, setQueueChoose] = useState([]);
 
   useEffect(() => {
     console.log("1. useEffect");
@@ -171,6 +172,9 @@ function App() {
               setFavourite={setFavourite}
               setSongs={setSongs}
               queue={queue}
+              currentSongPlaylist={currentSongPlaylist}
+              setQueueChoose={setQueueChoose}
+              queueChoose={queueChoose}
             />
           }
         />
@@ -195,6 +199,7 @@ function App() {
               shuffle={shuffle}
               setSongs={setSongs}
               queue={queue}
+              setQueueChoose={setQueueChoose}
             />
           }
         ></Route>
@@ -213,11 +218,13 @@ function App() {
               setDuration={setDuration}
               setSong={setSong}
               setCurrentSongPlaylist={setCurrentSongPlaylist}
+              currentSongPlaylist={currentSongPlaylist}
               setCurrentIndex={setCurrentIndex}
               setIsPlaying={setIsPlaying}
               setCurrentGenerator={setCurrentGenerator}
               queue={queue}
               authors={authors}
+              setQueueChoose={setQueueChoose}
             />
           }
         ></Route>
@@ -248,6 +255,8 @@ function App() {
           setFavourite={setFavourite}
           randomTrackGenerator={randomTrackGenerator}
           setAuthor={setAuthor}
+          queueChoose={queueChoose}
+          setQueueChoose={setQueueChoose}
         />
       )}
     </BrowserRouter>

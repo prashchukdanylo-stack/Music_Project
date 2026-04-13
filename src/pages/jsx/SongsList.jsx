@@ -1,5 +1,6 @@
 import { useState } from "react";
-import "../css/SongsList.css"
+import "../css/SongsList.css";
+import { QueueButton } from "../../Components/jsx/QueueButton";
 
 export function SongsList({
   song,
@@ -15,31 +16,29 @@ export function SongsList({
   favourite,
   setFavourite,
   setSongs,
-  queue
+  queue,
+  setQueueChoose
 }) {
   const [search, setSearch] = useState("");
-  
- 
 
   const chooseSong = (song) => {
     setProgress(0);
     setTime("0:00 / 0:00");
     setDuration(0);
-    
 
-    const updatedSongs =  songs.map((s) => {
+    const updatedSongs = songs.map((s) => {
       if (s.id === song.id) {
         return {
           ...s,
-          playCount: (s.playCount || 0) + 1
+          playCount: (s.playCount || 0) + 1,
         };
       }
       return s;
-    })
+    });
 
     setSongs(updatedSongs);
 
-    const updatedSong = updatedSongs.find((s)=> s.id === song.id);
+    const updatedSong = updatedSongs.find((s) => s.id === song.id);
 
     const index = songsToRender.findIndex((s) => s.id === song.id);
     setCurrentGenerator(updatedSongs);
@@ -56,26 +55,25 @@ export function SongsList({
     });
   };
 
-  const highestPrioritySong =() => {
-
-   const song = queue.current.peek("highest");
-   console.log(song);
+  const highestPrioritySong = () => {
+    const song = queue.current.peek("highest");
+    console.log(song);
     if (song) {
       chooseSong(song.item);
-      setCurrentSongPlaylist(queue.current.items.map((s)=> s.item));
+      setCurrentSongPlaylist(queue.current.items.map((s) => s.item));
       queue.current.dequeue("highest");
     }
     queue.current.print();
-  }
+  };
 
   const lowestPrioritySong = () => {
     const song = queue.current.peek("lowest");
-   console.log(song);
+    console.log(song);
     if (song) {
       chooseSong(song.item);
       queue.current.dequeue("lowest");
     }
-  }
+  };
 
   const songsToRender = search ? filteredSong() : songs;
   return (
@@ -89,12 +87,16 @@ export function SongsList({
             setSearch(e.target.value);
           }}
         ></input>
-        <img onClick={highestPrioritySong} src="images/top.png" className = "priority-button">
-          
-        </img>
-        <img onClick={lowestPrioritySong} src="images/bad.png" className = "priority-button">
-        
-        </img>
+        <img
+          onClick={highestPrioritySong}
+          src="images/top.png"
+          className="priority-button"
+        ></img>
+        <img
+          onClick={lowestPrioritySong}
+          src="images/bad.png"
+          className="priority-button"
+        ></img>
       </div>
       {songsToRender.length === 0 ? (
         <div className="sorry-text">
@@ -122,33 +124,35 @@ export function SongsList({
                 </div>
                 <div className="song-info">
                   <h5 className="song-author">{songToRender.author}</h5>
-                  <img
-                    className="player-song-heart"
-                    src={
-                      favourite.has(songToRender.id)
-                        ? "images/heart-active.png"
-                        : "images/heart.png"
-                    }
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setFavourite((prev) => {
-                        const newSet = new Set(prev);
-                        newSet.has(songToRender.id)
-                          ? newSet.delete(songToRender.id)
-                          : newSet.add(songToRender.id);
-                        return newSet;
-                      });
-                    }}
-                  ></img>
+
+                  <div>
+                    <QueueButton setQueueChoose = {setQueueChoose} songToRender = {songToRender} />
+                    <img
+                      className="player-song-heart"
+                      src={
+                        favourite.has(songToRender.id)
+                          ? "images/heart-active.png"
+                          : "images/heart.png"
+                      }
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setFavourite((prev) => {
+                          const newSet = new Set(prev);
+                          newSet.has(songToRender.id)
+                            ? newSet.delete(songToRender.id)
+                            : newSet.add(songToRender.id);
+                          return newSet;
+                        });
+                      }}
+                    ></img>
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
-      )
-
-      }
-      <div className = "bottom"></div>
+      )}
+      <div className="bottom"></div>
     </>
   );
 }

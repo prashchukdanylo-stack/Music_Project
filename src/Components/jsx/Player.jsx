@@ -27,7 +27,9 @@ export function Player({
   setFavourite,
   favourite,
   randomTrackGenerator,
-  setAuthor
+  setAuthor,
+  queueChoose,
+  setQueueChoose
 }) {
   const navigate = useNavigate();
   const [volume, setVolume] = useState(1);
@@ -123,6 +125,16 @@ export function Player({
       setDuration(0);
 
     if (shuffle) {
+
+      if(queueChoose.length > 0) {
+        const queuedSong = queueChoose[0];
+        setQueueChoose(prev => prev.slice(1));
+        setCurrentSongPlaylist(prev => [...prev, queuedSong]);
+         setCurrentIndex(currentSongPlaylist.length);
+        setSong(queuedSong);
+        setIsPlaying(true);
+        return;
+      }
       const newSong = trackGenRef.current.next().value;
       if (!newSong) return;
 
@@ -137,7 +149,7 @@ export function Player({
          });
          
       return;
-    }
+    };
 
     if (currentIndex < currentSongPlaylist.length - 1) {
       const nextIndex = currentIndex + 1;
@@ -154,7 +166,7 @@ export function Player({
     if (currentIndex <= 0) return;
     
      if (shuffle) {
-      currentSongPlaylist.pop();
+      setCurrentSongPlaylist(prev => prev.slice(0, -1));
     }
     setProgress(0);
     setTime("0:00 / 0:00");
@@ -240,7 +252,8 @@ export function Player({
           <h1 className="player-song-name">{song.name}</h1>
           <h5 className="player-song-author" onClick={
             () => {navigate("/author"); 
-            setAuthor(song)}}>
+            setAuthor(song);
+            }}>
             {song.author}
           </h5>
         </div>

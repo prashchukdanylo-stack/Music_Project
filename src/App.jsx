@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PriorityQueue from "./utils/queue";
+import { asyncMap } from "./utils/asyncMap";
 import "./App.css";
 import { HomePage } from "./pages/jsx/HomePage";
 import { Song } from "./pages/jsx/Song";
@@ -62,8 +63,27 @@ function App() {
         }
 
         const data = await response.json();
+        const verifySongs = async (song) => {
+          try{
+          const audioLink = song.audio;
+          const result = await fetch(audioLink, {method: 'HEAD', signal: controller.signal});
+          const contentType = result.headers.get('content-type');
+          if (result.ok && contentType && !contentType.includes("text/html")) {
+            return song;
+          } else {
+            console.log(`Song ${song.name} cannot be played`);
+            return null;
+          } 
+        }
+        catch(error) {
+            console.log(error);
+            return null;
+          }
+        };
 
-        loadedSongs = data.map((song) => ({
+        const mappedData = await asyncMap(data, verifySongs);
+
+        loadedSongs = mappedData.filter((song)=> song !== null).map((song) => ({
           ...song,
           playCount: song.playCount || 0,
         }));

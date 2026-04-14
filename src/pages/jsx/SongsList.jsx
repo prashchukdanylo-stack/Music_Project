@@ -1,81 +1,47 @@
 import { useState } from "react";
 import "../css/SongsList.css";
-import { QueueButton } from "../../Components/jsx/QueueButton";
+import { SongsGrid } from "../../Components/jsx/SongsGrid.jsx";
 
 export function SongsList({
   song,
   songs,
-  setProgress,
-  setTime,
-  setDuration,
-  setSong,
-  setIsPlaying,
   setCurrentSongPlaylist,
-  setCurrentIndex,
-  setCurrentGenerator,
   favourite,
   setFavourite,
-  setSongs,
-  queue,
-  setQueueChoose
+  priorityQueue,
+  setQueueShuffle,
+  chooseSong,
 }) {
   const [search, setSearch] = useState("");
 
-  const chooseSong = (song) => {
-    setProgress(0);
-    setTime("0:00 / 0:00");
-    setDuration(0);
-
-    const updatedSongs = songs.map((s) => {
-      if (s.id === song.id) {
-        return {
-          ...s,
-          playCount: (s.playCount || 0) + 1,
-        };
-      }
-      return s;
-    });
-
-    setSongs(updatedSongs);
-
-    const updatedSong = updatedSongs.find((s) => s.id === song.id);
-
-    const index = songsToRender.findIndex((s) => s.id === song.id);
-    setCurrentGenerator(updatedSongs);
-    setSong(updatedSong);
-    setCurrentSongPlaylist(updatedSongs);
-    setCurrentIndex(index);
-    setIsPlaying(true);
-    queue.current.enqueue(updatedSong, updatedSong.playCount || 0);
-    queue.current.print();
-  };
   const filteredSong = () => {
     return songs.filter((song) => {
       return song.name.toLowerCase().includes(search.toLowerCase());
     });
   };
 
+  const songsToRender = search ? filteredSong() : songs;
+
   const highestPrioritySong = () => {
-    const song = queue.current.peek("highest");
+    const song = priorityQueue.current.peek("highest");
     console.log(song);
     if (song) {
-      chooseSong(song.item);
-      setCurrentSongPlaylist(queue.current.items.map((s) => s.item));
-      queue.current.dequeue("highest");
+      chooseSong(song.item, songsToRender);
+      setCurrentSongPlaylist(priorityQueue.current.items.map((s) => s.item));
+      priorityQueue.current.dequeue("highest");
     }
-    queue.current.print();
+    priorityQueue.current.print();
   };
 
   const lowestPrioritySong = () => {
-    const song = queue.current.peek("lowest");
+    const song = priorityQueue.current.peek("lowest");
     console.log(song);
     if (song) {
-      chooseSong(song.item);
-      queue.current.dequeue("lowest");
+      chooseSong(song.item, songsToRender);
+      priorityQueue.current.dequeue("lowest");
     }
   };
 
-  const songsToRender = search ? filteredSong() : songs;
   return (
     <>
       <div className="songs-list-header">
@@ -98,60 +64,14 @@ export function SongsList({
           className="priority-button"
         ></img>
       </div>
-      {songsToRender.length === 0 ? (
-        <div className="sorry-text">
-          <h1>
-            Sorry, there is no song like this! Check for mistakes in your input.
-          </h1>
-        </div>
-      ) : (
-        <div className="songs-grid">
-          {songsToRender.map((songToRender) => {
-            return (
-              <div
-                key={songToRender.id}
-                className={
-                  songToRender === song
-                    ? "songlist-card-active"
-                    : "songlist-card"
-                }
-                onClick={() => chooseSong(songToRender)}
-              >
-                <img src={songToRender.img} className="songs-list-img" />
-                <div className="song-info">
-                  <h3>{songToRender.name}</h3>
-                  <h5>{songToRender.duration}</h5>
-                </div>
-                <div className="song-info">
-                  <h5 className="song-author">{songToRender.author}</h5>
-
-                  <div>
-                    <QueueButton setQueueChoose = {setQueueChoose} songToRender = {songToRender} />
-                    <img
-                      className="player-song-heart"
-                      src={
-                        favourite.has(songToRender.id)
-                          ? "images/heart-active.png"
-                          : "images/heart.png"
-                      }
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        setFavourite((prev) => {
-                          const newSet = new Set(prev);
-                          newSet.has(songToRender.id)
-                            ? newSet.delete(songToRender.id)
-                            : newSet.add(songToRender.id);
-                          return newSet;
-                        });
-                      }}
-                    ></img>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <SongsGrid
+        songsToRender={songsToRender}
+        chooseSong={chooseSong}
+        setQueueShuffle={setQueueShuffle}
+        favourite={favourite}
+        setFavourite={setFavourite}
+        song={song}
+      />
       <div className="bottom"></div>
     </>
   );

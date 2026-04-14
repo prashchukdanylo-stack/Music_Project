@@ -11,8 +11,9 @@ import { Player } from "./Components/jsx/Player";
 import { Favourite } from "./pages/jsx/Favourite";
 import { Author } from "./pages/jsx/Author";
 
-
 function App() {
+  const audioRef = useRef(null);
+  const priorityQueue = useRef(new PriorityQueue());
   const [isPlaying, setIsPlaying] = useState(false);
   const [authors, setAuthors] = useState("");
   const [song, setSong] = useState();
@@ -23,116 +24,120 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [author, setAuthor] = useState("");
+  const [queueShuffle, setQueueShuffle] = useState([]);
+  const [shuffle, setShuffle] = useState(false);
   const [time, setTime] = useState(() => {
     const Parsedtime = localStorage.getItem("time");
     return Parsedtime ? Parsedtime : "0:00 / 0:00";
   });
-
-  const [duration, setDuration] = useState(0);
-  const audioRef = useRef(null);
-  const [shuffle, setShuffle] = useState(false);
   const [favourite, setFavourite] = useState(() => {
     const saved = localStorage.getItem("favourite");
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
 
-
-  const queue = useRef(new PriorityQueue());
-  const [author, setAuthor] = useState("");
-  const [queueChoose, setQueueChoose] = useState([]);
-
   useEffect(() => {
-
     const controller = new AbortController();
 
-  const getSongsData = async () => {
-    
-    try {
-      let loadedSongs = [];
-      const savedSongs = localStorage.getItem("songs");
+    const getSongsData = async () => {
+      try {
+        let loadedSongs = [];
+        const savedSongs = localStorage.getItem("songs");
 
-      if (savedSongs) {
-        loadedSongs = JSON.parse(savedSongs);
-      }
+        if (savedSongs) {
+          loadedSongs = JSON.parse(savedSongs);
+        }
 
-      if (loadedSongs.length === 0) {
-        const response = await fetch("/songs.json", {signal: controller.signal});
+        if (loadedSongs.length === 0) {
+          const response = await fetch("/songs.json", {
+            signal: controller.signal,
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to load songs");
+          }
+
+          const data = await response.json();
+          const verifySongs = async (song) => {
+            try {
+              const audioLink = song.audio;
+              const result = await fetch(audioLink, {
+                method: "HEAD",
+                signal: controller.signal,
+              });
+              const contentType = result.headers.get("content-type");
+              if (
+                result.ok &&
+                contentType &&
+                !contentType.includes("text/html")
+              ) {
+                return song;
+              } else {
+                console.log(`Song ${song.name} cannot be played`);
+                return null;
+              }
+            } catch (error) {
+              console.log(error);
+              return null;
+            }
+          };
+
+          const mappedData = await asyncMap(data, verifySongs);
+
+          loadedSongs = mappedData
+            .filter((song) => song !== null)
+            .map((song) => ({
+              ...song,
+              playCount: song.playCount || 0,
+            }));
+
+          localStorage.setItem("songs", JSON.stringify(loadedSongs));
+        }
+
+        setSongs(loadedSongs);
+        setCurrentSongPlaylist(loadedSongs);
+
+        const savedPlayer = localStorage.getItem("player");
+
+        if (savedPlayer) {
+          const { song, currentSongPlaylist, currentIndex } =
+            JSON.parse(savedPlayer);
+
+          setCurrentIndex(currentIndex ?? -1);
+          setCurrentSongPlaylist(currentSongPlaylist || []);
+          setSong(song || null);
+          setIsPlaying(false);
+        }
+
+        const response = await fetch("/authors.json", {
+          signal: controller.signal,
+        });
 
         if (!response.ok) {
-          throw new Error("Failed to load songs");
+          throw new Error("Failed to load authors");
         }
 
         const data = await response.json();
-        const verifySongs = async (song) => {
-          try{
-          const audioLink = song.audio;
-          const result = await fetch(audioLink, {method: 'HEAD', signal: controller.signal});
-          const contentType = result.headers.get('content-type');
-          if (result.ok && contentType && !contentType.includes("text/html")) {
-            return song;
-          } else {
-            console.log(`Song ${song.name} cannot be played`);
-            return null;
-          } 
-        }
-        catch(error) {
-            console.log(error);
-            return null;
-          }
-        };
-
-        const mappedData = await asyncMap(data, verifySongs);
-
-        loadedSongs = mappedData.filter((song)=> song !== null).map((song) => ({
-          ...song,
-          playCount: song.playCount || 0,
-        }));
-
-        localStorage.setItem("songs", JSON.stringify(loadedSongs));
+        setAuthors(data);
+      } catch (error) {
+        console.error("Loading error:", error);
+      } finally {
+        setIsPlayerReady(true);
       }
+    };
 
-      setSongs(loadedSongs);
-      setCurrentSongPlaylist(loadedSongs);
+    const timeExpire = Number(localStorage.getItem("timeExpire"));
 
-      const savedPlayer = localStorage.getItem("player");
-
-      if (savedPlayer) {
-        const { song, currentSongPlaylist, currentIndex } =
-          JSON.parse(savedPlayer);
-
-        setCurrentIndex(currentIndex ?? -1);
-        setCurrentSongPlaylist(currentSongPlaylist || []);
-        setSong(song || null);
-        setIsPlaying(false);
-      }
-
-      const response = await fetch("/authors.json", {signal: controller.signal});
-
-      if (!response.ok) {
-        throw new Error("Failed to load authors");
-      }
-
-      const data = await response.json();
-      setAuthors(data);
-
-    } catch (error) {
-      console.error("Loading error:", error);
-    }finally {
-      setIsPlayerReady(true);
+    if (timeExpire && Date.now() > timeExpire) {
+      localStorage.removeItem("player");
+      localStorage.removeItem("timeExpire");
+      console.log("complete");
     }
-  };
 
-  const timeExpire = Number(localStorage.getItem("timeExpire"));
-
-  if (timeExpire && Date.now() > timeExpire) {
-    localStorage.removeItem("player");
-    localStorage.removeItem("timeExpire");
-    console.log("complete");
-  }
-
-  getSongsData();
-  return () => controller.abort();
-}, []);
+    getSongsData();
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     if (!song) return;
@@ -176,6 +181,36 @@ function App() {
     }
   }, [currentGenerator]);
 
+  const chooseSong = (song, songsToRender) => {
+    setProgress(0);
+    setTime("0:00 / 0:00");
+    setDuration(0);
+
+    const updatedSongs = songs.map((s) => {
+      if (s.id === song.id) {
+        return {
+          ...s,
+          playCount: (s.playCount || 0) + 1,
+        };
+      }
+      return s;
+    });
+
+    setSongs(updatedSongs);
+
+    const updatedSong = updatedSongs.find((s) => s.id === song.id);
+
+    const index = songsToRender.findIndex((s) => s.id === song.id);
+    setSong(updatedSong);
+    setCurrentSongPlaylist(songsToRender);
+    setCurrentGenerator(songsToRender);
+    setCurrentIndex(index);
+
+    setIsPlaying(true);
+    priorityQueue.current.enqueue(updatedSong, updatedSong.playCount || 0);
+    priorityQueue.current.print();
+  };
+
   if (!isPlayerReady) return null;
   return (
     <BrowserRouter>
@@ -202,24 +237,13 @@ function App() {
           element={
             <SongsList
               songs={songs}
-              progress={progress}
-              setProgress={setProgress}
-              setTime={setTime}
-              setDuration={setDuration}
-              setSong={setSong}
-              setIsPlaying={setIsPlaying}
               setCurrentSongPlaylist={setCurrentSongPlaylist}
-              setCurrentIndex={setCurrentIndex}
-              shuffle={shuffle}
-              setCurrentGenerator={setCurrentGenerator}
               song={song}
               favourite={favourite}
               setFavourite={setFavourite}
-              setSongs={setSongs}
-              queue={queue}
-              currentSongPlaylist={currentSongPlaylist}
-              setQueueChoose={setQueueChoose}
-              queueChoose={queueChoose}
+              priorityQueue={priorityQueue}
+              setQueueShuffle={setQueueShuffle}
+              chooseSong={chooseSong}
             />
           }
         />
@@ -228,23 +252,11 @@ function App() {
           element={
             <Favourite
               songs={songs}
-              progress={progress}
-              setProgress={setProgress}
-              setTime={setTime}
-              setDuration={setDuration}
-              setSong={setSong}
-              setIsPlaying={setIsPlaying}
-              setCurrentSongPlaylist={setCurrentSongPlaylist}
-              setCurrentIndex={setCurrentIndex}
               favourite={favourite}
               setFavourite={setFavourite}
-              currentSongPlaylist={currentSongPlaylist}
               song={song}
-              setCurrentGenerator={setCurrentGenerator}
-              shuffle={shuffle}
-              setSongs={setSongs}
-              queue={queue}
-              setQueueChoose={setQueueChoose}
+              setQueueShuffle={setQueueShuffle}
+              chooseSong={chooseSong}
             />
           }
         ></Route>
@@ -257,19 +269,9 @@ function App() {
               song={song}
               setFavourite={setFavourite}
               favourite={favourite}
-              setSongs={setSongs}
-              setProgress={setProgress}
-              setTime={setTime}
-              setDuration={setDuration}
-              setSong={setSong}
-              setCurrentSongPlaylist={setCurrentSongPlaylist}
-              currentSongPlaylist={currentSongPlaylist}
-              setCurrentIndex={setCurrentIndex}
-              setIsPlaying={setIsPlaying}
-              setCurrentGenerator={setCurrentGenerator}
-              queue={queue}
               authors={authors}
-              setQueueChoose={setQueueChoose}
+              setQueueShuffle={setQueueShuffle}
+              chooseSong={chooseSong}
             />
           }
         ></Route>
@@ -300,8 +302,8 @@ function App() {
           setFavourite={setFavourite}
           randomTrackGenerator={randomTrackGenerator}
           setAuthor={setAuthor}
-          queueChoose={queueChoose}
-          setQueueChoose={setQueueChoose}
+          queueShuffle={queueShuffle}
+          setQueueShuffle={setQueueShuffle}
         />
       )}
     </BrowserRouter>

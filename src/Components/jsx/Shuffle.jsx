@@ -1,18 +1,12 @@
-
 import { useEffect } from "react";
-import "../../pages/css/Song.css"
-export function Shuffle({
-  shuffle,
-  setShuffle,
-}) {
-  
+import "../../pages/css/Song.css";
+export function Shuffle({ shuffle, setShuffle }) {
   const shuffleSongs = () => {
-   if (!shuffle) {
-    setShuffle(true);
-   } else {
-    setShuffle(false);
-    
-   }
+    if (!shuffle) {
+      setShuffle(true);
+    } else {
+      setShuffle(false);
+    }
   };
 
   useEffect(() => {
@@ -25,8 +19,8 @@ export function Shuffle({
     window.addEventListener("keydown", handleEvent);
     return () => {
       window.removeEventListener("keydown", handleEvent);
-    }
-  })
+    };
+  });
 
   return (
     <img

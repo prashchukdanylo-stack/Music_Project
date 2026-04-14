@@ -1,4 +1,4 @@
-import { QueueButton } from "../../Components/jsx/QueueButton";
+import { SongsGrid } from "../../Components/jsx/SongsGrid";
 import "../css/Author.css";
 
 export function Author({
@@ -7,55 +7,14 @@ export function Author({
   song,
   setFavourite,
   favourite,
-  setSongs,
-  setProgress,
-  setTime,
-  setDuration,
-  setSong,
-  setCurrentSongPlaylist,
-  currentSongPlaylist,
-  setCurrentIndex,
-  setIsPlaying,
-  setCurrentGenerator,
-  queue,
+  chooseSong,
   authors,
-  setQueueChoose
+  setQueueShuffle,
 }) {
-  
   const author = authors.find((a) => a.author === authorInfo.author);
-  
-
-  const chooseSong = (song) => {
-    setProgress(0);
-    setTime("0:00 / 0:00");
-    setDuration(0);
-    
-
-    const updatedSongs = songs.map((s) => {
-      if (s.id === song.id) {
-        return {
-          ...s,
-          playCount: (s.playCount || 0) + 1,
-        };
-      }
-      return s;
-    });
-
-    setSongs(updatedSongs);
-
-    const updatedSong = updatedSongs.find((s) => s.id === song.id);
-
-    
-    setSong(updatedSong);
-    setCurrentSongPlaylist(updatedSongs.filter((s) => s.author === authorInfo.author));
-    setCurrentIndex(currentSongPlaylist.findIndex((s)=>s.id === song.id));
-    setCurrentGenerator(updatedSongs.filter((s) => s.author === authorInfo.author));
-    
-
-    setIsPlaying(true);
-    queue.current.enqueue(updatedSong, updatedSong.playCount || 0);
-    queue.current.print();
-  };
+  const songsToRender = songs.filter(
+    (song) => song.author === authorInfo.author,
+  );
 
   return (
     <div>
@@ -67,56 +26,14 @@ export function Author({
           alt={authorInfo.author}
         ></img>
       </div>
-
-      <div className="author-songs">
-        {songs
-          .filter((song) => song.author === authorInfo.author)
-          .map((songToRender) => {
-            return (
-              <div
-                key={songToRender.id}
-                className={
-                  songToRender === song
-                    ? "songlist-card-active"
-                    : "songlist-card"
-                }
-                onClick={() => chooseSong(songToRender)}
-              >
-                <img src={songToRender.img} className="songs-list-img" />
-                <div className="song-info">
-                  <h3>{songToRender.name}</h3>
-                  <h5>{songToRender.duration}</h5>
-                </div>
-                <div className="song-info">
-                  <h5 className="song-author">
-                    {songToRender.author}
-                  </h5>
-                  <div>
-                    <QueueButton setQueueChoose = {setQueueChoose} songToRender = {songToRender} />
-                  <img
-                    className="player-song-heart"
-                    src={
-                      favourite.has(songToRender.id)
-                        ? "images/heart-active.png"
-                        : "images/heart.png"
-                    }
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setFavourite((prev) => {
-                        const newSet = new Set(prev);
-                        newSet.has(songToRender.id)
-                          ? newSet.delete(songToRender.id)
-                          : newSet.add(songToRender.id);
-                        return newSet;
-                      });
-                    }}
-                  ></img>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-      </div>
+      <SongsGrid
+        songsToRender={songsToRender}
+        chooseSong={chooseSong}
+        setQueueShuffle={setQueueShuffle}
+        favourite={favourite}
+        setFavourite={setFavourite}
+        song={song}
+      />
     </div>
   );
 }

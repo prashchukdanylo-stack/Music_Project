@@ -28,8 +28,8 @@ export function Player({
   favourite,
   randomTrackGenerator,
   setAuthor,
-  queueChoose,
-  setQueueChoose
+  queueShuffle,
+  setQueueShuffle,
 }) {
   const navigate = useNavigate();
   const [volume, setVolume] = useState(1);
@@ -75,17 +75,16 @@ export function Player({
     const handleKeyDown = (e) => {
       if (e.code === "Space") {
         e.preventDefault();
-         setIsPlaying((prev) => {
-      if (prev === false) {
-        audioRef.current.play();
-        return true;
-      } else {
-        audioRef.current.pause();
-        return false;
+        setIsPlaying((prev) => {
+          if (prev === false) {
+            audioRef.current.play();
+            return true;
+          } else {
+            audioRef.current.pause();
+            return false;
+          }
+        });
       }
-    });
-      }
-      
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -95,13 +94,13 @@ export function Player({
   }, []);
 
   const playSong = async () => {
-   if (audioRef.current.paused) {
-    await audioRef.current.play();
-    setIsPlaying(true);
-   } else {
-    audioRef.current.pause();
-    setIsPlaying(false);
-   }
+    if (audioRef.current.paused) {
+      await audioRef.current.play();
+      setIsPlaying(true);
+    } else {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
   };
 
   const trackDuration = () => {
@@ -113,24 +112,26 @@ export function Player({
 
     setProgress((currentTime / duration) * 100);
     setTime(`${formatTime(currentTime)} / ${song?.duration || "0:00"}`);
-    localStorage.setItem("time", JSON.stringify({
-      time: currentTime,
-      songId: song.id
-    }));
+    localStorage.setItem(
+      "time",
+      JSON.stringify({
+        time: currentTime,
+        songId: song.id,
+      }),
+    );
   };
 
   const nextSong = () => {
     setProgress(0);
-      setTime("0:00 / 0:00");
-      setDuration(0);
+    setTime("0:00 / 0:00");
+    setDuration(0);
 
     if (shuffle) {
-
-      if(queueChoose.length > 0) {
-        const queuedSong = queueChoose[0];
-        setQueueChoose(prev => prev.slice(1));
-        setCurrentSongPlaylist(prev => [...prev, queuedSong]);
-         setCurrentIndex(currentSongPlaylist.length);
+      if (queueShuffle.length > 0) {
+        const queuedSong = queueShuffle[0];
+        setQueueShuffle((prev) => prev.slice(1));
+        setCurrentSongPlaylist((prev) => [...prev, queuedSong]);
+        setCurrentIndex(currentSongPlaylist.length);
         setSong(queuedSong);
         setIsPlaying(true);
         return;
@@ -141,32 +142,29 @@ export function Player({
       setSong(newSong);
       setIsPlaying(true);
 
-      setCurrentSongPlaylist((prev) => { 
+      setCurrentSongPlaylist((prev) => {
         const newArr = [...prev, newSong];
-         setCurrentIndex(newArr.length - 1); 
-         console.log(currentSongPlaylist);
-         return newArr;
-         });
-         
+        setCurrentIndex(newArr.length - 1);
+        console.log(currentSongPlaylist);
+        return newArr;
+      });
+
       return;
-    };
+    }
 
     if (currentIndex < currentSongPlaylist.length - 1) {
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
       setSong(currentSongPlaylist[nextIndex]);
       setIsPlaying(true);
-
-      
     }
   };
 
   const previousSong = () => {
-   
     if (currentIndex <= 0) return;
-    
-     if (shuffle) {
-      setCurrentSongPlaylist(prev => prev.slice(0, -1));
+
+    if (shuffle) {
+      setCurrentSongPlaylist((prev) => prev.slice(0, -1));
     }
     setProgress(0);
     setTime("0:00 / 0:00");
@@ -183,7 +181,6 @@ export function Player({
     localStorage.setItem("timeExpire", Date.now() + 600000);
   };
 
-
   useEffect(() => {
     const handleEvent = (e) => {
       if (e.code === "ArrowRight") {
@@ -193,7 +190,7 @@ export function Player({
         e.preventDefault();
         previousSong();
       }
-    }
+    };
 
     window.addEventListener("keydown", handleEvent);
     return () => window.removeEventListener("keydown", handleEvent);
@@ -250,20 +247,29 @@ export function Player({
         ></img>
         <div className="player-song-description">
           <h1 className="player-song-name">{song.name}</h1>
-          <h5 className="player-song-author" onClick={
-            () => {navigate("/author"); 
-            setAuthor(song);
-            }}>
+          <h5
+            className="player-song-author"
+            onClick={() => {
+              navigate("/author");
+              setAuthor(song);
+            }}
+          >
             {song.author}
           </h5>
         </div>
         <img
           className="player-song-heart"
-          src={favourite.has(song.id) ? "images/heart-active.png" : "images/heart.png"}
+          src={
+            favourite.has(song.id)
+              ? "images/heart-active.png"
+              : "images/heart.png"
+          }
           onClick={() => {
             setFavourite((prev) => {
               const newSet = new Set(prev);
-              newSet.has(song.id) ? newSet.delete(song.id) : newSet.add(song.id);
+              newSet.has(song.id)
+                ? newSet.delete(song.id)
+                : newSet.add(song.id);
               return newSet;
             });
           }}
@@ -276,15 +282,17 @@ export function Player({
             type="range"
             min="0"
             max="100"
-            value = {volume * 100}
+            value={volume * 100}
             onChange={(event) => {
               const volume = Number(event.target.value) / 100;
               audioRef.current.volume = volume;
               setVolume(volume);
-              localStorage.setItem("volume", JSON.stringify({ volume: volume}));
-              console.log(audioRef.current.volume)
+              localStorage.setItem(
+                "volume",
+                JSON.stringify({ volume: volume }),
+              );
+              console.log(audioRef.current.volume);
             }}
-           
           ></input>
         </div>
         <div className="progress">

@@ -10,6 +10,7 @@ import { Player } from "./Components/jsx/Player";
 import { Favourite } from "./pages/jsx/Favourite";
 import { Author } from "./pages/jsx/Author";
 
+
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [authors, setAuthors] = useState("");
@@ -40,18 +41,28 @@ function App() {
   const [queueChoose, setQueueChoose] = useState([]);
 
   useEffect(() => {
-    console.log("1. useEffect");
-    const getSongsData = async () => {
+
+    const controller = new AbortController();
+
+  const getSongsData = async () => {
+    
+    try {
       let loadedSongs = [];
       const savedSongs = localStorage.getItem("songs");
+
       if (savedSongs) {
-        const parsed = JSON.parse(savedSongs);
-        loadedSongs = parsed;
+        loadedSongs = JSON.parse(savedSongs);
       }
 
       if (loadedSongs.length === 0) {
-        const response = await fetch("/songs.json");
+        const response = await fetch("/songs.json", {signal: controller.signal});
+
+        if (!response.ok) {
+          throw new Error("Failed to load songs");
+        }
+
         const data = await response.json();
+
         loadedSongs = data.map((song) => ({
           ...song,
           playCount: song.playCount || 0,
@@ -68,26 +79,40 @@ function App() {
       if (savedPlayer) {
         const { song, currentSongPlaylist, currentIndex } =
           JSON.parse(savedPlayer);
+
         setCurrentIndex(currentIndex ?? -1);
         setCurrentSongPlaylist(currentSongPlaylist || []);
         setSong(song || null);
         setIsPlaying(false);
       }
-      const response = await fetch("/authors.json");
+
+      const response = await fetch("/authors.json", {signal: controller.signal});
+
+      if (!response.ok) {
+        throw new Error("Failed to load authors");
+      }
+
       const data = await response.json();
       setAuthors(data);
-    };
 
-    const timeExpire = Number(localStorage.getItem("timeExpire"));
-    if (timeExpire && Date.now() > timeExpire) {
-      localStorage.removeItem("player");
-      localStorage.removeItem("timeExpire");
-      console.log("complete");
+    } catch (error) {
+      console.error("Loading error:", error);
+    }finally {
+      setIsPlayerReady(true);
     }
+  };
 
-    setIsPlayerReady(true);
-    getSongsData();
-  }, []);
+  const timeExpire = Number(localStorage.getItem("timeExpire"));
+
+  if (timeExpire && Date.now() > timeExpire) {
+    localStorage.removeItem("player");
+    localStorage.removeItem("timeExpire");
+    console.log("complete");
+  }
+
+  getSongsData();
+  return () => controller.abort();
+}, []);
 
   useEffect(() => {
     if (!song) return;

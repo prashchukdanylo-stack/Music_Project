@@ -1,29 +1,33 @@
+
 import { SongsGrid } from "../../Components/jsx/SongsGrid";
 import "../css/Author.css";
 
 export function Author({
-  authorInfo,
-  songs,
+  author,
+  songs = [],
   song,
   setFavourite,
   favourite,
   chooseSong,
-  authors,
+  authors = [],
   setQueueShuffle,
+  shuffle
 }) {
-  const author = authors.find((a) => a.author === authorInfo.author);
+  
+  
   const songsToRender = songs.filter(
-    (song) => song.author === authorInfo.author,
+    (song) => song.author === author
   );
+  const authorInfo = authors.find((autho)=>autho.author === author);
 
   return (
     <div>
       <div className="author-page">
-        <p className="author">{authorInfo.author}</p>
+        <p className="author">{author}</p>
         <img
           className="author-img"
-          src={author.img}
-          alt={authorInfo.author}
+          src={authorInfo.img}
+          alt={author}
         ></img>
       </div>
       <SongsGrid
@@ -33,6 +37,7 @@ export function Author({
         favourite={favourite}
         setFavourite={setFavourite}
         song={song}
+        shuffle={shuffle}
       />
     </div>
   );

@@ -6,6 +6,7 @@ export function SongsGrid({
   setQueueShuffle,
   favourite,
   setFavourite,
+  shuffle
 }) {
   return (
     <>
@@ -40,6 +41,7 @@ export function SongsGrid({
                     <QueueButton
                       setQueueShuffle={setQueueShuffle}
                       songToRender={songToRender}
+                      shuffle={shuffle}
                     />
                     <img
                       className="player-song-heart"

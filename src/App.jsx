@@ -15,7 +15,7 @@ function App() {
   const audioRef = useRef(null);
   const priorityQueue = useRef(new PriorityQueue());
   const [isPlaying, setIsPlaying] = useState(false);
-  const [authors, setAuthors] = useState("");
+  const [authors, setAuthors] = useState([]);
   const [song, setSong] = useState();
   const [songs, setSongs] = useState([]);
   const trackGenRef = useRef(null);
@@ -25,7 +25,10 @@ function App() {
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [author, setAuthor] = useState("");
+  const [author, setAuthor] = useState(()=>{
+    const saved = localStorage.getItem("author");
+    return saved ? JSON.parse(saved) : "";
+  });
   const [queueShuffle, setQueueShuffle] = useState([]);
   const [shuffle, setShuffle] = useState(false);
   const [time, setTime] = useState(() => {
@@ -44,10 +47,14 @@ function App() {
       try {
         let loadedSongs = [];
         const savedSongs = localStorage.getItem("songs");
-
+        const savedAuthors = localStorage.getItem("authors");
+        if (savedAuthors) {
+          setAuthors(JSON.parse(savedAuthors));
+        }
         if (savedSongs) {
           loadedSongs = JSON.parse(savedSongs);
         }
+
 
         if (loadedSongs.length === 0) {
           const response = await fetch("/songs.json", {
@@ -120,6 +127,7 @@ function App() {
 
         const data = await response.json();
         setAuthors(data);
+        localStorage.setItem("authors", JSON.stringify(data));
       } catch (error) {
         console.error("Loading error:", error);
       } finally {
@@ -150,6 +158,11 @@ function App() {
       }),
     );
   }, [song, currentSongPlaylist, currentIndex]);
+
+  useEffect(()=> {
+    localStorage.setItem("author", JSON.stringify(author));
+
+  }, [author]);
 
   useEffect(() => {
     localStorage.setItem("favourite", JSON.stringify(Array.from(favourite)));
@@ -244,6 +257,7 @@ function App() {
               priorityQueue={priorityQueue}
               setQueueShuffle={setQueueShuffle}
               chooseSong={chooseSong}
+              shuffle= {shuffle}
             />
           }
         />
@@ -257,6 +271,7 @@ function App() {
               song={song}
               setQueueShuffle={setQueueShuffle}
               chooseSong={chooseSong}
+              shuffle={shuffle}
             />
           }
         ></Route>
@@ -264,7 +279,8 @@ function App() {
           path="/author"
           element={
             <Author
-              authorInfo={author}
+              author={author}
+              setAuthor={setAuthor}
               songs={songs}
               song={song}
               setFavourite={setFavourite}
@@ -272,6 +288,7 @@ function App() {
               authors={authors}
               setQueueShuffle={setQueueShuffle}
               chooseSong={chooseSong}
+              shuffle={shuffle}
             />
           }
         ></Route>

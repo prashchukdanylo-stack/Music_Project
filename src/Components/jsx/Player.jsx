@@ -251,7 +251,7 @@ export function Player({
             className="player-song-author"
             onClick={() => {
               navigate("/author");
-              setAuthor(song);
+              setAuthor(song.author);
             }}
           >
             {song.author}

@@ -11,6 +11,7 @@ export function SongsList({
   priorityQueue,
   setQueueShuffle,
   chooseSong,
+  shuffle
 }) {
   const [search, setSearch] = useState("");
 
@@ -71,6 +72,7 @@ export function SongsList({
         favourite={favourite}
         setFavourite={setFavourite}
         song={song}
+        shuffle={shuffle}
       />
       <div className="bottom"></div>
     </>

@@ -7,6 +7,7 @@ export function Favourite({
   setFavourite,
   setQueueShuffle,
   chooseSong,
+  shuffle
 }) {
   const songsMap = new Map(songs.map((song) => [song.id, song]));
   let songsToRender = Array.from(favourite)
@@ -22,6 +23,7 @@ export function Favourite({
       favourite={favourite}
       setFavourite={setFavourite}
       song={song}
+      shuffle={shuffle}
     />
   );
 }

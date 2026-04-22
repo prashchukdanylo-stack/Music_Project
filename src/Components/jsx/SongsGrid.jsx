@@ -1,20 +1,19 @@
+import { useContext } from "react";
+import { PlayerContext } from "../../contexts/PlayerContext";
 import { QueueButton } from "./QueueButton";
+import { LibraryContext } from "../../contexts/LibraryContext";
+import { QueueContext } from "../../contexts/QueueContext";
 export function SongsGrid({
-  songsToRender,
-  song,
-  chooseSong,
-  setQueueShuffle,
-  favourite,
-  setFavourite,
-  shuffle
+  songsToRender
 }) {
+  const {favourite, setFavourite} = useContext(LibraryContext);
+  const {song, shuffle, chooseSong} = useContext(PlayerContext);
   return (
     <>
       {songsToRender.length === 0 ? (
         <div className="sorry-text">
           <h1>
-            Sorry, there are no songs! Choose the best songs on "Songs" page to
-            see them here!
+            Sorry, there are no songs! Something trult bad happened!
           </h1>
         </div>
       ) : (
@@ -39,7 +38,6 @@ export function SongsGrid({
                   <h5 className="song-author">{songToRender.author}</h5>
                   <div>
                     <QueueButton
-                      setQueueShuffle={setQueueShuffle}
                       songToRender={songToRender}
                       shuffle={shuffle}
                     />

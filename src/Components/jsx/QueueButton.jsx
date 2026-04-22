@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import "../css/QueueButton.css"
+import { QueueContext } from "../../contexts/QueueContext";
 
 
-export function QueueButton({setQueueShuffle, songToRender, shuffle}) {
+export function QueueButton({songToRender, shuffle}) {
+  const {setQueueShuffle} = useContext(QueueContext);
   return (
     <img
       src="images/queue.png"

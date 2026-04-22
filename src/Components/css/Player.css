@@ -68,6 +68,9 @@
 .progress {
     text-align: center;
 }
+.volume {
+    text-align: center;
+}
 .player-song-heart {
     width: 40px;
     height: 40px;

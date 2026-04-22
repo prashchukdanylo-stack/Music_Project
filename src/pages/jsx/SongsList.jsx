@@ -1,20 +1,17 @@
-import { useState } from "react";
+import { useContext, useState} from "react";
 import "../css/SongsList.css";
 import { SongsGrid } from "../../Components/jsx/SongsGrid.jsx";
+import { QueueContext } from "../../contexts/QueueContext.jsx";
+import { PlayerContext } from "../../contexts/PlayerContext.jsx";
+
 
 export function SongsList({
-  song,
   songs,
-  setCurrentSongPlaylist,
-  favourite,
-  setFavourite,
-  priorityQueue,
-  setQueueShuffle,
-  chooseSong,
-  shuffle
+  priorityQueue
 }) {
+  const {chooseSong} = useContext(PlayerContext);
+  const {setCurrentSongPlaylist} = useContext(QueueContext);
   const [search, setSearch] = useState("");
-
   const filteredSong = () => {
     return songs.filter((song) => {
       return song.name.toLowerCase().includes(search.toLowerCase());
@@ -68,11 +65,6 @@ export function SongsList({
       <SongsGrid
         songsToRender={songsToRender}
         chooseSong={chooseSong}
-        setQueueShuffle={setQueueShuffle}
-        favourite={favourite}
-        setFavourite={setFavourite}
-        song={song}
-        shuffle={shuffle}
       />
       <div className="bottom"></div>
     </>

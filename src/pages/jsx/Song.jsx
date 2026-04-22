@@ -1,5 +1,7 @@
 import "../css/Song.css";
-export function Song({ song, time }) {
+
+export function Song(song, time) {
+  
   return (
     <>
       <div className="song-card">

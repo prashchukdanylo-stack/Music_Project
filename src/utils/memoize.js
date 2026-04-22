@@ -1,4 +1,4 @@
-const memoize = (fn, options) => {
+export const memoize = (fn, options) => {
   const cache = new Map();
   return (...args) => {
     const key = JSON.stringify(args);

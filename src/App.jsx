@@ -10,7 +10,10 @@ import { Sidebar } from "./Components/jsx/Sidebar";
 import { Player } from "./Components/jsx/Player";
 import { Favourite } from "./pages/jsx/Favourite";
 import { Author } from "./pages/jsx/Author";
-
+import { PlayerContext } from "./contexts/PlayerContext";
+import { LibraryContext } from "./contexts/LibraryContext";
+import { QueueContext } from "./contexts/QueueContext";
+import { TimeContext } from "./contexts/TimeContext";
 function App() {
   const audioRef = useRef(null);
   const priorityQueue = useRef(new PriorityQueue());
@@ -25,7 +28,7 @@ function App() {
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [author, setAuthor] = useState(()=>{
+  const [author, setAuthor] = useState(() => {
     const saved = localStorage.getItem("author");
     return saved ? JSON.parse(saved) : "";
   });
@@ -54,7 +57,6 @@ function App() {
         if (savedSongs) {
           loadedSongs = JSON.parse(savedSongs);
         }
-
 
         if (loadedSongs.length === 0) {
           const response = await fetch("/songs.json", {
@@ -159,9 +161,8 @@ function App() {
     );
   }, [song, currentSongPlaylist, currentIndex]);
 
-  useEffect(()=> {
+  useEffect(() => {
     localStorage.setItem("author", JSON.stringify(author));
-
   }, [author]);
 
   useEffect(() => {
@@ -226,104 +227,94 @@ function App() {
 
   if (!isPlayerReady) return null;
   return (
-    <BrowserRouter>
-      <Sidebar song={song} />
-      <Routes>
-        <Route
-          index
-          element={
-            <HomePage
-              isPlaying={isPlaying}
-              setIsPlaying={setIsPlaying}
-              setSong={setSong}
-              trackGenRef={trackGenRef}
-              setCurrentSongPlaylist={setCurrentSongPlaylist}
-              currentIndex={currentIndex}
-              setCurrentIndex={setCurrentIndex}
-              song={song}
-            />
-          }
-        />
-        <Route path="/song" element={<Song song={song} time={time} />} />
-        <Route
-          path="/songslist"
-          element={
-            <SongsList
-              songs={songs}
-              setCurrentSongPlaylist={setCurrentSongPlaylist}
-              song={song}
-              favourite={favourite}
-              setFavourite={setFavourite}
-              priorityQueue={priorityQueue}
-              setQueueShuffle={setQueueShuffle}
-              chooseSong={chooseSong}
-              shuffle= {shuffle}
-            />
-          }
-        />
-        <Route
-          path="/favourite"
-          element={
-            <Favourite
-              songs={songs}
-              favourite={favourite}
-              setFavourite={setFavourite}
-              song={song}
-              setQueueShuffle={setQueueShuffle}
-              chooseSong={chooseSong}
-              shuffle={shuffle}
-            />
-          }
-        ></Route>
-        <Route
-          path="/author"
-          element={
-            <Author
-              author={author}
-              setAuthor={setAuthor}
-              songs={songs}
-              song={song}
-              setFavourite={setFavourite}
-              favourite={favourite}
-              authors={authors}
-              setQueueShuffle={setQueueShuffle}
-              chooseSong={chooseSong}
-              shuffle={shuffle}
-            />
-          }
-        ></Route>
-      </Routes>
+    <TimeContext.Provider value={{ progress, setProgress, time, setTime }}>
+      <PlayerContext.Provider
+        value={{
+          song,
+          setSong,
+          isPlaying,
+          setIsPlaying,
+          duration,
+          setDuration,
+          shuffle,
+          setShuffle,
+          audioRef,
+          chooseSong,
+        }}
+      >
+        <LibraryContext.Provider
+          value={{
+            songs,
+            setSongs,
+            authors,
+            setAuthors,
+            author,
+            setAuthor,
+            favourite,
+            setFavourite,
+          }}
+        >
+          <QueueContext.Provider
+            value={{
+              currentSongPlaylist,
+              setCurrentSongPlaylist,
+              currentIndex,
+              setCurrentIndex,
+              queueShuffle,
+              setQueueShuffle,
+            }}
+          >
+            <BrowserRouter>
+              <Sidebar />
+              <Routes>
+                <Route index element={<HomePage />} />
+                <Route
+                  path="/song"
+                  element={<Song time={time} song={song} />}
+                />
+                <Route
+                  path="/songslist"
+                  element={
+                    <SongsList songs={songs} priorityQueue={priorityQueue} />
+                  }
+                />
+                <Route
+                  path="/favourite"
+                  element={<Favourite songs={songs} favourite={favourite} />}
+                ></Route>
+                <Route
+                  path="/author"
+                  element={
+                    <Author
+                      author={author}
+                      setAuthor={setAuthor}
+                      songs={songs}
+                      authors={authors}
+                    />
+                  }
+                ></Route>
+              </Routes>
 
-      {song && (
-        <Player
-          setTime={setTime}
-          duration={duration}
-          setDuration={setDuration}
-          shuffle={shuffle}
-          setShuffle={setShuffle}
-          setSong={setSong}
-          trackGenRef={trackGenRef}
-          currentSongPlaylist={currentSongPlaylist}
-          setCurrentSongPlaylist={setCurrentSongPlaylist}
-          currentIndex={currentIndex}
-          setCurrentIndex={setCurrentIndex}
-          audioRef={audioRef}
-          progress={progress}
-          setProgress={setProgress}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          song={song}
-          songs={songs}
-          time={time}
-          favourite={favourite}
-          setFavourite={setFavourite}
-          randomTrackGenerator={randomTrackGenerator}
-          setAuthor={setAuthor}
-          queueShuffle={queueShuffle}
-          setQueueShuffle={setQueueShuffle}
-        />
-      )}
-    </BrowserRouter>
+              {song && (
+                <Player
+                  trackGenRef={trackGenRef}
+                  currentSongPlaylist={currentSongPlaylist}
+                  currentIndex={currentIndex}
+                  setCurrentIndex={setCurrentIndex}
+                  songs={songs}
+                  favourite={favourite}
+                  setFavourite={setFavourite}
+                  randomTrackGenerator={randomTrackGenerator}
+                  setAuthor={setAuthor}
+                  queueShuffle={queueShuffle}
+                  setQueueShuffle={setQueueShuffle}
+                />
+              )}
+            </BrowserRouter>
+          </QueueContext.Provider>
+        </LibraryContext.Provider>
+      </PlayerContext.Provider>
+    </TimeContext.Provider>
   );
 }
 

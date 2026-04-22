@@ -2,12 +2,7 @@ import { SongsGrid } from "../../Components/jsx/SongsGrid";
 
 export function Favourite({
   favourite,
-  songs,
-  song,
-  setFavourite,
-  setQueueShuffle,
-  chooseSong,
-  shuffle
+  songs
 }) {
   const songsMap = new Map(songs.map((song) => [song.id, song]));
   let songsToRender = Array.from(favourite)
@@ -18,12 +13,6 @@ export function Favourite({
   return (
     <SongsGrid
       songsToRender={songsToRender}
-      chooseSong={chooseSong}
-      setQueueShuffle={setQueueShuffle}
-      favourite={favourite}
-      setFavourite={setFavourite}
-      song={song}
-      shuffle={shuffle}
     />
   );
 }

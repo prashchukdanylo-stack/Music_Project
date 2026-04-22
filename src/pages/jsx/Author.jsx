@@ -5,13 +5,7 @@ import "../css/Author.css";
 export function Author({
   author,
   songs = [],
-  song,
-  setFavourite,
-  favourite,
-  chooseSong,
   authors = [],
-  setQueueShuffle,
-  shuffle
 }) {
   
   
@@ -29,15 +23,10 @@ export function Author({
           src={authorInfo.img}
           alt={author}
         ></img>
+        <p className = "author-description">{authorInfo.description}</p>
       </div>
       <SongsGrid
         songsToRender={songsToRender}
-        chooseSong={chooseSong}
-        setQueueShuffle={setQueueShuffle}
-        favourite={favourite}
-        setFavourite={setFavourite}
-        song={song}
-        shuffle={shuffle}
       />
     </div>
   );

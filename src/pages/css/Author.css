@@ -5,14 +5,26 @@
 .author {
     font-size: 50px;
     color: rgb(255, 255, 255);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    width: 200px;
     
 }
 .author-img {
     width: 300px;
-    height: 300px;  
+    height: 300px;
+    margin: 10px 30px 0 30px; 
+    border-radius: 30px;
 }
 .author-songs {
     display:flex;
     justify-content: center;
     gap: 20px;
+}
+.author-description {
+    height: 300px;
+    width: 600px;
+    background-color: rgb(161, 116, 203);
+    border-radius: 30px;
+    padding: 10px 10px 10px 10px;
+    margin-top: 0;
 }

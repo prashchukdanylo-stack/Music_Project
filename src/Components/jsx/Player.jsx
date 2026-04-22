@@ -1,38 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react"
+import { PlayerContext } from "../../contexts/PlayerContext";
 import { useNavigate } from "react-router-dom";
 import { formatTime } from "../../utils/formatTime";
 import { Shuffle } from "./Shuffle";
 import "../css/Player.css";
+import { TimeContext } from "../../contexts/TimeContext";
+import { QueueContext } from "../../contexts/QueueContext";
 
-export function Player({
-  audioRef,
-  song,
-  songs,
-  setTime,
-  setDuration,
-  setIsPlaying,
-  setProgress,
+export function Player({ 
   currentIndex,
   currentSongPlaylist,
   setCurrentIndex,
-  setCurrentSongPlaylist,
-  setSong,
-  shuffle,
   trackGenRef,
-  isPlaying,
-  setShuffle,
-  progress,
-  duration,
-  time,
   setFavourite,
   favourite,
-  randomTrackGenerator,
   setAuthor,
   queueShuffle,
   setQueueShuffle,
 }) {
   const navigate = useNavigate();
   const [volume, setVolume] = useState(1);
+
+  const { 
+    song, setSong, 
+    isPlaying, setIsPlaying, 
+    duration, setDuration, 
+    shuffle, 
+    audioRef 
+  } = useContext(PlayerContext);
+  const {setCurrentSongPlaylist} = useContext(QueueContext);
+  const {
+    time, setTime, progress, setProgress
+  } = useContext(TimeContext);
 
   useEffect(() => {
     if (!audioRef.current || !song) return;
@@ -61,7 +60,7 @@ export function Player({
       if (savedAudio) {
         audioRef.current.volume = savedAudio.volume;
         setVolume(savedAudio.volume);
-        console.log("Volume set to:", audioRef.current.volume);
+        
       }
     };
 
@@ -196,6 +195,9 @@ export function Player({
     return () => window.removeEventListener("keydown", handleEvent);
   }, [song]);
 
+
+  
+
   return (
     <div className="player-container">
       <audio
@@ -225,19 +227,7 @@ export function Player({
           src="/images/next.png"
           className="play-button"
         ></img>
-        <Shuffle
-          trackGenRef={trackGenRef}
-          setSong={setSong}
-          setIsPlaying={setIsPlaying}
-          setCurrentSongPlaylist={setCurrentSongPlaylist}
-          setCurrentIndex={setCurrentIndex}
-          shuffle={shuffle}
-          setShuffle={setShuffle}
-          currentSongPlaylist={currentSongPlaylist}
-          randomTrackGenerator={randomTrackGenerator}
-          song={song}
-          songs={songs}
-        />
+        <Shuffle/>
       </div>
       <div className="song-details">
         <img
@@ -294,6 +284,7 @@ export function Player({
               console.log(audioRef.current.volume);
             }}
           ></input>
+          <p className="player-time">Volume {Math.floor(volume * 100)}%</p>
         </div>
         <div className="progress">
           <input

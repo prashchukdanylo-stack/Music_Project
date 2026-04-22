@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../css/Sidebar.css";
-export function Sidebar({ song }) {
+export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebar, setSidebar] = useState(false);
@@ -34,7 +34,7 @@ export function Sidebar({ song }) {
               navigate("/");
             }}
           >
-            Fluire{" "}
+            Home{" "}
           </button>
           <button
             className={
@@ -49,21 +49,7 @@ export function Sidebar({ song }) {
             {" "}
             Songs
           </button>
-          <button
-            className={
-              location.pathname === "/song" ? "nav-button-active" : "nav-button"
-            }
-            onClick={() => {
-              if (song) {
-                navigate("/song");
-              } else {
-                alert("Choose a song first");
-                navigate("/songslist");
-              }
-            }}
-          >
-            Go to song page
-          </button>
+      
           <button
             className={
               location.pathname === "/favourite"

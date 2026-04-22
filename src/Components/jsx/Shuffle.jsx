@@ -1,17 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import "../../pages/css/Song.css";
-export function Shuffle({ shuffle, setShuffle }) {
+import { PlayerContext } from "../../contexts/PlayerContext";
+export function Shuffle() {
+  const {
+    shuffle, setShuffle
+  } = useContext(PlayerContext);
   const shuffleSongs = () => {
-    if (!shuffle) {
-      setShuffle(true);
-    } else {
-      setShuffle(false);
-    }
+    setShuffle((prev)=> !prev);
   };
 
   useEffect(() => {
     const handleEvent = (e) => {
-      if (e.code === "KeyS") {
+      if (e.code === "KeyS" && e.target.tagName !== "INPUT") {
         e.preventDefault();
         shuffleSongs();
       }

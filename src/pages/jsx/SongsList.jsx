@@ -1,4 +1,4 @@
-import { useContext, useState} from "react";
+import { useContext, useState, useMemo} from "react";
 import "../css/SongsList.css";
 import { SongsGrid } from "../../Components/jsx/SongsGrid.jsx";
 import { QueueContext } from "../../contexts/QueueContext.jsx";
@@ -12,14 +12,15 @@ export function SongsList({
   const {chooseSong} = useContext(PlayerContext);
   const {setCurrentSongPlaylist} = useContext(QueueContext);
   const [search, setSearch] = useState("");
-  const filteredSong = () => {
-    return songs.filter((song) => {
-      return song.name.toLowerCase().includes(search.toLowerCase());
-    });
-  };
 
-  const songsToRender = search ? filteredSong() : songs;
 
+  const songsToRender = useMemo(()=> {
+    if (!search) return songs;
+
+    return songs.filter((song)=> song.name.toLowerCase().includes(search.toLowerCase()));
+  }, [search, songs]);
+
+  
   const highestPrioritySong = () => {
     const song = priorityQueue.current.peek("highest");
     console.log(song);

@@ -1,12 +1,21 @@
 import "../css/Song.css";
-
-export function Song(song, time) {
+import { TimeContext } from "../../contexts/TimeContext";
+import { useContext } from "react";
+export function Song({song}) {
   
+  const {time} = useContext(TimeContext);
+
+  if (!song) {
+    return(
+      <div className="sorry-text">
+        <h1>There is no song, please choose it first!</h1>;
+      </div>
+    )
+  }
   return (
-    <>
       <div className="song-card">
         <div className="song-container">
-          <img src={song.img} className="song-image"></img>
+          <img src={song.img} className="song-image" alt={song} image />
           <h1 className="song-name">{song.name}</h1>
           <h5 className="song-author">{song.author} </h5>
           <div>
@@ -15,6 +24,5 @@ export function Song(song, time) {
           </div>
         </div>
       </div>
-    </>
   );
 }

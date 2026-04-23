@@ -1,13 +1,15 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useCallback } from "react";
 import "../../pages/css/Song.css";
 import { PlayerContext } from "../../contexts/PlayerContext";
 export function Shuffle() {
   const {
     shuffle, setShuffle
   } = useContext(PlayerContext);
-  const shuffleSongs = () => {
+
+
+  const shuffleSongs = useCallback(() => {
     setShuffle((prev)=> !prev);
-  };
+  }, [setShuffle]);
 
   useEffect(() => {
     const handleEvent = (e) => {
@@ -20,7 +22,7 @@ export function Shuffle() {
     return () => {
       window.removeEventListener("keydown", handleEvent);
     };
-  });
+  }, [shuffleSongs]);
 
   return (
     <img

@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState, useContext, useRef, useCallback } from "react";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { useNavigate } from "react-router-dom";
 import { formatTime } from "../../utils/formatTime";
@@ -7,7 +7,7 @@ import "../css/Player.css";
 import { TimeContext } from "../../contexts/TimeContext";
 import { QueueContext } from "../../contexts/QueueContext";
 
-export function Player({ 
+export function Player({
   currentIndex,
   currentSongPlaylist,
   setCurrentIndex,
@@ -20,18 +20,20 @@ export function Player({
 }) {
   const navigate = useNavigate();
   const [volume, setVolume] = useState(1);
+  const lastUsedTime = useRef(0);
 
-  const { 
-    song, setSong, 
-    isPlaying, setIsPlaying, 
-    duration, setDuration, 
-    shuffle, 
-    audioRef 
-  } = useContext(PlayerContext);
-  const {setCurrentSongPlaylist} = useContext(QueueContext);
   const {
-    time, setTime, progress, setProgress
-  } = useContext(TimeContext);
+    song,
+    setSong,
+    isPlaying,
+    setIsPlaying,
+    duration,
+    setDuration,
+    shuffle,
+    audioRef,
+  } = useContext(PlayerContext);
+  const { setCurrentSongPlaylist } = useContext(QueueContext);
+  const { time, setTime, progress, setProgress } = useContext(TimeContext);
 
   useEffect(() => {
     if (!audioRef.current || !song) return;
@@ -60,7 +62,6 @@ export function Player({
       if (savedAudio) {
         audioRef.current.volume = savedAudio.volume;
         setVolume(savedAudio.volume);
-        
       }
     };
 
@@ -72,6 +73,7 @@ export function Player({
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if ("INPUT" === e.target.tagName) return;
       if (e.code === "Space") {
         e.preventDefault();
         setIsPlaying((prev) => {
@@ -90,7 +92,7 @@ export function Player({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [audioRef, setIsPlaying]);
 
   const playSong = async () => {
     if (audioRef.current.paused) {
@@ -111,16 +113,20 @@ export function Player({
 
     setProgress((currentTime / duration) * 100);
     setTime(`${formatTime(currentTime)} / ${song?.duration || "0:00"}`);
-    localStorage.setItem(
-      "time",
-      JSON.stringify({
-        time: currentTime,
-        songId: song.id,
-      }),
-    );
+
+    if (Math.abs(currentTime - lastUsedTime.current) > 5) {
+      localStorage.setItem(
+        "time",
+        JSON.stringify({
+          time: currentTime,
+          songId: song.id,
+        }),
+      );
+      lastUsedTime.current = currentTime;
+    }
   };
 
-  const nextSong = () => {
+  const nextSong = useCallback(() => {
     setProgress(0);
     setTime("0:00 / 0:00");
     setDuration(0);
@@ -157,9 +163,23 @@ export function Player({
       setSong(currentSongPlaylist[nextIndex]);
       setIsPlaying(true);
     }
-  };
+  }, [
+    currentSongPlaylist,
+    currentIndex,
+    queueShuffle,
+    setCurrentIndex,
+    setCurrentSongPlaylist,
+    setDuration,
+    setIsPlaying,
+    setProgress,
+    setQueueShuffle,
+    setSong,
+    setTime,
+    shuffle,
+    trackGenRef,
+  ]);
 
-  const previousSong = () => {
+  const previousSong = useCallback(() => {
     if (currentIndex <= 0) return;
 
     if (shuffle) {
@@ -173,12 +193,23 @@ export function Player({
     setCurrentIndex(previousIndex);
     setSong(currentSongPlaylist[previousIndex]);
     setIsPlaying(true);
-  };
+  }, [
+    currentSongPlaylist,
+    currentIndex,
+    setCurrentIndex,
+    setCurrentSongPlaylist,
+    setDuration,
+    setIsPlaying,
+    setProgress,
+    setSong,
+    setTime,
+    shuffle,
+  ]);
 
-  const handleEnded = () => {
+  const handleEnded = useCallback(() => {
     nextSong();
     localStorage.setItem("timeExpire", Date.now() + 600000);
-  };
+  }, [nextSong]);
 
   useEffect(() => {
     const handleEvent = (e) => {
@@ -193,10 +224,7 @@ export function Player({
 
     window.addEventListener("keydown", handleEvent);
     return () => window.removeEventListener("keydown", handleEvent);
-  }, [song]);
-
-
-  
+  }, [handleEnded, previousSong]);
 
   return (
     <div className="player-container">
@@ -227,7 +255,7 @@ export function Player({
           src="/images/next.png"
           className="play-button"
         ></img>
-        <Shuffle/>
+        <Shuffle />
       </div>
       <div className="song-details">
         <img

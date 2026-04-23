@@ -9,7 +9,7 @@ export function HomePage() {
           <div className="welcome-about-container">
             <p className="welcome-descr">
               This is a beautiful place to chill and throw away all your
-              problems and just feel hapiness!Here, the music flows like a
+              problems and just feel happiness!Here, the music flows like a
               gentle river, carrying your thoughts away and wrapping you in a
               cocoon of sound. Every beat, every note, is designed to lift your
               spirit and let your soul breathe. The colors, the rhythm, the
@@ -31,7 +31,7 @@ export function HomePage() {
           onClick={() => {
             localStorage.removeItem("songs");
             localStorage.removeItem("player");
-
+            localStorage.removeItem("author")
             window.location.reload();
           }}
         >

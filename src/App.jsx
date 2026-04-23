@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PriorityQueue from "./utils/queue";
-import { asyncMap } from "./utils/asyncMap";
 import "./App.css";
 import { HomePage } from "./pages/jsx/HomePage";
 import { Song } from "./pages/jsx/Song";
@@ -13,7 +12,7 @@ import { Author } from "./pages/jsx/Author";
 import { PlayerContext } from "./contexts/PlayerContext";
 import { LibraryContext } from "./contexts/LibraryContext";
 import { QueueContext } from "./contexts/QueueContext";
-import { TimeContext } from "./contexts/TimeContext";
+import { TimeProvider, TimeContext } from "./contexts/TimeContext";
 function App() {
   const audioRef = useRef(null);
   const priorityQueue = useRef(new PriorityQueue());
@@ -26,7 +25,6 @@ function App() {
   const [currentGenerator, setCurrentGenerator] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [author, setAuthor] = useState(() => {
     const saved = localStorage.getItem("author");
@@ -34,14 +32,11 @@ function App() {
   });
   const [queueShuffle, setQueueShuffle] = useState([]);
   const [shuffle, setShuffle] = useState(false);
-  const [time, setTime] = useState(() => {
-    const Parsedtime = localStorage.getItem("time");
-    return Parsedtime ? Parsedtime : "0:00 / 0:00";
-  });
   const [favourite, setFavourite] = useState(() => {
     const saved = localStorage.getItem("favourite");
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
+  
 
   useEffect(() => {
     const controller = new AbortController();
@@ -68,34 +63,9 @@ function App() {
           }
 
           const data = await response.json();
-          const verifySongs = async (song) => {
-            try {
-              const audioLink = song.audio;
-              const result = await fetch(audioLink, {
-                method: "HEAD",
-                signal: controller.signal,
-              });
-              const contentType = result.headers.get("content-type");
-              if (
-                result.ok &&
-                contentType &&
-                !contentType.includes("text/html")
-              ) {
-                return song;
-              } else {
-                console.log(`Song ${song.name} cannot be played`);
-                return null;
-              }
-            } catch (error) {
-              console.log(error);
-              return null;
-            }
-          };
+          
 
-          const mappedData = await asyncMap(data, verifySongs);
-
-          loadedSongs = mappedData
-            .filter((song) => song !== null)
+          loadedSongs = data
             .map((song) => ({
               ...song,
               playCount: song.playCount || 0,
@@ -195,9 +165,8 @@ function App() {
     }
   }, [currentGenerator]);
 
-  const chooseSong = (song, songsToRender) => {
-    setProgress(0);
-    setTime("0:00 / 0:00");
+  const chooseSong = useCallback((song, songsToRender) => {
+    
     setDuration(0);
 
     const updatedSongs = songs.map((s) => {
@@ -223,46 +192,43 @@ function App() {
     setIsPlaying(true);
     priorityQueue.current.enqueue(updatedSong, updatedSong.playCount || 0);
     priorityQueue.current.print();
-  };
-
-  if (!isPlayerReady) return null;
-  return (
-    <TimeContext.Provider value={{ progress, setProgress, time, setTime }}>
-      <PlayerContext.Provider
-        value={{
-          song,
-          setSong,
-          isPlaying,
+  }, [songs]);
+  const playerContextValue = useMemo(()=> ({
+          song, setSong,isPlaying,
           setIsPlaying,
           duration,
           setDuration,
           shuffle,
           setShuffle,
           audioRef,
-          chooseSong,
-        }}
+          chooseSong 
+  }), [song, isPlaying, duration, shuffle, chooseSong]);
+
+  const libraryContextValue = useMemo(() => ({
+  songs, setSongs, authors, setAuthors, author, setAuthor, favourite, setFavourite
+}), [songs, authors, author, favourite]);
+
+const queueContextValue = useMemo(() => ({
+  currentSongPlaylist, setCurrentSongPlaylist, currentIndex, setCurrentIndex, queueShuffle, setQueueShuffle
+}), [currentSongPlaylist, currentIndex, queueShuffle]);
+
+  if (!isPlayerReady) return null;
+  return (
+    <TimeProvider>
+      <PlayerContext.Provider
+        value={
+          playerContextValue
+        }
       >
         <LibraryContext.Provider
-          value={{
-            songs,
-            setSongs,
-            authors,
-            setAuthors,
-            author,
-            setAuthor,
-            favourite,
-            setFavourite,
-          }}
+          value={
+            libraryContextValue
+          }
         >
           <QueueContext.Provider
-            value={{
-              currentSongPlaylist,
-              setCurrentSongPlaylist,
-              currentIndex,
-              setCurrentIndex,
-              queueShuffle,
-              setQueueShuffle,
-            }}
+            value={
+              queueContextValue
+            }
           >
             <BrowserRouter>
               <Sidebar />
@@ -270,7 +236,7 @@ function App() {
                 <Route index element={<HomePage />} />
                 <Route
                   path="/song"
-                  element={<Song time={time} song={song} />}
+                  element={<Song song={song} />}
                 />
                 <Route
                   path="/songslist"
@@ -314,7 +280,7 @@ function App() {
           </QueueContext.Provider>
         </LibraryContext.Provider>
       </PlayerContext.Provider>
-    </TimeContext.Provider>
+    </TimeProvider>
   );
 }
 

@@ -2,10 +2,12 @@ import { useContext } from "react";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { QueueButton } from "./QueueButton";
 import { LibraryContext } from "../../contexts/LibraryContext";
-import { QueueContext } from "../../contexts/QueueContext";
+
+
 export function SongsGrid({
   songsToRender
 }) {
+
   const {favourite, setFavourite} = useContext(LibraryContext);
   const {song, shuffle, chooseSong} = useContext(PlayerContext);
   return (
@@ -13,7 +15,7 @@ export function SongsGrid({
       {songsToRender.length === 0 ? (
         <div className="sorry-text">
           <h1>
-            Sorry, there are no songs! Something trult bad happened!
+            Sorry, there are no songs! Something truly bad happened!
           </h1>
         </div>
       ) : (
@@ -27,7 +29,9 @@ export function SongsGrid({
                     ? "songlist-card-active"
                     : "songlist-card"
                 }
-                onClick={() => chooseSong(songToRender, songsToRender)}
+                onClick={() => {
+                  chooseSong(songToRender, songsToRender);
+                }}
               >
                 <img src={songToRender.img} className="songs-list-img" />
                 <div className="song-info">

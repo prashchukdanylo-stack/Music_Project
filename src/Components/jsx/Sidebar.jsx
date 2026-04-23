@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../css/Sidebar.css";
 export function Sidebar() {
@@ -6,15 +6,26 @@ export function Sidebar() {
   const location = useLocation();
   const [sidebar, setSidebar] = useState(false);
 
+  const navLinks = [
+    { path: "/", label: "Home" },
+    { path: "/songslist", label: "Songs" },
+    { path: "/favourite", label: "Favourite" },
+  ];
+
+  const toggleSidebar = useCallback(() => {
+    setSidebar((prev)=> !prev);
+  }, []);
+
+
   useEffect(() => {
     const handleGlobalKey = (e) => {
       if (e.key === "Escape") {
-        sidebar ? setSidebar(false) : setSidebar(true);
+        toggleSidebar();
       }
     };
     window.addEventListener("keydown", handleGlobalKey);
     return () => window.removeEventListener("keydown", handleGlobalKey);
-  }, [sidebar]);
+  }, [toggleSidebar]);
 
   return (
     <div className="sidebar">
@@ -26,42 +37,17 @@ export function Sidebar() {
 
       {sidebar && (
         <div className="side-links">
+          {navLinks.map((link)=>  
           <button
             className={
-              location.pathname === "/" ? "nav-button-active" : "nav-button"
+              location.pathname === link.path ? "nav-button-active" : "nav-button"
             }
             onClick={() => {
-              navigate("/");
+              navigate(link.path);
             }}
           >
-            Home{" "}
-          </button>
-          <button
-            className={
-              location.pathname === "/songslist"
-                ? "nav-button-active"
-                : "nav-button"
-            }
-            onClick={() => {
-              navigate("/songslist");
-            }}
-          >
-            {" "}
-            Songs
-          </button>
-      
-          <button
-            className={
-              location.pathname === "/favourite"
-                ? "nav-button-active"
-                : "nav-button"
-            }
-            onClick={() => {
-              navigate("/favourite");
-            }}
-          >
-            Favourite
-          </button>
+            {link.label}
+          </button>)}
         </div>
       )}
     </div>

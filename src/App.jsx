@@ -12,7 +12,8 @@ import { Author } from "./pages/jsx/Author";
 import { PlayerContext } from "./contexts/PlayerContext";
 import { LibraryContext } from "./contexts/LibraryContext";
 import { QueueContext } from "./contexts/QueueContext";
-import { TimeProvider, TimeContext } from "./contexts/TimeContext";
+import { TimeProvider } from "./contexts/TimeContext";
+import { ClosePlayerButton } from "./Components/jsx/ClosePlayerButton";
 function App() {
   const audioRef = useRef(null);
   const priorityQueue = useRef(new PriorityQueue());
@@ -37,6 +38,7 @@ function App() {
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
   
+const [isPlayerClosed, setIsPlayerClosed] = useState(true);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -274,8 +276,12 @@ const queueContextValue = useMemo(() => ({
                   setAuthor={setAuthor}
                   queueShuffle={queueShuffle}
                   setQueueShuffle={setQueueShuffle}
+                  isPlayerClosed={isPlayerClosed}
+                  setIsPlayerClosed={setIsPlayerClosed}
+                  
                 />
               )}
+              <ClosePlayerButton isPlayerClosed={isPlayerClosed} setIsPlayerClosed={setIsPlayerClosed} />
             </BrowserRouter>
           </QueueContext.Provider>
         </LibraryContext.Provider>

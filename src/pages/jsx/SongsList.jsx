@@ -10,7 +10,6 @@ export function SongsList({
   priorityQueue
 }) {
   const {chooseSong} = useContext(PlayerContext);
-  const {setCurrentSongPlaylist} = useContext(QueueContext);
   const [search, setSearch] = useState("");
 
 
@@ -26,7 +25,6 @@ export function SongsList({
     console.log(song);
     if (song) {
       chooseSong(song.item, songsToRender);
-      setCurrentSongPlaylist(priorityQueue.current.items.map((s) => s.item));
       priorityQueue.current.dequeue("highest");
     }
     priorityQueue.current.print();
@@ -67,7 +65,7 @@ export function SongsList({
         songsToRender={songsToRender}
         chooseSong={chooseSong}
       />
-      <div className="bottom"></div>
+      <div style={{height:"200px"}}></div>
     </>
   );
 }

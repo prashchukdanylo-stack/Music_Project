@@ -15,8 +15,11 @@ export function Favourite({
   },[favourite, songs]);
 
   return (
+    <>
     <SongsGrid
       songsToRender={songsToRender}
     />
+    <div style={{height:"200px"}}></div>
+    </>
   );
 }

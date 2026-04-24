@@ -17,9 +17,12 @@ export function Player({
   setAuthor,
   queueShuffle,
   setQueueShuffle,
+  setIsPlayerClosed,
+  isPlayerClosed
 }) {
   const navigate = useNavigate();
   const [volume, setVolume] = useState(1);
+  
   const lastUsedTime = useRef(0);
 
   const {
@@ -92,7 +95,7 @@ export function Player({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [audioRef, setIsPlaying]);
+  }, [audioRef,setIsPlaying]);
 
   const playSong = async () => {
     if (audioRef.current.paused) {
@@ -226,8 +229,9 @@ export function Player({
     return () => window.removeEventListener("keydown", handleEvent);
   }, [handleEnded, previousSong]);
 
+ 
   return (
-    <div className="player-container">
+    <div className="player-container" style ={{display: !isPlayerClosed && 'none'}}>
       <audio
         id="id"
         ref={audioRef}
@@ -329,6 +333,7 @@ export function Player({
           ></input>
           <p className="player-time">{time}</p>
         </div>
+        <img src="images/close.png" alt="open button"  className="play-button" onClick={()=> setIsPlayerClosed((prev)=> !prev)} />
       </div>
     </div>
   );

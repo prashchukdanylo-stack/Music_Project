@@ -38,7 +38,7 @@ export function Sidebar() {
       {sidebar && (
         <div className="side-links">
           {navLinks.map((link)=>  
-          <button
+          <button key={link.label}
             className={
               location.pathname === link.path ? "nav-button-active" : "nav-button"
             }

@@ -13,7 +13,6 @@ import { PlayerContext } from "./contexts/PlayerContext";
 import { LibraryContext } from "./contexts/LibraryContext";
 import { QueueContext } from "./contexts/QueueContext";
 import { TimeProvider } from "./contexts/TimeContext";
-import { ClosePlayerButton } from "./Components/jsx/ClosePlayerButton";
 function App() {
   const audioRef = useRef(null);
   const priorityQueue = useRef(new PriorityQueue());
@@ -281,7 +280,7 @@ const queueContextValue = useMemo(() => ({
                   
                 />
               )}
-              <ClosePlayerButton isPlayerClosed={isPlayerClosed} setIsPlayerClosed={setIsPlayerClosed} />
+              
             </BrowserRouter>
           </QueueContext.Provider>
         </LibraryContext.Provider>

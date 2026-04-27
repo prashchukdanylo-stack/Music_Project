@@ -37,6 +37,7 @@ export function Player({
   } = useContext(PlayerContext);
   const { setCurrentSongPlaylist } = useContext(QueueContext);
   const { time, setTime, progress, setProgress } = useContext(TimeContext);
+  
 
   useEffect(() => {
     if (!audioRef.current || !song) return;
@@ -73,6 +74,9 @@ export function Player({
       audio.removeEventListener("loadedmetadata", handleMetaData);
     };
   }, [song, audioRef, setDuration, setTime, setProgress]);
+
+  
+
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -229,9 +233,20 @@ export function Player({
     return () => window.removeEventListener("keydown", handleEvent);
   }, [handleEnded, previousSong]);
 
+
+  function openSong() {
+    const willBeClosed = !isPlayerClosed;
+    setIsPlayerClosed(willBeClosed);
+
+    if (!willBeClosed) {
+      navigate("/song");
+    } else {
+      navigate(-1);
+    }
+  }
  
   return (
-    <div className="player-container" style ={{display: !isPlayerClosed && 'none'}}>
+    <div className="player-container">
       <audio
         id="id"
         ref={audioRef}
@@ -265,7 +280,7 @@ export function Player({
         <img
           className="player-song-image"
           src={song.img}
-          onClick={() => navigate("/song")}
+          onClick={openSong}
         ></img>
         <div className="player-song-description">
           <h1 className="player-song-name">{song.name}</h1>
@@ -333,7 +348,7 @@ export function Player({
           ></input>
           <p className="player-time">{time}</p>
         </div>
-        <img src="images/close.png" alt="open button"  className="play-button" onClick={()=> setIsPlayerClosed((prev)=> !prev)} />
+        <img src={isPlayerClosed ? "images/close.png": "images/open.png"} alt="open button"  className="play-button" onClick={openSong} />
       </div>
     </div>
   );

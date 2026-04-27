@@ -14,6 +14,20 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
+.queue-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 400px;
+    width: 400px;
+    background: rgb(161, 116, 203);
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
 .song-image {
     width: 600px;
     height: 600px;
@@ -27,4 +41,13 @@
 .player-song-author {
     margin-top: 0;
     
+}
+
+.queue-song-img {
+    height: 50px;
+    width: 50px;
+}
+
+.queue-song {
+    display: flex;
 }

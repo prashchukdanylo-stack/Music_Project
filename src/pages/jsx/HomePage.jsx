@@ -31,7 +31,8 @@ export function HomePage() {
           onClick={() => {
             localStorage.removeItem("songs");
             localStorage.removeItem("player");
-            localStorage.removeItem("author")
+            localStorage.removeItem("author");
+            localStorage.removeItem("authors");
             window.location.reload();
           }}
         >

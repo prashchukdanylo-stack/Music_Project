@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PriorityQueue from "./utils/queue";
+import { streamLoader } from "./utils/streamLoader";
 import "./App.css";
 import { HomePage } from "./pages/jsx/HomePage";
 import { Song } from "./pages/jsx/Song";
@@ -75,7 +76,17 @@ const [isPlayerClosed, setIsPlayerClosed] = useState(true);
           localStorage.setItem("songs", JSON.stringify(loadedSongs));
         }
 
-        setSongs(loadedSongs);
+        const processSongsStreams = async (data) => {
+          const songsStream = streamLoader(data);
+          for await (const chunk of songsStream) {
+            setSongs((prev)=> {
+              const newSongs = chunk.filter((newSong) => !prev.some((song)=> song.id === newSong.id));
+              return [...prev, ...newSongs];
+            })
+          }
+        }
+
+        processSongsStreams(loadedSongs);
         setCurrentSongPlaylist(loadedSongs);
 
         const savedPlayer = localStorage.getItem("player");

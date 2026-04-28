@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import "../css/QueueButton.css"
 import { QueueContext } from "../../contexts/QueueContext";
+import { PlayerContext } from "../../contexts/PlayerContext";
 
 
-export function QueueButton({songToRender, shuffle}) {
+export function QueueButton({songToRender}) {
   const {setQueueShuffle} = useContext(QueueContext);
+  const {shuffle} = useContext(PlayerContext);
 
   const handleAddToQueue = (event) => {
     event.stopPropagation();

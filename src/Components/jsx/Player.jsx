@@ -9,7 +9,7 @@ import { QueueContext } from "../../contexts/QueueContext";
 
 export function Player({
   currentIndex,
-  currentSongPlaylist,
+  player,
   setCurrentIndex,
   trackGenRef,
   setFavourite,
@@ -35,7 +35,7 @@ export function Player({
     shuffle,
     audioRef,
   } = useContext(PlayerContext);
-  const { setCurrentSongPlaylist } = useContext(QueueContext);
+  const { setPlayer } = useContext(QueueContext);
   const { time, setTime, progress, setProgress } = useContext(TimeContext);
   
 
@@ -142,8 +142,8 @@ export function Player({
       if (queueShuffle.length > 0) {
         const queuedSong = queueShuffle[0];
         setQueueShuffle((prev) => prev.slice(1));
-        setCurrentSongPlaylist((prev) => [...prev, queuedSong]);
-        setCurrentIndex(currentSongPlaylist.length);
+        setPlayer((prev) => [...prev, queuedSong]);
+        setCurrentIndex(player.length);
         setSong(queuedSong);
         setIsPlaying(true);
         return;
@@ -154,28 +154,28 @@ export function Player({
       setSong(newSong);
       setIsPlaying(true);
 
-      setCurrentSongPlaylist((prev) => {
+      setPlayer((prev) => {
         const newArr = [...prev, newSong];
         setCurrentIndex(newArr.length - 1);
-        console.log(currentSongPlaylist);
+        console.log(player);
         return newArr;
       });
 
       return;
     }
 
-    if (currentIndex < currentSongPlaylist.length - 1) {
+    if (currentIndex < player.length - 1) {
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
-      setSong(currentSongPlaylist[nextIndex]);
+      setSong(player[nextIndex]);
       setIsPlaying(true);
     }
   }, [
-    currentSongPlaylist,
+    player,
     currentIndex,
     queueShuffle,
     setCurrentIndex,
-    setCurrentSongPlaylist,
+    setPlayer,
     setDuration,
     setIsPlaying,
     setProgress,
@@ -190,7 +190,7 @@ export function Player({
     if (currentIndex <= 0) return;
 
     if (shuffle) {
-      setCurrentSongPlaylist((prev) => prev.slice(0, -1));
+      setPlayer((prev) => prev.slice(0, -1));
     }
     setProgress(0);
     setTime("0:00 / 0:00");
@@ -198,13 +198,13 @@ export function Player({
 
     const previousIndex = currentIndex - 1;
     setCurrentIndex(previousIndex);
-    setSong(currentSongPlaylist[previousIndex]);
+    setSong(player[previousIndex]);
     setIsPlaying(true);
   }, [
-    currentSongPlaylist,
+    player,
     currentIndex,
     setCurrentIndex,
-    setCurrentSongPlaylist,
+    setPlayer,
     setDuration,
     setIsPlaying,
     setProgress,

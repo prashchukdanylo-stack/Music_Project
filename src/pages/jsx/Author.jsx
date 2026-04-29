@@ -16,6 +16,7 @@ export function Author({
   
   const authorInfo = useMemo(()=> {
     if (!author) return null;
+    if (!Array.isArray(authors)) return null;
     return authors.find((autho)=>autho.author === author);
   }, [author, authors]);
 
@@ -30,12 +31,17 @@ export function Author({
     <div>
       <div className="author-page">
         <p className="author">{author}</p>
-        <img
+        {authorInfo && (
+          <>
+          <img
           className="author-img"
           src={authorInfo.img}
           alt={author}
         ></img>
         <p className = "author-description">{authorInfo.description}</p>
+        </>
+        )}
+        
       </div>
       <SongsGrid
         songsToRender={songsToRender}

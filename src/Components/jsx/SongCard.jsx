@@ -11,7 +11,7 @@ export const SongCard = memo(({songToRender, songsToRender}) => {
         <div
                 key={songToRender.id}
                 className={
-                  songToRender.id === song.id
+                  songToRender.id === song?.id
                     ? "songlist-card-active"
                     : "songlist-card"
                 }

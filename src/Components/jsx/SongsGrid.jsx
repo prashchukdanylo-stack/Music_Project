@@ -19,7 +19,7 @@ export function SongsGrid({
         <div className="songs-grid">
           {songsToRender.map((songToRender) => {
             return (
-              <SongCard songToRender={songToRender} songsToRender={songsToRender} />
+              <SongCard songToRender={songToRender} songsToRender={songsToRender} key={songToRender.id} />
             );
           })}
         </div>

@@ -1,0 +1,22 @@
+.toast-container {
+    display: flex;
+    position: fixed;
+    background-color: rgb(161, 116, 203);
+    top: 10px;
+    right: 10px;
+    border-radius: 15px;
+}
+.toast-warning-container {
+    display: flex;
+    position: fixed;
+    background-color: rgb(227, 22, 63);
+    top: 10px;
+    right: 10px;
+    border-radius: 15px;
+}
+.toast-message {
+    color: blueviolet;
+}
+.toast-warning-message {
+    color: black;
+}

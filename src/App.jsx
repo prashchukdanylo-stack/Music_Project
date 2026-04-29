@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { randomTrackGenerator } from "./utils/randomTrackGenerator";
 import PriorityQueue from "./utils/queue";
 import { streamLoader } from "./utils/streamLoader";
 import "./App.css";
@@ -10,27 +11,26 @@ import { Sidebar } from "./Components/jsx/Sidebar";
 import { Player } from "./Components/jsx/Player";
 import { Favourite } from "./pages/jsx/Favourite";
 import { Author } from "./pages/jsx/Author";
+import { Toast } from "./Components/jsx/Toast";
 import { PlayerContext } from "./contexts/PlayerContext";
 import { LibraryContext } from "./contexts/LibraryContext";
 import { QueueContext } from "./contexts/QueueContext";
 import { TimeProvider } from "./contexts/TimeContext";
+import { useStorage } from "./hooks/useStorage";
 function App() {
   const audioRef = useRef(null);
   const priorityQueue = useRef(new PriorityQueue());
   const [isPlaying, setIsPlaying] = useState(false);
-  const [authors, setAuthors] = useState([]);
+  const [authors, setAuthors] = useStorage("authors", []);
   const [song, setSong] = useState();
-  const [songs, setSongs] = useState([]);
+  const [songs, setSongs] = useStorage("songs", []);
   const trackGenRef = useRef(null);
-  const [currentSongPlaylist, setCurrentSongPlaylist] = useState([]);
+  const [player, setPlayer] = useStorage("player", []);
   const [currentGenerator, setCurrentGenerator] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [duration, setDuration] = useState(0);
-  const [author, setAuthor] = useState(() => {
-    const saved = localStorage.getItem("author");
-    return saved ? JSON.parse(saved) : "";
-  });
+  const [author, setAuthor] = useStorage("author", "")
   const [queueShuffle, setQueueShuffle] = useState([]);
   const [shuffle, setShuffle] = useState(false);
   const [favourite, setFavourite] = useState(() => {
@@ -39,21 +39,16 @@ function App() {
   });
   
 const [isPlayerClosed, setIsPlayerClosed] = useState(true);
+const [toast, setToast] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
 
     const getSongsData = async () => {
       try {
-        let loadedSongs = [];
-        const savedSongs = localStorage.getItem("songs");
-        const savedAuthors = localStorage.getItem("authors");
-        if (savedAuthors) {
-          setAuthors(JSON.parse(savedAuthors));
-        }
-        if (savedSongs) {
-          loadedSongs = JSON.parse(savedSongs);
-        }
+        let loadedSongs = songs;
+  
+
 
         if (loadedSongs.length === 0) {
           const response = await fetch("/songs.json", {
@@ -73,7 +68,7 @@ const [isPlayerClosed, setIsPlayerClosed] = useState(true);
               playCount: song.playCount || 0,
             }));
 
-          localStorage.setItem("songs", JSON.stringify(loadedSongs));
+          setSongs(loadedSongs);
         }
 
         const processSongsStreams = async (data) => {
@@ -87,22 +82,20 @@ const [isPlayerClosed, setIsPlayerClosed] = useState(true);
         }
 
         processSongsStreams(loadedSongs);
-        setCurrentSongPlaylist(loadedSongs);
+        setPlayer(loadedSongs);
 
-        const savedPlayer = localStorage.getItem("player");
-
-        if (savedPlayer) {
-          const { song, currentSongPlaylist, currentIndex } =
-            JSON.parse(savedPlayer);
+        const savedPlayback = localStorage.getItem("playback");
+        if (savedPlayback) {
+          const { song, player, currentIndex } = JSON.parse(savedPlayback);
 
           setCurrentIndex(currentIndex ?? -1);
-          setCurrentSongPlaylist(currentSongPlaylist || []);
           setSong(song || null);
+          setPlayer(player || []);
           setIsPlaying(false);
         }
-
-        const response = await fetch("/authors.json", {
-          signal: controller.signal,
+        if (authors.length === 0) {
+           const response = await fetch("/authors.json", {
+           signal: controller.signal,
         });
 
         if (!response.ok) {
@@ -111,9 +104,15 @@ const [isPlayerClosed, setIsPlayerClosed] = useState(true);
 
         const data = await response.json();
         setAuthors(data);
-        localStorage.setItem("authors", JSON.stringify(data));
+      
+        }
+          
+       
       } catch (error) {
-        console.error("Loading error:", error);
+        if (error.name !== "AbortError") {
+          console.error("Loading error:", error);
+        }
+        
       } finally {
         setIsPlayerReady(true);
       }
@@ -122,7 +121,7 @@ const [isPlayerClosed, setIsPlayerClosed] = useState(true);
     const timeExpire = Number(localStorage.getItem("timeExpire"));
 
     if (timeExpire && Date.now() > timeExpire) {
-      localStorage.removeItem("player");
+      localStorage.removeItem("playback");
       localStorage.removeItem("timeExpire");
       console.log("complete");
     }
@@ -134,43 +133,21 @@ const [isPlayerClosed, setIsPlayerClosed] = useState(true);
   useEffect(() => {
     if (!song) return;
     localStorage.setItem(
-      "player",
+      "playback",
       JSON.stringify({
         song,
-        currentSongPlaylist,
+        player,
         currentIndex,
       }),
     );
-  }, [song, currentSongPlaylist, currentIndex]);
-
-  useEffect(() => {
-    localStorage.setItem("author", JSON.stringify(author));
-  }, [author]);
+  }, [song, player, currentIndex]);
 
   useEffect(() => {
     localStorage.setItem("favourite", JSON.stringify(Array.from(favourite)));
     console.log(localStorage);
   }, [favourite]);
 
-  useEffect(() => {
-    if (songs.length > 0 && Array.isArray(songs)) {
-      localStorage.setItem("songs", JSON.stringify(songs));
-    }
-  }, [songs]);
-
-  const randomTrackGenerator = (songs) => {
-    let copyOfSongs = [...songs];
-
-    return function* () {
-      while (true) {
-        if (copyOfSongs.length === 0) {
-          copyOfSongs = [...songs];
-        }
-        const index = Math.floor(Math.random() * copyOfSongs.length);
-        yield copyOfSongs.splice(index, 1)[0];
-      }
-    };
-  };
+ 
   useEffect(() => {
     if (currentGenerator.length > 0) {
       trackGenRef.current = randomTrackGenerator(currentGenerator)();
@@ -191,20 +168,19 @@ const [isPlayerClosed, setIsPlayerClosed] = useState(true);
       return s;
     });
 
-    setSongs(updatedSongs);
-
     const updatedSong = updatedSongs.find((s) => s.id === song.id);
-
     const index = songsToRender.findIndex((s) => s.id === song.id);
+    setSongs(updatedSongs);
     setSong(updatedSong);
-    setCurrentSongPlaylist(songsToRender);
+    setPlayer(songsToRender);
     setCurrentGenerator(songsToRender);
     setCurrentIndex(index);
 
     setIsPlaying(true);
     priorityQueue.current.enqueue(updatedSong, updatedSong.playCount || 0);
     priorityQueue.current.print();
-  }, [songs]);
+  }, [songs,setSongs,setPlayer]);
+  
   const playerContextValue = useMemo(()=> ({
           song, setSong,isPlaying,
           setIsPlaying,
@@ -218,11 +194,11 @@ const [isPlayerClosed, setIsPlayerClosed] = useState(true);
 
   const libraryContextValue = useMemo(() => ({
   songs, setSongs, authors, setAuthors, author, setAuthor, favourite, setFavourite
-}), [songs, authors, author, favourite]);
+}), [songs, author, favourite, authors, setAuthor, setAuthors,setSongs]);
 
 const queueContextValue = useMemo(() => ({
-  currentSongPlaylist, setCurrentSongPlaylist, currentIndex, setCurrentIndex, queueShuffle, setQueueShuffle
-}), [currentSongPlaylist, currentIndex, queueShuffle]);
+  player, setPlayer, currentIndex, setCurrentIndex, queueShuffle, setQueueShuffle, toast, setToast
+}), [player, currentIndex, queueShuffle, toast, setPlayer]);
 
   if (!isPlayerReady) return null;
   return (
@@ -276,7 +252,7 @@ const queueContextValue = useMemo(() => ({
               {song && (
                 <Player
                   trackGenRef={trackGenRef}
-                  currentSongPlaylist={currentSongPlaylist}
+                  player={player}
                   currentIndex={currentIndex}
                   setCurrentIndex={setCurrentIndex}
                   songs={songs}
@@ -291,6 +267,8 @@ const queueContextValue = useMemo(() => ({
                   
                 />
               )}
+
+              {toast && <Toast toast={toast} />}
               
             </BrowserRouter>
           </QueueContext.Provider>

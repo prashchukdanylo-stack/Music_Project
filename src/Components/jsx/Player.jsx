@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useRef, useCallback } from "react";
 import { PlayerContext } from "../../contexts/PlayerContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { formatTime } from "../../utils/formatTime";
 import { Shuffle } from "./Shuffle";
 import "../css/Player.css";
@@ -21,6 +21,8 @@ export function Player({
   isPlayerClosed
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [volume, setVolume] = useState(1);
   
   const lastUsedTime = useRef(0);
@@ -38,6 +40,11 @@ export function Player({
   const { setPlayer } = useContext(QueueContext);
   const { time, setTime, progress, setProgress } = useContext(TimeContext);
   
+  useEffect(()=> {
+    if (location.pathname !== "/song") {
+      setIsPlayerClosed(true);
+    }
+  },[location.pathname, setIsPlayerClosed]);
 
   useEffect(() => {
     if (!audioRef.current || !song) return;

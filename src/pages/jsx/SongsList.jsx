@@ -1,7 +1,6 @@
-import { useContext, useState, useMemo} from "react";
+import { useContext, useState, useMemo, useEffect, useRef} from "react";
 import "../css/SongsList.css";
 import { SongsGrid } from "../../Components/jsx/SongsGrid.jsx";
-import { QueueContext } from "../../contexts/QueueContext.jsx";
 import { PlayerContext } from "../../contexts/PlayerContext.jsx";
 
 
@@ -11,7 +10,22 @@ export function SongsList({
 }) {
   const {chooseSong} = useContext(PlayerContext);
   const [search, setSearch] = useState("");
+  const searchRef = useRef(null);
+  useEffect(()=> {
 
+    const handleKeyDown = (e) => {
+      if ("INPUT" === e.target.tagName) return;
+      if (e.code === "Enter") {
+        e.preventDefault();
+        searchRef.current.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    }
+  },[searchRef]);
 
   const songsToRender = useMemo(()=> {
     if (!search) return songs;
@@ -43,6 +57,7 @@ export function SongsList({
     <>
       <div className="songs-list-header">
         <input
+        ref={searchRef}
           placeholder="Search song"
           className="songs-list-search"
           value={search}

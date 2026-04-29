@@ -32,7 +32,7 @@ function App() {
   const [duration, setDuration] = useState(0);
   const [author, setAuthor] = useStorage("author", "")
   const [queueShuffle, setQueueShuffle] = useState([]);
-  const [shuffle, setShuffle] = useState(false);
+  const [shuffle, setShuffle] = useStorage("shuffle", false);
   const [favourite, setFavourite] = useState(() => {
     const saved = localStorage.getItem("favourite");
     return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -68,7 +68,6 @@ const [toast, setToast] = useState(null);
               playCount: song.playCount || 0,
             }));
 
-          setSongs(loadedSongs);
         }
 
         const processSongsStreams = async (data) => {
@@ -91,6 +90,7 @@ const [toast, setToast] = useState(null);
           setSong(song || null);
           setPlayer(player || []);
           setIsPlaying(false);
+          setCurrentGenerator(player || []);
         }
         if (authors.length === 0) {
            const response = await fetch("/authors.json", {

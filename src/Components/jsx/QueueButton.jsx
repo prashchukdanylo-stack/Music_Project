@@ -1,36 +1,25 @@
-import { useContext, useCallback, useRef } from "react";
+import { useContext, useCallback } from "react";
 import "../css/QueueButton.css"
 import { QueueContext } from "../../contexts/QueueContext";
 import { PlayerContext } from "../../contexts/PlayerContext";
 
 
-export function QueueButton({songToRender}) {
-  const {setQueueShuffle, setToast} = useContext(QueueContext);
-  const {shuffle} = useContext(PlayerContext);
-   const toastRef = useRef(null);
 
-  const showToast = useCallback((message) => {
-    if (toastRef.current) {
-      clearTimeout(toastRef.current);
-    }
-    setToast(message);
-    toastRef.current = setTimeout(()=> {
-      setToast(null);
-      toastRef.current = null;
-    }
-      , 3000);
-  }, [setToast]);
+export function QueueButton({songToRender}) {
+  const {setQueueShuffle,setToast} = useContext(QueueContext);
+  const {shuffle} = useContext(PlayerContext);
+   
 
   const handleAddToQueue = useCallback((event) => {
     event.stopPropagation();
     if (shuffle) {
           setQueueShuffle((prev) => [...prev, songToRender]);
           
-          showToast(`"${songToRender.name}" successfully added to the queue!`)
+          setToast(`"${songToRender.name}" successfully added to the queue!`)
         } else {
-          showToast("Shuffle is off, turn it on!");
+          setToast("Shuffle is off, turn it on!");
         }
-  }, [shuffle, songToRender, setQueueShuffle, showToast]);
+  }, [shuffle,setQueueShuffle,setToast,songToRender]);
   return (
     <img
       src="images/queue.png"

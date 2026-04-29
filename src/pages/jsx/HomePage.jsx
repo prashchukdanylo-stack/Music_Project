@@ -30,7 +30,7 @@ export function HomePage() {
           className="erase-button"
           onClick={() => {
             localStorage.removeItem("songs");
-            localStorage.removeItem("player");
+            localStorage.removeItem("playback");
             localStorage.removeItem("author");
             localStorage.removeItem("authors");
             window.location.reload();

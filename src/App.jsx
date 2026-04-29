@@ -25,7 +25,7 @@ function App() {
   const [song, setSong] = useState();
   const [songs, setSongs] = useStorage("songs", []);
   const trackGenRef = useRef(null);
-  const [player, setPlayer] = useStorage("player", []);
+  const [player, setPlayer] = useState([]);
   const [currentGenerator, setCurrentGenerator] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
@@ -82,7 +82,6 @@ const [toast, setToast] = useState(null);
         }
 
         processSongsStreams(loadedSongs);
-        setPlayer(loadedSongs);
 
         const savedPlayback = localStorage.getItem("playback");
         if (savedPlayback) {

@@ -31,7 +31,7 @@ function App() {
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [duration, setDuration] = useState(0);
   const [author, setAuthor] = useStorage("author", "")
-  const [queueShuffle, setQueueShuffle] = useState([]);
+  const [queueShuffle, setQueueShuffle] = useStorage("queueShuffle", []);
   const [shuffle, setShuffle] = useStorage("shuffle", false);
   const [favourite, setFavourite] = useState(() => {
     const saved = localStorage.getItem("favourite");

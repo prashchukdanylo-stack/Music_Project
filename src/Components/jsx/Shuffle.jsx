@@ -18,9 +18,9 @@ export function Shuffle() {
         shuffleSongs();
       }
     };
-    window.addEventListener("keydown", handleEvent);
+    window.addEventListener("keyup", handleEvent);
     return () => {
-      window.removeEventListener("keydown", handleEvent);
+      window.removeEventListener("keyup", handleEvent);
     };
   }, [shuffleSongs]);
 

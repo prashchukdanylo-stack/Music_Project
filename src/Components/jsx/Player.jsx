@@ -86,7 +86,7 @@ export function Player({
 
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handlekeyup = (e) => {
       if ("INPUT" === e.target.tagName) return;
       if (e.code === "Space") {
         e.preventDefault();
@@ -102,9 +102,9 @@ export function Player({
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handlekeyup);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handlekeyup);
     };
   }, [audioRef,setIsPlaying]);
 
@@ -236,8 +236,8 @@ export function Player({
       }
     };
 
-    window.addEventListener("keydown", handleEvent);
-    return () => window.removeEventListener("keydown", handleEvent);
+    window.addEventListener("keyup", handleEvent);
+    return () => window.removeEventListener("keyup", handleEvent);
   }, [handleEnded, previousSong]);
 
 

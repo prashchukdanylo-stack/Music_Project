@@ -23,8 +23,8 @@ export function Sidebar() {
         toggleSidebar();
       }
     };
-    window.addEventListener("keydown", handleGlobalKey);
-    return () => window.removeEventListener("keydown", handleGlobalKey);
+    window.addEventListener("keyup", handleGlobalKey);
+    return () => window.removeEventListener("keyup", handleGlobalKey);
   }, [toggleSidebar]);
 
   return (

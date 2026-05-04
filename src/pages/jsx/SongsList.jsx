@@ -13,7 +13,7 @@ export function SongsList({
   const searchRef = useRef(null);
   useEffect(()=> {
 
-    const handleKeyDown = (e) => {
+    const handlekeyup = (e) => {
       if ("INPUT" === e.target.tagName) return;
       if (e.code === "Enter") {
         e.preventDefault();
@@ -21,9 +21,9 @@ export function SongsList({
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handlekeyup);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handlekeyup);
     }
   },[searchRef]);
 

@@ -1,6 +1,9 @@
 
 
 .song-container {
+    position: absolute;
+    left: 570px;
+    bottom: 150px;
     display: flex;
     flex-direction: column;
     margin-top: 10px;
@@ -15,6 +18,9 @@
 }
 
 .queue-container {
+    position: absolute;
+    right: 100px;
+    top: 200px;
     display: flex;
     flex-direction: column;
     margin-top: 10px;
@@ -27,6 +33,29 @@
     border-radius: 30px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
+.queue-inner-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 350px;
+    width: 350px;
+    background: #0f0f0f;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    max-height: 320px;
+    overflow-y: auto;
+  overflow-x: hidden;
+}
+.queue-name {
+    color: blue;
+}
+.queue-song {
+    color: blueviolet;
+}
+
 
 .song-image {
     width: 600px;
@@ -50,4 +79,13 @@
 
 .queue-song {
     display: flex;
+}
+.cross {
+    height: 25px;
+    width: 25px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.active {
+    color: red;
 }

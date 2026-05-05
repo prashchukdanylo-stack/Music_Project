@@ -39,7 +39,6 @@ function App() {
   });
   
 const [isPlayerClosed, setIsPlayerClosed] = useState(true);
-const [toast, setToast] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -189,15 +188,15 @@ const [toast, setToast] = useState(null);
           setShuffle,
           audioRef,
           chooseSong 
-  }), [song, isPlaying, duration, shuffle, chooseSong]);
+  }), [song, isPlaying, duration, shuffle, setShuffle, chooseSong]);
 
   const libraryContextValue = useMemo(() => ({
   songs, setSongs, authors, setAuthors, author, setAuthor, favourite, setFavourite
 }), [songs, author, favourite, authors, setAuthor, setAuthors,setSongs]);
 
 const queueContextValue = useMemo(() => ({
-  player, setPlayer, currentIndex, setCurrentIndex, queueShuffle, setQueueShuffle, toast, setToast
-}), [player, currentIndex, queueShuffle, toast, setPlayer]);
+  player, setPlayer, currentIndex, setCurrentIndex, queueShuffle, setQueueShuffle
+}), [player, currentIndex, queueShuffle, setQueueShuffle,setPlayer]);
 
   if (!isPlayerReady) return null;
   return (
@@ -267,7 +266,7 @@ const queueContextValue = useMemo(() => ({
                 />
               )}
 
-              {toast && <Toast toast={toast} />}
+              <Toast />
               
             </BrowserRouter>
           </QueueContext.Provider>

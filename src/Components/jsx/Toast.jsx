@@ -1,23 +1,34 @@
-import { useContext, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../css/Toast.css";
-import { QueueContext } from "../../contexts/QueueContext";
+import emitter from "../../utils/eventBus";
 
-export function Toast({toast}) {
-    const {setToast} = useContext(QueueContext);
+export function Toast() {
+    const [message, setMessage] = useState(null);
+
     useEffect(()=> {
-        if (!toast) return;
+        const handleToast = (event) => {
+            setMessage(event);
+        }
 
-        const timerId = setTimeout(()=>{
-            setToast(null);
-        }, 3000);
-        return () => clearTimeout(timerId);
-    }, [toast, setToast]);
+        emitter.on("toast", handleToast);
+
+        return () => emitter.off("toast", handleToast);
+    }, []);
     
-     
+    useEffect(() => {
+        if (!message) return;
 
+        const timerId = setTimeout(() => {
+            setMessage(null);
+        }, 3000);
+
+        return () => clearTimeout(timerId);
+    }, [message]);
+     
+    if (!message) return null;
     return (
-        <div className={ toast!=="Shuffle is off, turn it on!" ? "toast-container" : "toast-warning-container"}>
-            <h1 className={toast !=="Shuffle is off, turn it on!"? "toast-message" : "toast-warning-message"}>{toast}</h1>
+        <div className={ message!=="Shuffle is off, turn it on!" ? "toast-container" : "toast-warning-container"}>
+            <h1 className={message !=="Shuffle is off, turn it on!"? "toast-message" : "toast-warning-message"}>{message}</h1>
         </div>
     );
 }

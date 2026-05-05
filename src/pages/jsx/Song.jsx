@@ -5,7 +5,7 @@ import { QueueContext } from "../../contexts/QueueContext";
 export function Song({ song }) {
   const { queueShuffle, setQueueShuffle } = useContext(QueueContext);
   const { time } = useContext(TimeContext);
-
+  
   if (!song) {
     return (
       <div className="sorry-text">

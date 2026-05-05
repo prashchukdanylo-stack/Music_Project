@@ -2,24 +2,27 @@ import { useContext, useCallback } from "react";
 import "../css/QueueButton.css"
 import { QueueContext } from "../../contexts/QueueContext";
 import { PlayerContext } from "../../contexts/PlayerContext";
+import emitter from "../../utils/eventBus";
 
 
 
 export function QueueButton({songToRender}) {
-  const {setQueueShuffle,setToast} = useContext(QueueContext);
+  const {setQueueShuffle, queueShuffle} = useContext(QueueContext);
   const {shuffle} = useContext(PlayerContext);
    
 
   const handleAddToQueue = useCallback((event) => {
     event.stopPropagation();
-    if (shuffle) {
+    if (shuffle && !queueShuffle.includes(songToRender)) {
           setQueueShuffle((prev) => [...prev, songToRender]);
           
-          setToast(`"${songToRender.name}" successfully added to the queue!`)
+          emitter.emit("toast", `"${songToRender.name}" added to shuffle queue!`);
+        } else if (!shuffle) {
+          emitter.emit("toast", "Shuffle is off, turn it on!");
         } else {
-          setToast("Shuffle is off, turn it on!");
+          emitter.emit("toast", `"${songToRender.name}" is already in the shuffle queue!`);
         }
-  }, [shuffle,setQueueShuffle,setToast,songToRender]);
+  }, [shuffle, queueShuffle ,setQueueShuffle,songToRender]);
   return (
     <img
       src="images/queue.png"

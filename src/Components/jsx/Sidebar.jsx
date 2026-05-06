@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import emitter from "../../utils/eventBus";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../css/Sidebar.css";
 export function Sidebar() {
@@ -18,14 +19,12 @@ export function Sidebar() {
 
 
   useEffect(() => {
-    const handleGlobalKey = (e) => {
-      if (e.key === "Escape") {
-        toggleSidebar();
-      }
-    };
-    window.addEventListener("keyup", handleGlobalKey);
-    return () => window.removeEventListener("keyup", handleGlobalKey);
-  }, [toggleSidebar]);
+   const onToggleSidebar = () => toggleSidebar();
+
+   emitter.on("toggleSidebar", onToggleSidebar);
+
+   return () => emitter.off("toggleSidebar", onToggleSidebar);
+   }, [toggleSidebar]);
 
   return (
     <div className="sidebar">

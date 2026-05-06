@@ -2,7 +2,7 @@ import { useContext, useState, useMemo, useEffect, useRef} from "react";
 import "../css/SongsList.css";
 import { SongsGrid } from "../../Components/jsx/SongsGrid.jsx";
 import { PlayerContext } from "../../contexts/PlayerContext.jsx";
-
+import emitter from "../../utils/eventBus.js";
 
 export function SongsList({
   songs,
@@ -13,19 +13,14 @@ export function SongsList({
   const searchRef = useRef(null);
   useEffect(()=> {
 
-    const handlekeyup = (e) => {
-      if ("INPUT" === e.target.tagName) return;
-      if (e.code === "Enter") {
-        e.preventDefault();
-        searchRef.current.focus();
-      }
-    };
-
-    window.addEventListener("keyup", handlekeyup);
-    return () => {
-      window.removeEventListener("keyup", handlekeyup);
+    const handleFocus = () => {
+      searchRef.current.focus();
     }
-  },[searchRef]);
+
+    emitter.on("openInput", handleFocus);
+
+    return () => emitter.off("openInput", handleFocus);
+  },[]);
 
   const songsToRender = useMemo(()=> {
     if (!search) return songs;

@@ -17,6 +17,8 @@ import { LibraryContext } from "./contexts/LibraryContext";
 import { QueueContext } from "./contexts/QueueContext";
 import { TimeProvider } from "./contexts/TimeContext";
 import { useStorage } from "./hooks/useStorage";
+import { useKeyboard } from "./hooks/useKeyboard";
+import { useSessionManager } from "./hooks/useSessionManager";
 function App() {
   const audioRef = useRef(null);
   const priorityQueue = useRef(new PriorityQueue());
@@ -40,6 +42,8 @@ function App() {
   
 const [isPlayerClosed, setIsPlayerClosed] = useState(true);
 
+useKeyboard();
+useSessionManager();
   useEffect(() => {
     const controller = new AbortController();
 

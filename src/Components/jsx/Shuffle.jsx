@@ -1,4 +1,5 @@
 import { useEffect, useContext, useCallback } from "react";
+import emitter from "../../utils/eventBus";
 import "../../pages/css/Song.css";
 import { PlayerContext } from "../../contexts/PlayerContext";
 export function Shuffle() {
@@ -12,16 +13,14 @@ export function Shuffle() {
   }, [setShuffle]);
 
   useEffect(() => {
-    const handleEvent = (e) => {
-      if (e.code === "KeyS" && e.target.tagName !== "INPUT") {
-        e.preventDefault();
-        shuffleSongs();
-      }
-    };
-    window.addEventListener("keyup", handleEvent);
+    const onShuffle = () => shuffleSongs();
+    emitter.on("toggleShuffle", onShuffle);
+
     return () => {
-      window.removeEventListener("keyup", handleEvent);
+      emitter.off("toggleShuffle", onShuffle);
     };
+
+
   }, [shuffleSongs]);
 
   return (

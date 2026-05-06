@@ -6,7 +6,7 @@ import { Shuffle } from "./Shuffle";
 import "../css/Player.css";
 import { TimeContext } from "../../contexts/TimeContext";
 import { QueueContext } from "../../contexts/QueueContext";
-
+import emitter from "../../utils/eventBus";
 export function Player({
   currentIndex,
   player,
@@ -82,33 +82,7 @@ export function Player({
     };
   }, [song, audioRef, setDuration, setTime, setProgress]);
 
-  
-
-
-  useEffect(() => {
-    const handlekeyup = (e) => {
-      if ("INPUT" === e.target.tagName) return;
-      if (e.code === "Space") {
-        e.preventDefault();
-        setIsPlaying((prev) => {
-          if (prev === false) {
-            audioRef.current.play();
-            return true;
-          } else {
-            audioRef.current.pause();
-            return false;
-          }
-        });
-      }
-    };
-
-    window.addEventListener("keyup", handlekeyup);
-    return () => {
-      window.removeEventListener("keyup", handlekeyup);
-    };
-  }, [audioRef,setIsPlaying]);
-
-  const playSong = async () => {
+  const playSong = useCallback(async () => {
     if (audioRef.current.paused) {
       await audioRef.current.play();
       setIsPlaying(true);
@@ -116,7 +90,7 @@ export function Player({
       audioRef.current.pause();
       setIsPlaying(false);
     }
-  };
+  }, [audioRef, setIsPlaying]);
 
   const trackDuration = () => {
     const audio = audioRef.current;
@@ -220,27 +194,44 @@ export function Player({
     shuffle,
   ]);
 
+   const handleSongChange = useCallback((direction) => {
+    if (direction === "next") {
+      nextSong()
+    } else if (direction === "prev") {
+      previousSong()
+    }
+    emitter.emit("timeExpire", {time: Date.now()});
+
+  }, [nextSong, previousSong]);
+
+  
   const handleEnded = useCallback(() => {
-    nextSong();
-    localStorage.setItem("timeExpire", Date.now() + 600000);
-  }, [nextSong]);
+    handleSongChange("next");
+    emitter.emit("songEnded", {songId: song.id});
+    
+  }, [handleSongChange, song.id]);
+
+ 
 
   useEffect(() => {
-    const handleEvent = (e) => {
-      if (e.code === "ArrowRight") {
-        e.preventDefault();
-        handleEnded();
-      } else if (e.code === "ArrowLeft") {
-        e.preventDefault();
-        previousSong();
-      }
-    };
 
-    window.addEventListener("keyup", handleEvent);
-    return () => window.removeEventListener("keyup", handleEvent);
-  }, [handleEnded, previousSong]);
+      const onNextSong = () => handleSongChange("next");
+      const onPrevSong = () => handleSongChange("prev");
+      const onTogglePlay = () => playSong();
+
+      emitter.on("nextSong", onNextSong);
+      emitter.on("previousSong", onPrevSong);
+      emitter.on("togglePlay", onTogglePlay);
+      return () => {
+        emitter.off("nextSong", onNextSong);
+        emitter.off("previousSong", onPrevSong);
+        emitter.off("togglePlay", onTogglePlay);
+      };
+  }, [handleSongChange, playSong]);
+   
 
 
+  
   function openSong() {
     const willBeClosed = !isPlayerClosed;
     setIsPlayerClosed(willBeClosed);
@@ -266,7 +257,7 @@ export function Player({
       ></audio>
       <div>
         <img
-          onClick={previousSong}
+          onClick={() => handleSongChange("prev")}
           src="/images/previous.png"
           className="play-button"
         ></img>
@@ -277,7 +268,7 @@ export function Player({
           onClick={playSong}
         ></img>
         <img
-          onClick={handleEnded}
+          onClick={() => handleSongChange("next")}
           src="/images/next.png"
           className="play-button"
         ></img>

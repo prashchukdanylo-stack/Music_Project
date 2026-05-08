@@ -7,6 +7,7 @@ import "../css/Player.css";
 import { TimeContext } from "../../contexts/TimeContext";
 import { QueueContext } from "../../contexts/QueueContext";
 import emitter from "../../utils/eventBus";
+import { useStorage } from "../../hooks/useStorage";
 export function Player({
   currentIndex,
   player,
@@ -24,7 +25,7 @@ export function Player({
   const location = useLocation();
 
   const [volume, setVolume] = useState(1);
-  
+  const [prevPath, setPrevPath] = useStorage("previousPath", { path: "/", wasClosed: true });
   const lastUsedTime = useRef(0);
 
   const {
@@ -43,6 +44,8 @@ export function Player({
   useEffect(()=> {
     if (location.pathname !== "/song") {
       setIsPlayerClosed(true);
+    } else {
+      setIsPlayerClosed(false);
     }
   },[location.pathname, setIsPlayerClosed]);
 
@@ -164,7 +167,7 @@ export function Player({
     setSong,
     setTime,
     shuffle,
-    trackGenRef,
+    trackGenRef
   ]);
 
   const previousSong = useCallback(() => {
@@ -233,14 +236,14 @@ export function Player({
 
   
   function openSong() {
-    const willBeClosed = !isPlayerClosed;
-    setIsPlayerClosed(willBeClosed);
-
-    if (!willBeClosed) {
-      navigate("/song");
-    } else {
-      navigate(-1);
-    }
+   if (location.pathname === "/song") {
+    const goBack = (prevPath?.path && prevPath.path !== "/song") ? prevPath.path : "/";
+    navigate(goBack);
+    
+   } else {
+    setPrevPath({path: location.pathname});
+    navigate("/song");
+   }
   }
  
   return (

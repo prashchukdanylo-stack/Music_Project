@@ -33,6 +33,8 @@ export function HomePage() {
             localStorage.removeItem("playback");
             localStorage.removeItem("author");
             localStorage.removeItem("authors");
+            localStorage.removeItem("shuffle");
+            localStorage.removeItem("previousPath");
             window.location.reload();
           }}
         >

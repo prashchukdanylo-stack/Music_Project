@@ -19,6 +19,7 @@ import { TimeProvider } from "./contexts/TimeContext";
 import { useStorage } from "./hooks/useStorage";
 import { useKeyboard } from "./hooks/useKeyboard";
 import { useSessionManager } from "./hooks/useSessionManager";
+import { LyricsViewer } from "./Components/jsx/LyricsViewer";
 function App() {
   const audioRef = useRef(null);
   const priorityQueue = useRef(new PriorityQueue());
@@ -249,6 +250,7 @@ const queueContextValue = useMemo(() => ({
                     />
                   }
                 ></Route>
+                <Route path="/lyrics" element={<LyricsViewer song={song} />} />
               </Routes>
 
               {song && (

@@ -1,0 +1,26 @@
+.lyrics-container {
+    margin-top: 20px;
+    padding: 10px;
+    background: #111;
+    border-radius: 8px;
+    width: 800px;
+    right: 100px;
+    position: absolute;
+}
+
+.lyrics-button {
+     padding: "8px 16px";
+     cursor: "pointer" 
+}
+
+.lyrics-error {
+    color: "red";
+    margin-top: "10px"
+}
+
+.lyrics-text {
+    margin-top: 15px;
+    white-space: pre-wrap;
+     color: #ccc;
+      line-height: 1.6
+}

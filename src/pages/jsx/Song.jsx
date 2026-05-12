@@ -2,6 +2,7 @@ import "../css/Song.css";
 import { TimeContext } from "../../contexts/TimeContext";
 import { useContext } from "react";
 import { QueueContext } from "../../contexts/QueueContext";
+
 export function Song({ song }) {
   const { queueShuffle, setQueueShuffle } = useContext(QueueContext);
   const { time } = useContext(TimeContext);
@@ -52,6 +53,9 @@ export function Song({ song }) {
           </div>
         </div>
       )}
+
+
+      
     </div>
   );
 }

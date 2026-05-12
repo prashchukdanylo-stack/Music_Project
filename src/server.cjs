@@ -1,44 +1,74 @@
-const http  = require('http');
-
+const http = require('http');
+const cheerio = require('cheerio');
 
 const PORT = 8080;
+const GENIUS_ACCESS_TOKEN = 'gZHB_N5GnpetJJo4bGCGEN2G_l0y5aydbRnQTNcz6xu6y9tOn4_vbLAoRRki9Spy';
 
-const EXTERNAL_API_KEY = process.env.EXTERNAL_API_KEY || 'default_api_key';
-
-const server = http.createServer(async(req, res) => {
+const server = http.createServer(async (req, res) => {
+    
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
-    if(req.method === 'OPTIONS') {
+    if (req.method === 'OPTIONS') {
         res.writeHead(204);
         res.end();
         return;
     }
 
-    if (req.url === '/api/sigma' && req.method === 'GET') {
-        try {
-            const response = await fetch("https://api.sigma.com/data", {
-                headers: {
-                    "Authorization": `Bearer ${EXTERNAL_API_KEY}`
-                }
-        });
-        const data = await response.text();
-        res.writeHead(response.status, { 'Content-Type': 'application/json' });
-            res.end(data);
-    } catch(error) {
-        console.error('Помилка проксі:', error);
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Внутрішня помилка сервера' }));
-    }
-}
+    const reqUrl = new URL(req.url, `http://${req.headers.host}`);
 
-else {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Маршрут не знайдено' }));
+    if (reqUrl.pathname === '/api/lyrics' && req.method === 'GET') {
+        const searchQuery = reqUrl.searchParams.get('q');
+
+        if (!searchQuery) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ error: 'Вкажіть запит' }));
+        }
+
+        try {
+        
+            const apiRes = await fetch(`https://api.genius.com/search?q=${encodeURIComponent(searchQuery)}`, {
+                headers: { 'Authorization': `Bearer ${GENIUS_ACCESS_TOKEN}` }
+            });
+            const data = await apiRes.json();
+            const bestMatch = data.response.hits[0]?.result;
+
+            if (!bestMatch) {
+                res.writeHead(404, { 'Content-Type': 'application/json' });
+                return res.end(JSON.stringify({ error: 'Пісню не знайдено' }));
+            }
+
+    
+            const pageRes = await fetch(bestMatch.url);
+            const html = await pageRes.text();
+            const $ = cheerio.load(html);
+            
+            let lyricsText = "";
+
+            $('[data-lyrics-container="true"]').each((i, el) => {
+        
+                let chunk = $(el).html().replace(/<br\s*\/?>/gi, '\n');
+            
+                chunk = chunk.replace(/<[^>]*>?/gm, ''); 
+                lyricsText += chunk + '\n\n';
+            });
+
+    
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+                title: bestMatch.title,
+                artist: bestMatch.primary_artist.name,
+                lyrics: lyricsText.trim() || "Не вдалося витягнути текст."
+            }));
+            
+        } catch (error) {
+            console.error('Помилка сервера:', error);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Внутрішня помилка' }));
+        }
+    } else {
+        res.writeHead(404).end();
     }
-}
-)
-server.listen(PORT, () => {
-    console.log(`Сервер працює на http://localhost:${PORT}`);
 });
+
+server.listen(PORT, () => console.log(`Проксі-сервер готовий на http://localhost:${PORT}`));

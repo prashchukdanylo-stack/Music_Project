@@ -126,7 +126,7 @@ useSessionManager();
     if (timeExpire && Date.now() > timeExpire) {
       localStorage.removeItem("playback");
       localStorage.removeItem("timeExpire");
-      console.log("complete");
+      
     }
 
     getSongsData();

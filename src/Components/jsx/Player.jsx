@@ -8,6 +8,8 @@ import { TimeContext } from "../../contexts/TimeContext";
 import { QueueContext } from "../../contexts/QueueContext";
 import emitter from "../../utils/eventBus";
 import { useStorage } from "../../hooks/useStorage";
+import logger from "../../utils/logger";
+import { LyricsViewer } from "./LyricsViewer";
 export function Player({
   currentIndex,
   player,
@@ -57,7 +59,7 @@ export function Player({
     audio.load();
 
     setTime(`0:00 / ${song.duration}`);
-    console.log("okey");
+    
     const handleMetaData = () => {
       const duration = audio.duration;
       if (duration && !isNaN(duration)) {
@@ -141,7 +143,7 @@ export function Player({
       setPlayer((prev) => {
         const newArr = [...prev, newSong];
         setCurrentIndex(newArr.length - 1);
-        console.log(player);
+        
         return newArr;
       });
 
@@ -312,6 +314,7 @@ export function Player({
             });
           }}
         ></img>
+        <button onClick={() => navigate("/lyrics")} className = "lyrics-button play-button"> See text</button>
       </div>
       <div className="player-ranges">
         <div className="volume">

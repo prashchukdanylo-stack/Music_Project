@@ -1,11 +1,15 @@
+.lyrics-viewer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .lyrics-container {
     margin-top: 20px;
     padding: 10px;
     background: #111;
     border-radius: 8px;
     width: 800px;
-    right: 100px;
-    position: absolute;
 }
 
 .lyrics-button {

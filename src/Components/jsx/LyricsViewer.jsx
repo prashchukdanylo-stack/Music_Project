@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import "../css/LyricsViewer.css";
 export function LyricsViewer({ song }) {
     const [lyrics, setLyrics] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    
 
-    const fetchLyrics = async () => {
+    const fetchLyrics = useCallback(async function(){
         if (!song) return;
         
         setLoading(true);
@@ -31,18 +32,17 @@ export function LyricsViewer({ song }) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [song]);
+
+    useEffect(() => {
+        fetchLyrics();
+    }, [fetchLyrics]);
 
     return (
-        <div className="lyrics-container">
-            <button 
-                onClick={fetchLyrics} 
-                disabled={loading || !song}
-                className="lyrics-button"
-            >
-                {loading ? "Searching for text..." : "Show text"}
-            </button>
-
+        <>
+        <div className="lyrics-viewer">
+        <div className="lyrics-container" >
+            <h1>{loading ? "Loading lyrics..." : ""}</h1>
             {error && <h1 className="lyrics-error">{error}</h1>}
 
             {lyrics && (
@@ -50,6 +50,10 @@ export function LyricsViewer({ song }) {
                     {lyrics}
                 </div>
             )}
+            
         </div>
+        </div>
+        <div style={{height:"200px"}}></div>
+        </>
     );
 }

@@ -3,7 +3,7 @@ import "../css/SongsList.css";
 import { SongsGrid } from "../../Components/jsx/SongsGrid.jsx";
 import { PlayerContext } from "../../contexts/PlayerContext.jsx";
 import emitter from "../../utils/eventBus.js";
-
+import logger from "../../utils/logger.js";
 export function SongsList({
   songs,
   priorityQueue
@@ -31,21 +31,21 @@ export function SongsList({
   
   const highestPrioritySong = () => {
     const song = priorityQueue.current.peek("highest");
-    console.log(song);
+    
     if (song) {
       chooseSong(song.item, songsToRender);
       priorityQueue.current.dequeue("highest");
     }
-    priorityQueue.current.print();
+    return song;
   };
 
   const lowestPrioritySong = () => {
     const song = priorityQueue.current.peek("lowest");
-    console.log(song);
     if (song) {
       chooseSong(song.item, songsToRender);
       priorityQueue.current.dequeue("lowest");
     }
+    return song;
   };
 
   return (
@@ -61,12 +61,12 @@ export function SongsList({
           }}
         ></input>
         <img
-          onClick={highestPrioritySong}
+          onClick={logger(highestPrioritySong, "Highest Priority Song")}
           src="images/top.png"
           className="priority-button"
         ></img>
         <img
-          onClick={lowestPrioritySong}
+          onClick={logger(lowestPrioritySong, "Lowest Priority Song")}
           src="images/bad.png"
           className="priority-button"
         ></img>

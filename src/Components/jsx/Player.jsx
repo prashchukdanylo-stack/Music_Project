@@ -140,12 +140,12 @@ export function Player({
       setSong(newSong);
       setIsPlaying(true);
 
-      setPlayer((prev) => {
+      setPlayer(logger((prev) => {
         const newArr = [...prev, newSong];
         setCurrentIndex(newArr.length - 1);
         
         return newArr;
-      });
+      }, "Player updated with new song"));
 
       return;
     }
@@ -304,7 +304,7 @@ export function Player({
               ? "images/heart-active.png"
               : "images/heart.png"
           }
-          onClick={() => {
+          onClick={logger(() => {
             setFavourite((prev) => {
               const newSet = new Set(prev);
               newSet.has(song.id)
@@ -312,7 +312,8 @@ export function Player({
                 : newSet.add(song.id);
               return newSet;
             });
-          }}
+            return song;
+          }, "Toggle Favourite Song: ")}
         ></img>
         <button onClick={() => navigate("/lyrics")} className = "lyrics-button play-button"> See text</button>
       </div>

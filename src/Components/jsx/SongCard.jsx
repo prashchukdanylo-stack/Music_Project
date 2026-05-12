@@ -2,11 +2,23 @@ import { useContext, memo } from "react";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { QueueButton } from "./QueueButton";
 import { LibraryContext } from "../../contexts/LibraryContext";
-
+import logger from "../../utils/logger";
 export const SongCard = memo(({songToRender, songsToRender}) => {
     const {favourite, setFavourite} = useContext(LibraryContext);
   const {song, chooseSong} = useContext(PlayerContext);
 
+
+  const favouriteHandler = (event) => {
+                        event.stopPropagation();
+                        setFavourite((prev) => {
+                          const newSet = new Set(prev);
+                          newSet.has(songToRender.id)
+                            ? newSet.delete(songToRender.id)
+                            : newSet.add(songToRender.id);
+                          return newSet;
+                        });
+                        return songToRender;
+                      }
     return (
         <div
                 key={songToRender.id}
@@ -15,9 +27,9 @@ export const SongCard = memo(({songToRender, songsToRender}) => {
                     ? "songlist-card-active"
                     : "songlist-card"
                 }
-                onClick={() => {
-                  chooseSong(songToRender, songsToRender);
-                }}
+                onClick={logger(() => {
+                  return chooseSong(songToRender, songsToRender);
+                }, "Chosen Song: ")}
               >
                 <img src={songToRender.img} className="songs-list-img" />
                 <div className="song-info">
@@ -37,16 +49,7 @@ export const SongCard = memo(({songToRender, songsToRender}) => {
                           ? "images/heart-active.png"
                           : "images/heart.png"
                       }
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        setFavourite((prev) => {
-                          const newSet = new Set(prev);
-                          newSet.has(songToRender.id)
-                            ? newSet.delete(songToRender.id)
-                            : newSet.add(songToRender.id);
-                          return newSet;
-                        });
-                      }}
+                      onClick={logger(favouriteHandler, "Favourite Song: ")}
                     ></img>
                   </div>
                 </div>

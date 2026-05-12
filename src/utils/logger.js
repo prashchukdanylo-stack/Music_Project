@@ -1,8 +1,9 @@
 const logger = function (func, message) {
 
     return function (...args) {
-        console.log(message);
-        return func(...args);
+        const result = func(...args);
+        console.log(message, result);
+        return result;
     }
 }
 

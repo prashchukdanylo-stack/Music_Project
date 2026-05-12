@@ -147,7 +147,6 @@ useSessionManager();
 
   useEffect(() => {
     localStorage.setItem("favourite", JSON.stringify(Array.from(favourite)));
-    console.log(localStorage);
   }, [favourite]);
 
  
@@ -181,7 +180,7 @@ useSessionManager();
 
     setIsPlaying(true);
     priorityQueue.current.enqueue(updatedSong, updatedSong.playCount || 0);
-    priorityQueue.current.print();
+    return song;
   }, [songs,setSongs,setPlayer]);
   
   const playerContextValue = useMemo(()=> ({

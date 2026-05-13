@@ -16,7 +16,7 @@ export function LyricsViewer({ song }) {
 
         try {
             
-            const query = `${song.author}${song.name}`;
+            const query = `${song.author} ${song.name}`;
             
             
             const response = await fetch(`http://localhost:8080/api/lyrics?q=${encodeURIComponent(query)}`);

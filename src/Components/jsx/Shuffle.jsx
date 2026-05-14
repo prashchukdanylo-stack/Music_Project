@@ -1,5 +1,6 @@
 import { useEffect, useContext, useCallback } from "react";
 import emitter from "../../utils/eventBus";
+import logger from "../../utils/logger";
 import "../../pages/css/Song.css";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { QueueContext } from "../../contexts/QueueContext";
@@ -11,9 +12,13 @@ export function Shuffle() {
 
   const { setPlayer, setCurrentIndex } = useContext(QueueContext);
   const { songs } = useContext(LibraryContext);
+
   const shuffleSongs = useCallback(() => {
-    setShuffle((prev)=> !prev);
-  }, [setShuffle]);
+    const newShuffle = !shuffle;
+    setShuffle(newShuffle);
+    return newShuffle ? "On" : "Off";
+    
+  }, [setShuffle, shuffle]);
 
   useEffect(() => {
     const onShuffle = () => shuffleSongs();
@@ -33,7 +38,7 @@ export function Shuffle() {
   return (
     <img
       className="play-button"
-      onClick={shuffleSongs}
+      onClick={logger(shuffleSongs, "shuffle: ")}
       src={shuffle ? "/images/shuffleOn.png" : "/images/shuffleOff.png"}
     ></img>
   );

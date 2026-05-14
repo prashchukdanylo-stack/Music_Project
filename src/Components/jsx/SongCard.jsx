@@ -3,22 +3,13 @@ import { PlayerContext } from "../../contexts/PlayerContext";
 import { QueueButton } from "./QueueButton";
 import { LibraryContext } from "../../contexts/LibraryContext";
 import logger from "../../utils/logger";
+import { Heart } from "./Heart";
+
 export const SongCard = memo(({songToRender, songsToRender}) => {
-    const {favourite, setFavourite} = useContext(LibraryContext);
   const {song, chooseSong} = useContext(PlayerContext);
 
 
-  const favouriteHandler = (event) => {
-                        event.stopPropagation();
-                        setFavourite((prev) => {
-                          const newSet = new Set(prev);
-                          newSet.has(songToRender.id)
-                            ? newSet.delete(songToRender.id)
-                            : newSet.add(songToRender.id);
-                          return newSet;
-                        });
-                        return songToRender;
-                      }
+ 
     return (
         <div
                 key={songToRender.id}
@@ -42,15 +33,7 @@ export const SongCard = memo(({songToRender, songsToRender}) => {
                     <QueueButton
                       songToRender={songToRender}
                     />
-                    <img
-                      className="player-song-heart"
-                      src={
-                        favourite.has(songToRender.id)
-                          ? "images/heart-active.png"
-                          : "images/heart.png"
-                      }
-                      onClick={logger(favouriteHandler, "Favourite Song: ")}
-                    ></img>
+                   <Heart songToRender={songToRender} />
                   </div>
                 </div>
               </div>

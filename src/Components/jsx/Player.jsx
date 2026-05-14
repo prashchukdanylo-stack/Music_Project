@@ -2,7 +2,6 @@ import { useEffect, useState, useContext, useRef, useCallback } from "react";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { formatTime } from "../../utils/formatTime";
-import { Shuffle } from "./Shuffle";
 import "../css/Player.css";
 import { TimeContext } from "../../contexts/TimeContext";
 import { QueueContext } from "../../contexts/QueueContext";
@@ -10,24 +9,28 @@ import emitter from "../../utils/eventBus";
 import { useStorage } from "../../hooks/useStorage";
 import logger from "../../utils/logger";
 import { LyricsViewer } from "./LyricsViewer";
+import { PlayerControls } from "./PlayerControls";
+import { SongDetails } from "./SongDetails";
+import { Ranges } from "./Ranges";
 export function Player({
   currentIndex,
   player,
   setCurrentIndex,
   trackGenRef,
-  setFavourite,
-  favourite,
   setAuthor,
   queueShuffle,
   setQueueShuffle,
   setIsPlayerClosed,
-  isPlayerClosed
+  isPlayerClosed,
 }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [volume, setVolume] = useState(1);
-  const [prevPath, setPrevPath] = useStorage("previousPath", { path: "/", wasClosed: true });
+  const [prevPath, setPrevPath] = useStorage("previousPath", {
+    path: "/",
+    wasClosed: true,
+  });
   const lastUsedTime = useRef(0);
 
   const {
@@ -42,14 +45,14 @@ export function Player({
   } = useContext(PlayerContext);
   const { setPlayer } = useContext(QueueContext);
   const { time, setTime, progress, setProgress } = useContext(TimeContext);
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     if (location.pathname !== "/song") {
       setIsPlayerClosed(true);
     } else {
       setIsPlayerClosed(false);
     }
-  },[location.pathname, setIsPlayerClosed]);
+  }, [location.pathname, setIsPlayerClosed]);
 
   useEffect(() => {
     if (!audioRef.current || !song) return;
@@ -59,7 +62,7 @@ export function Player({
     audio.load();
 
     setTime(`0:00 / ${song.duration}`);
-    
+
     const handleMetaData = () => {
       const duration = audio.duration;
       if (duration && !isNaN(duration)) {
@@ -91,10 +94,13 @@ export function Player({
     if (audioRef.current.paused) {
       await audioRef.current.play();
       setIsPlaying(true);
+      return "Play";
     } else {
       audioRef.current.pause();
       setIsPlaying(false);
+      return "Pause"
     }
+    
   }, [audioRef, setIsPlaying]);
 
   const trackDuration = () => {
@@ -128,11 +134,15 @@ export function Player({
       if (queueShuffle.length > 0) {
         const queuedSong = queueShuffle[0];
         setQueueShuffle((prev) => prev.slice(1));
-        setPlayer((prev) => [...prev, queuedSong]);
-        setCurrentIndex(player.length);
+        setPlayer((prev) =>{
+          const newArr = [...prev, queuedSong];
+          setCurrentIndex(newArr.length - 1);
+          return newArr;
+        });
+        
         setSong(queuedSong);
         setIsPlaying(true);
-        return;
+        return queuedSong;
       }
       const newSong = trackGenRef.current.next().value;
       if (!newSong) return;
@@ -140,14 +150,16 @@ export function Player({
       setSong(newSong);
       setIsPlaying(true);
 
-      setPlayer(logger((prev) => {
-        const newArr = [...prev, newSong];
-        setCurrentIndex(newArr.length - 1);
-        
-        return newArr;
-      }, "Player updated with new song"));
+      setPlayer(
+        logger((prev) => {
+          const newArr = [...prev, newSong];
+          setCurrentIndex(newArr.length - 1);
 
-      return;
+          return newArr;
+        }, "Player updated with new song"),
+      );
+
+      return newSong;
     }
 
     if (currentIndex < player.length - 1) {
@@ -186,6 +198,7 @@ export function Player({
     setCurrentIndex(previousIndex);
     setSong(player[previousIndex]);
     setIsPlaying(true);
+    return song;
   }, [
     player,
     currentIndex,
@@ -197,57 +210,54 @@ export function Player({
     setSong,
     setTime,
     shuffle,
+    song
   ]);
 
-   const handleSongChange = useCallback((direction) => {
-    if (direction === "next") {
-      nextSong()
-    } else if (direction === "prev") {
-      previousSong()
-    }
-    emitter.emit("timeExpire", {time: Date.now()});
+  const handleSongChange = useCallback(
+    (direction) => {
+      if (direction === "next") {
+        nextSong();
+      } else if (direction === "prev") {
+        previousSong();
+      }
+      emitter.emit("timeExpire", { time: Date.now() });
+ 
+      return song
+    },
+    [nextSong, previousSong, song]
+  );
 
-  }, [nextSong, previousSong]);
-
-  
   const handleEnded = useCallback(() => {
     handleSongChange("next");
-    emitter.emit("songEnded", {songId: song.id});
-    
+    emitter.emit("songEnded", { songId: song.id });
   }, [handleSongChange, song.id]);
 
- 
-
   useEffect(() => {
+    const onNextSong = () => handleSongChange("next");
+    const onPrevSong = () => handleSongChange("prev");
+    const onTogglePlay = () => playSong();
 
-      const onNextSong = () => handleSongChange("next");
-      const onPrevSong = () => handleSongChange("prev");
-      const onTogglePlay = () => playSong();
-
-      emitter.on("nextSong", onNextSong);
-      emitter.on("previousSong", onPrevSong);
-      emitter.on("togglePlay", onTogglePlay);
-      return () => {
-        emitter.off("nextSong", onNextSong);
-        emitter.off("previousSong", onPrevSong);
-        emitter.off("togglePlay", onTogglePlay);
-      };
+    emitter.on("nextSong", onNextSong);
+    emitter.on("previousSong", onPrevSong);
+    emitter.on("togglePlay", onTogglePlay);
+    return () => {
+      emitter.off("nextSong", onNextSong);
+      emitter.off("previousSong", onPrevSong);
+      emitter.off("togglePlay", onTogglePlay);
+    };
   }, [handleSongChange, playSong]);
-   
 
-
-  
   function openSong() {
-   if (location.pathname === "/song") {
-    const goBack = (prevPath?.path && prevPath.path !== "/song") ? prevPath.path : "/";
-    navigate(goBack);
-    
-   } else {
-    setPrevPath({path: location.pathname});
-    navigate("/song");
-   }
+    if (location.pathname === "/song") {
+      const goBack =
+        prevPath?.path && prevPath.path !== "/song" ? prevPath.path : "/";
+      navigate(goBack);
+    } else {
+      setPrevPath({ path: location.pathname });
+      navigate("/song");
+    }
   }
- 
+
   return (
     <div className="player-container">
       <audio
@@ -260,101 +270,29 @@ export function Player({
           if (isPlaying) audioRef.current.play();
         }}
       ></audio>
-      <div>
-        <img
-          onClick={() => handleSongChange("prev")}
-          src="/images/previous.png"
-          className="play-button"
-        ></img>
 
-        <img
-          className="play-button"
-          src={isPlaying ? "images/pause.png" : "images/play.png"}
-          onClick={playSong}
-        ></img>
-        <img
-          onClick={() => handleSongChange("next")}
-          src="/images/next.png"
-          className="play-button"
-        ></img>
-        <Shuffle />
-      </div>
-      <div className="song-details">
-        <img
-          className="player-song-image"
-          src={song.img}
-          onClick={openSong}
-        ></img>
-        <div className="player-song-description">
-          <h1 className="player-song-name">{song.name}</h1>
-          <h5
-            className="player-song-author"
-            onClick={() => {
-              navigate("/author");
-              setAuthor(song.author);
-            }}
-          >
-            {song.author}
-          </h5>
-        </div>
-        <img
-          className="player-song-heart"
-          src={
-            favourite.has(song.id)
-              ? "images/heart-active.png"
-              : "images/heart.png"
-          }
-          onClick={logger(() => {
-            setFavourite((prev) => {
-              const newSet = new Set(prev);
-              newSet.has(song.id)
-                ? newSet.delete(song.id)
-                : newSet.add(song.id);
-              return newSet;
-            });
-            return song;
-          }, "Toggle Favourite Song: ")}
-        ></img>
-        <button onClick={() => navigate("/lyrics")} className = "lyrics-button play-button"> See text</button>
-      </div>
-      <div className="player-ranges">
-        <div className="volume">
-          <input
-            className="volume-range"
-            type="range"
-            min="0"
-            max="100"
-            value={volume * 100}
-            onChange={(event) => {
-              const volume = Number(event.target.value) / 100;
-              audioRef.current.volume = volume;
-              setVolume(volume);
-              localStorage.setItem(
-                "volume",
-                JSON.stringify({ volume: volume }),
-              );
-              console.log(audioRef.current.volume);
-            }}
-          ></input>
-          <p className="player-time">Volume {Math.floor(volume * 100)}%</p>
-        </div>
-        <div className="progress">
-          <input
-            className="progress-range"
-            type="range"
-            min="0"
-            max="100"
-            value={progress}
-            onChange={(event) => {
-              const newTime = (event.target.value / 100) * duration;
-              audioRef.current.currentTime = newTime;
-              setProgress(Number(event.target.value));
-            }}
-          ></input>
-          <p className="player-time">{time}</p>
-        </div>
-        <img src={isPlayerClosed ? "images/close.png": "images/open.png"} alt="open button"  className="play-button" onClick={openSong} />
-      </div>
+      <PlayerControls
+        handleSongChange={handleSongChange}
+        isPlaying={isPlaying}
+        playSong={playSong}
+      />
+      <SongDetails
+        song={song}
+        openSong={openSong}
+        navigate={navigate}
+        setAuthor={setAuthor}
+      />
+      <Ranges
+        volume={volume}
+        audioRef={audioRef}
+        setVolume={setVolume}
+        duration={duration}
+        setProgress={setProgress}
+        time={time}
+        isPlayerClosed={isPlayerClosed}
+        progress={progress}
+        openSong={openSong}
+      />
     </div>
   );
 }

@@ -1,8 +1,10 @@
 const http = require('http');
 const cheerio = require('cheerio');
 
+require('dotenv').config();
+
 const PORT = 8080;
-const GENIUS_ACCESS_TOKEN = 'gZHB_N5GnpetJJo4bGCGEN2G_l0y5aydbRnQTNcz6xu6y9tOn4_vbLAoRRki9Spy';
+const GENIUS_ACCESS_TOKEN = process.env.API_KEY;
 
 const server = http.createServer(async (req, res) => {
     

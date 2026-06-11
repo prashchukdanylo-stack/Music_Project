@@ -42,6 +42,7 @@ function App() {
 
   useKeyboard();
   useSessionManager();
+  
   const { isPlayerReady } = useAppInit(
     songs,
     setSongs,

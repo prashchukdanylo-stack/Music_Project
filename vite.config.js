@@ -10,5 +10,5 @@ export default defineConfig({
       },
     }
   )],
-  base: '/UG_MUSIC/',
+  base: '/Music_Project/',
 })

@@ -12,7 +12,7 @@ export const useAppInit = (songs, setSongs, authors, setAuthors, setCurrentIndex
                 let loadedSongs = songs;
 
                 if (loadedSongs.length === 0) {
-                    const response = await fetch("/songs.json", {
+                    const response = await fetch("songs.json", {
                         signal: controller.signal,
                     });
                     if (response.ok) {
@@ -50,7 +50,7 @@ export const useAppInit = (songs, setSongs, authors, setAuthors, setCurrentIndex
                 }
                
                  if (authors.length === 0) {
-                    const response = await fetch("/authors.json", {signal: controller.signal});
+                    const response = await fetch("authors.json", {signal: controller.signal});
                     if (response.ok) {
                         const data = await response.json();
                         setAuthors(data);

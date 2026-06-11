@@ -30,7 +30,7 @@ export function Sidebar() {
     <div className="sidebar">
       <img
         onClick={() => (sidebar ? setSidebar(false) : setSidebar(true))}
-        src="/images/logo.png"
+        src="images/logo.png"
         className="logo"
       ></img>
 

@@ -28,3 +28,49 @@
     padding: 10px 10px 10px 10px;
     margin-top: 0;
 }
+
+@media (max-width: 900px) {
+    
+    .author-page {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+    }
+
+   
+    .author {
+        font-size: 30px;
+        width: auto;    
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .author-img {
+        width: 80vw;
+        height: 80vw;
+        max-width: 250px;
+        max-height: 250px;
+        object-fit: cover;
+        margin: 10px 0;
+    }
+
+   
+    .author-description {
+        width: 95vw;    
+        height: auto;  
+        max-width: 450px;
+        margin-top: 15px;
+        padding: 15px;
+        box-sizing: border-box; 
+    }
+
+    
+    .author-songs {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        margin-bottom: 120px;
+    }
+}

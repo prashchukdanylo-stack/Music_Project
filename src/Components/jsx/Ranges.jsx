@@ -1,3 +1,5 @@
+import "../css/Ranges.css";
+
 export const Ranges = ({
   volume,
   audioRef,
@@ -48,7 +50,7 @@ export const Ranges = ({
           (isPlayerClosed ? "images/close.webp" : "images/open.webp")
         }
         alt="open button"
-        className="play-button"
+        className="play-button close-open"
         onClick={openSong}
       />
     </div>

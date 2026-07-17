@@ -1,5 +1,6 @@
 import { Heart } from "./Heart";
-export const SongDetails = ({song, openSong, navigate, setAuthor}) => {
+import { PlayerControls } from "./PlayerControls";
+export const SongDetails = ({song, openSong, navigate, setAuthor, handleSongChange, isPlaying, playSong}) => {
   console.log("Current song data:", import.meta.env.BASE_URL + song.img.slice(1)); // <--- Додайте цей рядок
 console.log("Base URL:", import.meta.env.BASE_URL);
     return (
@@ -21,9 +22,14 @@ console.log("Base URL:", import.meta.env.BASE_URL);
             {song.author}
           </h5>
         </div>
-        
-       <Heart songToRender = {song} />
-
+        <PlayerControls
+        handleSongChange={handleSongChange}
+        isPlaying={isPlaying}
+        playSong={playSong}
+        song={song}
+      />
+       
+            <Heart songToRender = {song} />
         <button onClick={() => navigate("/lyrics")} className = "lyrics-button play-button"> See text</button>
       </div>
     );

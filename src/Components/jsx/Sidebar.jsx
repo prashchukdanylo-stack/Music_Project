@@ -5,7 +5,7 @@ import "../css/Sidebar.css";
 export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [sidebar, setSidebar] = useState(false);
+  const [sidebar, setSidebar] = useState(true);
 
   const navLinks = [
     { path: "/", label: "Home" },

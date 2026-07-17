@@ -20,3 +20,23 @@
 .toast-warning-message {
     color: black;
 }
+
+@media (max-width: 900px) {
+    
+    .toast-container,
+    .toast-warning-container {
+        right: 5vw;         
+        left: 5vw;
+        width: 90vw;        
+        top: 20px;          
+        justify-content: center; 
+        padding: 12px 15px;
+        box-sizing: border-box;
+    }
+
+    .toast-message,
+    .toast-warning-message {
+        font-size: 15px;
+        text-align: center;
+    }
+}

@@ -29,7 +29,7 @@ export const SongCard = memo(({songToRender, songsToRender}) => {
                 </div>
                 <div className="song-info">
                   <h5 className="song-author">{songToRender.author}</h5>
-                  <div>
+                  <div className="controls-group">
                     <QueueButton
                       songToRender={songToRender}
                     />

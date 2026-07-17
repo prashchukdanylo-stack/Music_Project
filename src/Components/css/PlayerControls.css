@@ -1,0 +1,14 @@
+.player-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px;
+}
+@media (max-width: 900px) {
+    .player-controls {
+        gap: 8px;
+        justify-content: center;
+        width: 100%; 
+    }
+}

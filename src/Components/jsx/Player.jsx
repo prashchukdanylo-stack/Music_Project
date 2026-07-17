@@ -271,16 +271,15 @@ export function Player({
         }}
       ></audio>
 
-      <PlayerControls
-        handleSongChange={handleSongChange}
-        isPlaying={isPlaying}
-        playSong={playSong}
-      />
+      
       <SongDetails
         song={song}
         openSong={openSong}
         navigate={navigate}
         setAuthor={setAuthor}
+        handleSongChange={handleSongChange}
+        isPlaying={isPlaying}
+        playSong={playSong}
       />
       <Ranges
         volume={volume}

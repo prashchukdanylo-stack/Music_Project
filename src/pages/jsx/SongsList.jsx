@@ -60,6 +60,7 @@ export function SongsList({
             setSearch(e.target.value);
           }}
         ></input>
+        <div>
         <img
           onClick={logger(highestPrioritySong, "Highest Priority Song")}
           src={`${import.meta.env.BASE_URL}images/top.webp`}
@@ -70,6 +71,7 @@ export function SongsList({
           src={`${import.meta.env.BASE_URL}images/bad.webp`}
           className="priority-button"
         ></img>
+        </div>
       </div>
       <SongsGrid
         songsToRender={songsToRender}

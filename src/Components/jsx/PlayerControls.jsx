@@ -1,9 +1,10 @@
 import { Shuffle } from "./Shuffle";
 import logger from "../../utils/logger";
+import "../css/PlayerControls.css";
 
 export const PlayerControls = ({handleSongChange, isPlaying, playSong}) => {
     return (
-        <div>
+        <div className="player-controls">
         <img
           onClick={logger(() => {return handleSongChange("prev")}, "previous track is playing")}
           src={`${import.meta.env.BASE_URL}images/previous.webp`}
@@ -21,6 +22,7 @@ export const PlayerControls = ({handleSongChange, isPlaying, playSong}) => {
           className="play-button"
         ></img>
         <Shuffle />
+        
       </div>
     );
 }

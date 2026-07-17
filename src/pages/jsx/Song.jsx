@@ -24,7 +24,7 @@ export function Song({ song }) {
         <h5 className="song-author">{song.author} </h5>
         <div>
           <p>{time}</p>
-          <h5>{song.playCount}- times clicked on song</h5>
+          
         </div>
       </div>
       {queueShuffle.length !== 0 && (
@@ -34,11 +34,13 @@ export function Song({ song }) {
             {queueShuffle.map((song) => {
               return (
                 <div className="queue-song" key={song.id}>
+                  <div>
                   {song.id === queueShuffle[0].id && <h1 className="active">Next:</h1>}
                   <img src={`${import.meta.env.BASE_URL}${song.img}`} className="queue-song-img" />
                   <h1 className={song.id === queueShuffle[0].id ? "active" : ""}>
                     {song.name}
                   </h1>
+                  </div>
                   <img
                     src={`${import.meta.env.BASE_URL}images/cross.webp`}
                     className="cross"

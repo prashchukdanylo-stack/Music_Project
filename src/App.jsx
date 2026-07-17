@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { randomTrackGenerator } from "./utils/randomTrackGenerator";
 import PriorityQueue from "./utils/queue";
 import "./App.css";
@@ -158,7 +158,7 @@ function App() {
       <PlayerContext.Provider value={playerContextValue}>
         <LibraryContext.Provider value={libraryContextValue}>
           <QueueContext.Provider value={queueContextValue}>
-            <BrowserRouter basename={import.meta.env.BASE_URL}>
+            <HashRouter>
               <Sidebar />
               <Routes>
                 <Route path="/" element={<HomePage />} />
@@ -206,7 +206,7 @@ function App() {
               )}
 
               <Toast />
-            </BrowserRouter>
+            </HashRouter>
           </QueueContext.Provider>
         </LibraryContext.Provider>
       </PlayerContext.Provider>

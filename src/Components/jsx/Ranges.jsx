@@ -35,7 +35,7 @@ export const Ranges = ({volume, audioRef, setVolume, duration, setProgress, time
           ></input>
           <p className="player-time">{time}</p>
         </div>
-        <img src={isPlayerClosed ? "images/close.png": "images/open.png"} alt="open button"  className="play-button" onClick={openSong} />
+        <img src={isPlayerClosed ? "images/close.webp": "images/open.webp"} alt="open button"  className="play-button" onClick={openSong} />
       </div>
     );
 }

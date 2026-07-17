@@ -1,60 +1,60 @@
 [
     {
         "author": "The Weeknd",
-        "img": "images/weeknd.jpg",
+        "img": "images/weeknd.webp",
         "description": "The Weeknd (real name Abel Tesfaye) was born and raised in Toronto, Canada. His birthday is Feb. 16, 1990, and his height is 5'8. He launched his career by anonymously uploading his music to YouTube, and released his first mixtape, 'House of Balloons,' in 2011; the project reached No. 113 on the Billboard 200. His debut studio album, 'Kiss Land,' came in September 2013 and peaked at No. 2, with 2018's 'My Dear Melancholy' EP becoming his first No. 1 album. 'Wicked Games' was his debut single, and it reached a peak of No. 53 on the Hot 100 in 2013. Since then, he has had multiple No. 1 songs, including 2015's 'The Hills' and 'Can't Feel My Face,' and 'Save Your Tears' and 'Die for You' with Ariana Grande. Other artists he's collaborated with include Drake, Doja Cat, Daft Punk, Maluma and Post Malone. He has earned multiple Grammys, including best urban contemporary album for 'Starboy' in 2018, and best R&B performance for 'Earned It' in 2016.",
         "id": 1
     },
     
     {
         "author": "Kanye West",
-        "img": "images/kanye.jpg",
+        "img": "images/kanye.webp",
         "description": "Kanye West was born in Atlanta and raised in Chicago.His birthday is June 8, 1977, and his height is 5'8. He began his career by producing music for local artists, and eventually started producing musicians on Jay-Z, Damon Dash and Kareem Burke's Roc-a-Fella Records in 2000, before signing on as an artist himself. He released 'The College Dropout,' his debut studio album, in 2004; the album peaked at No. 2 on the Billboard 200. Ye would go on to have many more No. 1s on both charts, including 'My Beautiful Dark Twisted Fantasy,' 'Yeezus' and 'Watch the Throne' (a collaborative album with Jay-Z) on the Billboard 20. Besides his numerous collaborations with Jay-Z, Ye also worked across genres with Rihanna, T-Pain, Drake, Paul McCartney, John Legend and many others. Kanye has many Grammys under his belt, including multiple best rap album wins, and best contemporary Christian music album for 'Jesus Is King.' In October 2021, he legally changed his name to Ye.",
         "id": 2
     },
 
     {
         "author": "Billie Eilish",
-        "img": "images/billie.jpg",
+        "img": "images/billie.webp",
         "description": "Billie Eilish is an American pop star from Los Angeles, California. Her birthday is December 18, 2001, and her height is about 5'3'. She began her career collaborating with her brother Finneas, famously uploading her breakthrough single 'Ocean Eyes' to SoundCloud in 2015. She released her debut EP, 'Don't Smile at Me,' in 2017, followed by her debut studio album, 'When We All Fall Asleep, Where Do We Go?,' in 2019; the album peaked at No. 1 on the Billboard 200. Eilish would go on to reach No. 1 on the Billboard 200 again with her album 'Happier Than Ever.' She also earned a Hot 100 No. 1 hit with the massive 'Bad Guy.' Besides her solo success, she collaborated across genres with Khalid, Rosalía, and Justin Bieber. Eilish has numerous Grammys and Oscars under her belt, famously sweeping the four major Grammy categories in one night and winning Academy Awards for her soundtrack hits 'No Time to Die' and 'What Was I Made For?'",
         "id": 3
     },
 
     {
         "author": "OMI",
-        "img": "images/omi.jpg",
+        "img": "images/omi.webp",
         "description": "OMI is a Jamaican pop and reggae singer from Clarendon Parish. His birthday is September 3, 1986, and his height is about 5'10'. He began his career in the local Jamaican music scene after catching the attention of manager Clifton 'Specialist' Dillon. He originally released his breakthrough single 'Cheerleader' in 2012, but it was the 2014 tropical house remix by German DJ Felix Jaehn that propelled him to global superstardom. The remixed track became a massive commercial success, eventually hitting No. 1 on the Billboard Hot 100 in 2015. He released 'Me 4 U,' his debut studio album, later that same year; the album charted on the Billboard 200 and featured his follow-up platinum hit 'Hula Hoop.' OMI has also worked across genres, collaborating with artists like Shaggy, The Vamps, and Marcus & Martinus. His inescapable summer anthem 'Cheerleader' earned him multi-platinum certifications worldwide and multiple Billboard Music Award nominations.",
         "id": 4
     },
 
     {
         "author": "Pixies",
-        "img": "images/pixies.jpg",
+        "img": "images/pixies.webp",
         "description": "Pixies are an American alternative rock band from Boston, Massachusetts. The group was formed in 1986, and their classic lineup featured Black Francis, Joey Santiago, Kim Deal, and David Lovering. They began their career playing in the local rock scene before catching the attention of British independent label 4AD. They released their debut EP, 'Come On Pilgrim,' in 1987, followed by their debut studio album, 'Surfer Rosa,' in 1988; the album became an underground sensation and a massive critical triumph. Pixies would go on to chart influential albums on the Billboard 200, including their commercial breakthrough 'Doolittle,' 'Bossanova,' and 'Trompe le Monde.' They also earned major alternative radio hits with enduring tracks like 'Here Comes Your Man,' 'Monkey Gone to Heaven,' and 'Where Is My Mind?' Pixies have a massive cultural legacy under their belt, pioneering the loud-quiet-loud dynamic and heavily influencing iconic artists like Nirvana, Radiohead, The Smashing Pumpkins, and David Bowie.",
         "id": 5
     },
 
      {
         "author": "Lil Nas X",
-        "img": "images/lilnasx.jpg",
+        "img": "images/lilnasx.webp",
         "description": "Lil Nas X is an American rapper and pop star from Lithia Springs, Georgia. His birthday is April 9, 1999, and his height is about 6'2'. He began his career as an internet personality, managing popular fan accounts, before focusing on music and independently releasing his country-trap single 'Old Town Road' in 2018. After going viral on TikTok, the song received a remix featuring Billy Ray Cyrus and made history by spending a record-breaking 19 weeks at No. 1 on the Billboard Hot 100. He released his debut EP, '7,' in 2019, followed by his debut studio album, 'Montero,' in 2021; the album peaked at No. 2 on the Billboard 200. Lil Nas X would go on to earn more Hot 100 No. 1 hits with the culturally massive 'Montero (Call Me By Your Name)' and 'Industry Baby.' He has also collaborated across genres with Jack Harlow, Cardi B, Elton John, Megan Thee Stallion, and Doja Cat. Lil Nas X has multiple Grammys under his belt, winning best pop duo/group performance and best music video for 'Old Town Road.'",
         "id": 6
     }, 
     {
         "author": "Justin Bieber",
-        "img": "images/justin.jpg",
+        "img": "images/justin.webp",
         "description": "Justin Bieber is a Canadian pop star. His birthday is March 1, 1994, and his height is 5’9”. He caught manager Scooter Braun's attention with his YouTube covers of Aretha Franklin, Chris Brown, and Ne-Yo, and was signed when he was 13 years old. Bieber released his debut EP, 'My World,' in 2009; it peaked at No. 5 on the Billboard 200, while his lead single “One Time” reached No. 17. Bieber would go on to have numerous No. 1 albums, including 'My World 2.0,' 'Believe,' 'Justice,' and 'Purpose.' He also earned multiple No. 1s on the Hot 100, including solo hits like 'Sorry' and collaborations like 'Despacito' and 'Peaches'. Besides his massive solo success, he worked across genres with Big Sean, Nicki Minaj, Usher, Ariana Grande, Post Malone, and many others. Bieber has multiple Grammys under his belt, including best dance recording for his Skrillex and Diplo collab “Where Are U Now,” and best country duo/group performance for “10,000 Hours” alongside Dan + Shay.",
         "id": 7
     },
     {
         "author": "Sabrina Carpenter",
-        "img": "images/sabrina.jpg",
+        "img": "images/sabrina.webp",
         "description": "Sabrina Carpenter is a pop star and actress from Quakertown, Pennsylvania. Her birthday is May 11, 1999, and her height is about 5'0'. She worked in entertainment long before her pop breakthrough, famously starring in Disney Channel's 'Girl Meets World' in 2014. She released 'Eyes Wide Open,' her debut studio album, in 2015; it peaked at No. 43 on the Billboard 200. After releasing several albums with her first label and starring in films like 'The Hate U Give,' she moved to Island Records. She soon dropped 'Skin,' a song rumored to be her response to Olivia Rodrigo's 'Drivers License,' which became her Billboard Hot 100 debut. Her 2022 album 'Emails I Can't Send' set the stage for her massive breakout. Carpenter would go on to reach No. 1 on the Billboard 200 with her albums 'Short n' Sweet' and 2025's 'Man's Best Friend.' She also earned Hot 100 No. 1 hits with 'Please Please Please' and 'Manchild.' Carpenter has a Grammy under her belt, winning best pop solo performance for her hit 'Espresso.'",
         "id": 8
     },
     {
         "author": "Eminem",
-        "img": "images/eminem.jpg",
+        "img": "images/eminem.webp",
         "description": "Eminem (real name Marshall Mathers) was born in St. Joseph, Mo., and moved back and forth between his birthplace and Detroit during his childhood. His birthday is Oct. 17, 1972, and his height is 5'8. His talent for rhyming led him to build his reputation as a talented aspiring rapper during open-mic contests in Motor City. Em's rise to fame began in 1997, when one of his mixtapes made its way to Dr. Dre, who signed him to Aftermath in 1998. His debut studio album, 'The Slim Shady LP,' dropped in 1999 and peaked at No. 2, while lead single 'My Name Is' reached No. 36. Sophomore album 'The Marshall Mathers LP' was a massive hit, holding the No. 1 spot for eight weeks. Single 'Lose Yourself' -- from his 2002 biographical film '8 Mile' in which he starred -- became his first Hot 100 No. 1, staying atop the chart for 12 weeks, and won the Grammy for best rap song and Oscar for best original song. Besides Dre and Rih, he has also counted Drake, Lil Wayne, Skylar Grey, 50 Cent, Dido, Beyonce and more as collaborators.",
         "id": 9
     }

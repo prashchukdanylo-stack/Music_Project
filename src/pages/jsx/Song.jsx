@@ -39,7 +39,7 @@ export function Song({ song }) {
                     {song.name}
                   </h1>
                   <img
-                    src="images/cross.png"
+                    src="images/cross.webp"
                     className="cross"
                     alt="cross"
                     onClick={() =>

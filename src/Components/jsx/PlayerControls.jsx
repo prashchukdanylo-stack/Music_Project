@@ -6,18 +6,18 @@ export const PlayerControls = ({handleSongChange, isPlaying, playSong}) => {
         <div>
         <img
           onClick={logger(() => {return handleSongChange("prev")}, "previous track is playing")}
-          src="images/previous.png"
+          src="images/previous.webp"
           className="play-button"
         ></img>
 
         <img
           className="play-button"
-          src={isPlaying ? "images/pause.png" : "images/play.png"}
+          src={isPlaying ? "images/pause.webp" : "images/play.webp"}
           onClick={logger(playSong, "playback status: ")}
         ></img>
         <img
           onClick={logger(() =>{ return handleSongChange("next")}, "next track is playing")}
-          src="images/next.png"
+          src="images/next.webp"
           className="play-button"
         ></img>
         <Shuffle />

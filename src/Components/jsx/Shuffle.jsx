@@ -39,7 +39,7 @@ export function Shuffle() {
     <img
       className="play-button"
       onClick={logger(shuffleSongs, "shuffle: ")}
-      src={shuffle ? "images/shuffleOn.png" : "images/shuffleOff.png"}
+      src={shuffle ? "images/shuffleOn.webp" : "images/shuffleOff.webp"}
     ></img>
   );
 }

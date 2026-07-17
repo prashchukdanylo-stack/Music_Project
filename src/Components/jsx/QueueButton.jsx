@@ -25,7 +25,7 @@ export function QueueButton({songToRender}) {
   }, [shuffle, queueShuffle ,setQueueShuffle,songToRender]);
   return (
     <img
-      src="images/queue.png"
+      src="images/queue.webp"
       className="queueButton"
       onClick={handleAddToQueue}
     ></img>

@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-  "deploy": "gh-pages -repo https://github.com/prashchukdanylo-stack/prashchukdanylo-stack.github.io.git -d dist"
+  "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "cheerio": "^1.2.0",

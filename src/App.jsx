@@ -161,20 +161,20 @@ function App() {
             <BrowserRouter>
               <Sidebar />
               <Routes>
-                <Route index element={<HomePage />} />
+                <Route path="/Music_Project" element={<HomePage />} />
                 <Route path="/song" element={<Song song={song} />} />
                 <Route
-                  path="/songslist"
+                  path="/Music_Project/songslist"
                   element={
                     <SongsList songs={songs} priorityQueue={priorityQueue} />
                   }
                 />
                 <Route
-                  path="/favourite"
+                  path="/Music_Project/favourite"
                   element={<Favourite songs={songs} favourite={favourite} />}
                 ></Route>
                 <Route
-                  path="/author"
+                  path="/Music_Project/author"
                   element={
                     <Author
                       author={author}
@@ -184,7 +184,7 @@ function App() {
                     />
                   }
                 ></Route>
-                <Route path="/lyrics" element={<LyricsViewer song={song} />} />
+                <Route path="/Music_Project/lyrics" element={<LyricsViewer song={song} />} />
               </Routes>
 
               {song && (

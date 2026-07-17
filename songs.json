@@ -4,7 +4,7 @@
     {
         "id": "2",
         "name": "Rap God",
-        "img":"images/rapgod.jpg",
+        "img":"images/rapgod.webp",
         "audio": "songs/rapgod.mp3",
         "duration": "6:03",
         "author": "Eminem",
@@ -14,7 +14,7 @@
     {
         "id": "3",
         "name": "Baby",
-        "img":"images/baby.jpg",
+        "img":"images/baby.webp",
         "audio": "songs/baby.mp3",
         "duration": "3:35",
         "author": "Justin Bieber",
@@ -24,7 +24,7 @@
     {
         "id": "4",
         "name": "Espresso",
-        "img":"images/espresso.jpg",
+        "img":"images/espresso.webp",
         "audio": "songs/espresso.mp3",
         "duration": "2:55",
         "author": "Sabrina Carpenter",
@@ -34,7 +34,7 @@
     {
         "id": "5",
         "name": "Stronger",
-        "img":"images/stronger.jpg",
+        "img":"images/stronger.webp",
         "audio": "songs/stronger.mp3",
         "duration": "5:11",
         "author": "Kanye West",
@@ -44,7 +44,7 @@
     {
         "id": "6",
         "name": "Where is my mind",
-        "img": "images/whereismymind.jpg",
+        "img": "images/whereismymind.webp",
         "audio": "songs/whereismymind.mp3",
         "duration": "3:52",
         "author": "Pixies",
@@ -54,7 +54,7 @@
     {
         "id": "7",
         "name": "Old town road",
-        "img": "images/oldtownroad.jpg",
+        "img": "images/oldtownroad.webp",
         "audio": "songs/oldtownroad.mp3",
         "duration": "2:37",
         "author": "Lil Nas X",
@@ -64,7 +64,7 @@
     {
         "id": "8",
         "name": "Cheerleader",
-        "img": "images/cheerleader.jpg",
+        "img": "images/cheerleader.webp",
         "audio": "songs/cheerleader.mp3",
         "duration": "3:01",
         "author": "OMI",
@@ -74,7 +74,7 @@
      {
         "id": "9",
         "name": "Popular",
-        "img": "images/popular.jpg",
+        "img": "images/popular.webp",
         "audio": "songs/popular.mp3",
         "duration": "3:35",
         "author": "The Weeknd",
@@ -84,7 +84,7 @@
     {
         "id": "10",
         "name": "Lovely",
-        "img": "images/lovely.jpg",
+        "img": "images/lovely.webp",
         "audio": "songs/lovely.mp3",
         "duration": "3:20",
         "author": "Billie Eilish",
@@ -93,7 +93,7 @@
     {
         "id": "11",
         "name": "What do you mean?",
-        "img": "images/whatdoyoumean.jpg",
+        "img": "images/whatdoyoumean.webp",
         "audio": "songs/whatdoyoumean.mp3",
         "duration": "3:21",
         "author": "Justin Bieber",
@@ -102,7 +102,7 @@
     {
         "id": "12",
         "name": "Yukon",
-        "img": "images/yukon.jpg",
+        "img": "images/yukon.webp",
         "audio": "songs/yukon.mp3",
         "duration": "2:43",
         "author": "Justin Bieber",
@@ -111,7 +111,7 @@
     {
         "id": "13",
         "name": "Mockingbird",
-        "img": "images/mockingbird.jpg",
+        "img": "images/mockingbird.webp",
         "audio": "songs/mockingbird.mp3",
         "duration": "4:10",
         "author": "Eminem",
@@ -120,7 +120,7 @@
     {
         "id": "14",
         "name": "Venom",
-        "img": "images/venom.jpg",
+        "img": "images/venom.webp",
         "audio": "songs/venom.mp3",
         "duration": "4:23",
         "author": "Eminem",
@@ -129,7 +129,7 @@
     {
         "id": "15",
         "name": "As long as I'm with you",
-        "img": "images/aslongasimwithyou.jpg",
+        "img": "images/aslongasimwithyou.webp",
         "audio": "songs/aslongasimwithyou.mp3",
         "duration": "3:08",
         "author": "OMI",
@@ -138,7 +138,7 @@
     {
         "id": "16",
         "name": "Call out my name",
-        "img": "images/calloutmyname.jpg",
+        "img": "images/calloutmyname.webp",
         "audio": "songs/calloutmyname.mp3",
         "duration": "3:48",
         "author": "The Weeknd",
@@ -147,7 +147,7 @@
     {
         "id": "17",
         "name": "São Paulo",
-        "img": "images/saopaulo.png",
+        "img": "images/saopaulo.webp",
         "audio": "songs/saopaulo.mp3",
         "duration": "5:01",
         "author": "The Weeknd",
@@ -156,7 +156,7 @@
     {
         "id": "18",
         "name": "Off the grid",
-        "img": "images/offthegrid.jpg",
+        "img": "images/offthegrid.webp",
         "audio": "songs/offthegrid.mp3",
         "duration": "5:39",
         "author": "Kanye West",
@@ -165,7 +165,7 @@
     {
         "id": "19",
         "name": "Love lock down",
-        "img": "images/lovelockdown.jpg",
+        "img": "images/lovelockdown.webp",
         "audio": "songs/lovelockdown.mp3",
         "duration": "4:30",
         "author": "Kanye West",
@@ -174,7 +174,7 @@
     {
         "id": "20",
         "name": "Please please please",
-        "img": "images/pleasepleaseplease.jpg",
+        "img": "images/pleasepleaseplease.webp",
         "audio": "songs/pleasepleaseplease.mp3",
         "duration": "3:06",
         "author": "Sabrina Carpenter",
@@ -183,7 +183,7 @@
     {
         "id": "21",
         "name": "Feather",
-        "img": "images/feather.jpg",
+        "img": "images/feather.webp",
         "audio": "songs/feather.mp3",
         "duration": "3:05",
         "author": "Sabrina Carpenter",
@@ -192,7 +192,7 @@
     {
         "id": "22",
         "name": "Industry baby",
-        "img": "images/industrybaby.jpg",
+        "img": "images/industrybaby.webp",
         "audio": "songs/industrybaby.mp3",
         "duration": "3:32",
         "author": "Lil Nas X",
@@ -201,7 +201,7 @@
     {
         "id": "23",
         "name": "Holiday",
-        "img": "images/holiday.jpg",
+        "img": "images/holiday.webp",
         "audio": "songs/holiday.mp3",
         "duration": "2:35",
         "author": "Lil Nas X",
@@ -210,7 +210,7 @@
     {
         "id": "24",
         "name": "Birds of a feather",
-        "img": "images/birdsofafeather.jpg",
+        "img": "images/birdsofafeather.webp",
         "audio": "songs/birdsofafeather.mp3",
         "duration": "3:30",
         "author": "Billie Eilish",
@@ -219,7 +219,7 @@
     {
         "id": "25",
         "name": "Here comes your man",
-        "img": "images/herecomesyourman.jpg",
+        "img": "images/herecomesyourman.webp",
         "audio": "songs/herecomesyourman.mp3",
         "duration": "3:21",
         "author": "Pixies",

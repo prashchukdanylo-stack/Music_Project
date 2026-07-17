@@ -158,23 +158,23 @@ function App() {
       <PlayerContext.Provider value={playerContextValue}>
         <LibraryContext.Provider value={libraryContextValue}>
           <QueueContext.Provider value={queueContextValue}>
-            <BrowserRouter>
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
               <Sidebar />
               <Routes>
-                <Route path="/Music_Project" element={<HomePage />} />
+                <Route path="/" element={<HomePage />} />
                 <Route path="/song" element={<Song song={song} />} />
                 <Route
-                  path="/Music_Project/songslist"
+                  path="/songslist"
                   element={
                     <SongsList songs={songs} priorityQueue={priorityQueue} />
                   }
                 />
                 <Route
-                  path="/Music_Project/favourite"
+                  path="/favourite"
                   element={<Favourite songs={songs} favourite={favourite} />}
                 ></Route>
                 <Route
-                  path="/Music_Project/author"
+                  path="/author"
                   element={
                     <Author
                       author={author}
@@ -184,7 +184,7 @@ function App() {
                     />
                   }
                 ></Route>
-                <Route path="/Music_Project/lyrics" element={<LyricsViewer song={song} />} />
+                <Route path="/lyrics" element={<LyricsViewer song={song} />} />
               </Routes>
 
               {song && (

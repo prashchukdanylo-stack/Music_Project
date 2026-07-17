@@ -1,10 +1,12 @@
 import { Heart } from "./Heart";
 export const SongDetails = ({song, openSong, navigate, setAuthor}) => {
+  console.log("Current song data:", import.meta.env.BASE_URL + song.img.slice(1)); // <--- Додайте цей рядок
+console.log("Base URL:", import.meta.env.BASE_URL);
     return (
           <div className="song-details">
         <img
           className="player-song-image"
-          src={song.img}
+          src={`${import.meta.env.BASE_URL}${song.img}`}
           onClick={openSong}
         ></img>
         <div className="player-song-description">

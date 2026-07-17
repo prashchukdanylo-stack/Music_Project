@@ -15,6 +15,7 @@ export function Song({ song }) {
       </div>
     );
   }
+  console.log(song)
   return (
     <div className="song-card">
       <div className="song-container">
@@ -34,12 +35,12 @@ export function Song({ song }) {
               return (
                 <div className="queue-song" key={song.id}>
                   {song.id === queueShuffle[0].id && <h1 className="active">Next:</h1>}
-                  <img src={song.img} className="queue-song-img" />
+                  <img src={`${import.meta.env.BASE_URL}${song.img}`} className="queue-song-img" />
                   <h1 className={song.id === queueShuffle[0].id ? "active" : ""}>
                     {song.name}
                   </h1>
                   <img
-                    src="images/cross.webp"
+                    src={`${import.meta.env.BASE_URL}images/cross.webp`}
                     className="cross"
                     alt="cross"
                     onClick={() =>

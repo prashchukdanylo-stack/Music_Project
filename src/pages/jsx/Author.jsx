@@ -35,7 +35,7 @@ export function Author({
           <>
           <img
           className="author-img"
-          src={authorInfo.img}
+          src={import.meta.env.BASE_URL+ authorInfo.img}
           alt={author}
         ></img>
         <p className = "author-description">{authorInfo.description}</p>

@@ -30,7 +30,7 @@ export function Sidebar() {
     <div className="sidebar">
       <img
         onClick={() => (sidebar ? setSidebar(false) : setSidebar(true))}
-        src="images/logo.webp"
+        src={`${import.meta.env.BASE_URL}images/logo.webp`}
         className="logo"
       ></img>
 

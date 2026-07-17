@@ -10,9 +10,10 @@ export const Heart = ({songToRender}) => {
          <img
                       className="player-song-heart"
                       src={
-                        favourite.has(songToRender.id)
+                        import.meta.env.BASE_URL +
+                        (favourite.has(songToRender.id)
                           ? "images/heart-active.webp"
-                          : "images/heart.webp"
+                          : "images/heart.webp")
                       }
                       onClick={logger((event) => favouriteHandler(event, setFavourite, songToRender), "Favourite Song: ")}
                     ></img>

@@ -22,7 +22,7 @@ export const SongCard = memo(({songToRender, songsToRender}) => {
                   return chooseSong(songToRender, songsToRender);
                 }, "Chosen Song: ")}
               >
-                <img src={songToRender.img} className="songs-list-img" />
+                <img src={import.meta.env.BASE_URL + songToRender.img} className="songs-list-img" />
                 <div className="song-info">
                   <h3>{songToRender.name}</h3>
                   <h5>{songToRender.duration}</h5>

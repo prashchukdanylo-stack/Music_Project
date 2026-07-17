@@ -62,12 +62,12 @@ export function SongsList({
         ></input>
         <img
           onClick={logger(highestPrioritySong, "Highest Priority Song")}
-          src="images/top.webp"
+          src={`${import.meta.env.BASE_URL}images/top.webp`}
           className="priority-button"
         ></img>
         <img
           onClick={logger(lowestPrioritySong, "Lowest Priority Song")}
-          src="images/bad.webp"
+          src={`${import.meta.env.BASE_URL}images/bad.webp`}
           className="priority-button"
         ></img>
       </div>
